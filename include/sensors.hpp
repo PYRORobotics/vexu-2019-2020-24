@@ -13,6 +13,16 @@
 #include "okapi/api/device/rotarysensor/continuousRotarySensor.hpp"
 #include "okapi/impl/device/rotarysensor/adiGyro.hpp"
 
+// Include sstream for serial parsing
+#include <sstream>
+
+// Prototypes for hidden vex functions to bypass PROS bug
+extern "C" int32_t vexGenericSerialReceive( uint32_t index, uint8_t *buffer, int32_t length );
+extern "C" void vexGenericSerialEnable(  uint32_t index, uint32_t nu );
+extern "C" void vexGenericSerialBaudrate(  uint32_t index, uint32_t rate );
+extern "C" int32_t vexGenericSerialTransmit( uint32_t index, uint8_t *buffer, int32_t length );
+
+
 namespace okapi {
 class BNO055 : public ADIGyro {
   public:

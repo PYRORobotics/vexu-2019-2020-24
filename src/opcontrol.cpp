@@ -15,24 +15,18 @@
  */
 
 
-using namespace okapi;
-
-
 void startAllTasks()	//FIXME
 {
-	pros::Task BNO055_Update(t_update_BNO055);
+	pros::Task update_BNO055(t_update_BNO055);
 }
 
 void opcontrol() {
 
 	startAllTasks();
 
-
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
-
-
 
 	const okapi::QLength WHEEL_DIAMETER = 3.95_in;
 	const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
@@ -52,15 +46,18 @@ void opcontrol() {
 	while (true)
 	{
 
-			driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0);
+		driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0);
 
 		pros::lcd::print(2, "heading: %f", BNO055_Main.get());
-		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+		{
 			pros::lcd::print(1, "GO!");
 			//controller.setTarget(200);
 			driveController.stop();
 			pros::delay(20000000);
 		}
+
 		pros::delay(20);
 	}
 }
