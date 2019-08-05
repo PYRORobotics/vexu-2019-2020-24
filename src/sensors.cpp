@@ -16,9 +16,11 @@ extern "C" int32_t vexGenericSerialTransmit( uint32_t index, uint8_t *buffer, in
 using namespace okapi;
 
 BNO055::BNO055() : ADIGyro::ADIGyro('G'), gyro('H')
-{}
+{
+  value = 0.0;
+}
 
-double BNO055::get(double value)
+double BNO055::get()
 {
   return value;
 }
@@ -31,13 +33,19 @@ std::int32_t BNO055::reset() {
 }
 
 
-double BNO055::controllerGet(double value)
+double BNO055::controllerGet()
 {
-  return get(value);
+  return get();
+}
+
+void BNO055::update(double value)
+{
+  this->value = value;
 }
 
 
-double gyroValue = 0;
+okapi::BNO055 BNO055_Main;
+
 
 void t_update_BNO055(void*)
 {
@@ -85,8 +93,10 @@ void t_update_BNO055(void*)
 						// Finished recieving angle, so put into variable
 						if (thisDigit == 'E') {
 								recordAngle = false;
-								myStream >> gyroValue;
-								gyroValue -= 180;
+                double heading;
+								myStream >> heading;
+								heading -= 180;
+                BNO055_Main.update(heading);
 						}
 
 						// If we want the digits, put them into stream

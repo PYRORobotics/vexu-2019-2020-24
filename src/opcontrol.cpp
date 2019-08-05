@@ -18,13 +18,7 @@
 using namespace okapi;
 
 
-
-
-
-
-
-
-void startAllTasks()
+void startAllTasks()	//FIXME
 {
 	pros::Task BNO055_Update(t_update_BNO055);
 }
@@ -34,20 +28,17 @@ void opcontrol() {
 	startAllTasks();
 
 
-
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 
 
-	okapi::BNO055 mainBNO055;
-	okapi::ADIGyro gyro('E');
 
 	const okapi::QLength WHEEL_DIAMETER = 3.95_in;
 	const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
 	const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
 
-	//auto controller = okapi::AsyncControllerFactory::posPID({-1, 2}, mainBNO055, 0.001, 0.0, 0.0001);
+	//auto controller = okapi::AsyncControllerFactory::posPID({-1, 2}, BNO055_Main, 0.001, 0.0, 0.0001);
 	auto driveController = ChassisControllerFactory::create(
 	   {1,1}, {2,2},
 	   okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
@@ -58,13 +49,12 @@ void opcontrol() {
 	 );
 
 
-	double i = 0;
 	while (true)
 	{
 
-			driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-gyroValue)/180.0);
+			driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0);
 
-		pros::lcd::print(2, "heading: %f", mainBNO055.controllerGet(gyroValue));
+		pros::lcd::print(2, "heading: %f", BNO055_Main.get());
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){
 			pros::lcd::print(1, "GO!");
 			//controller.setTarget(200);

@@ -33,7 +33,7 @@ class BNO055 : public ADIGyro {
    *
    * @return the current sensor value, or ``PROS_ERR`` on a failure.
    */
-  double get(double value);
+  double get();
 
   /**
    * Reset the sensor to zero.
@@ -48,15 +48,17 @@ class BNO055 : public ADIGyro {
    *
    * @return the current sensor value, or ``PROS_ERR`` on a failure.
    */
-  double controllerGet(double value);
+  double controllerGet() override;
+
+  void update(double value);
 
   protected:
   pros::ADIGyro gyro;
+  double value;
 };
 } // namespace okapi
 
-extern double gyroValue;
 extern void t_update_BNO055(void*);
-
+extern okapi::BNO055 BNO055_Main;
 
 #endif
