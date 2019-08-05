@@ -34,7 +34,7 @@ class BNO055 : public ADIGyro {
    * @param iport the ADI port number
    * @param imultiplier a value multiplied by the gyro heading value
    */
-  BNO055();
+  BNO055(int port);
 
   virtual ~BNO055();
 
@@ -61,10 +61,13 @@ class BNO055 : public ADIGyro {
   double controllerGet() override;
 
   void update(double value);
+  void set(double value);
+  int get_port();
 
   protected:
   pros::ADIGyro gyro;
   double value;
+  int port;
 };
 } // namespace okapi
 

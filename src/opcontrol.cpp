@@ -1,25 +1,58 @@
 #include "main.h"
 
-/**
- * Runs the operator control code. This function will be started in its own task
- * with the default priority and stack size whenever the robot is enabled via
- * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
- * If no competition control is connected, this function will run immediately
- * following initialize().
- *
- * If the robot is disabled or communications is lost, the
- * operator control task will be stopped. Re-enabling the robot will restart the
- * task, not resume it from where it left off.
- */
+//==================================START FILE==================================
+//==============================================================================
+// File:		opcontrol.cpp
+// Author:	Brandon Rice
+// Created: 13 July, 2019
+//
+// Description:
+// ------------
+// From PROS:
+// * Runs the operator control code. This function will be started in its own task
+// * with the default priority and stack size whenever the robot is enabled via
+// * the Field Management System or the VEX Competition Switch in the operator
+// * control mode.
+// *
+// * If no competition control is connected, this function will run immediately
+// * following initialize().
+// *
+// * If the robot is disabled or communications is lost, the
+// * operator control task will be stopped. Re-enabling the robot will restart the
+// * task, not resume it from where it left off.
+//
+//------------------------------------------------------------------------------
 
 
+
+// Function Defintions
+// -------------------
+
+
+// FIXME - Add Header?
 void startAllTasks()	//FIXME
 {
 	pros::Task update_BNO055(t_update_BNO055);
 }
 
+
+//------------------------------------------------------------------------------
+// Function: opcontrol() : void
+// ----------------------------
+// Description:
+// 		The function (task) that will be scheduled after initialize(), and after
+// 		competition_initialize() and autonomous() if connected to a competition
+// 		switch. This function will loop indefinately at roughly 50 Hz until the
+// 		user stops the program.
+// Parameters:
+//```
+//		None
+//```
+// Returns:
+//```
+//		None
+//```
+//------------------------------------------------------------------------------
 void opcontrol() {
 
 	startAllTasks();
@@ -61,3 +94,9 @@ void opcontrol() {
 		pros::delay(20);
 	}
 }
+
+
+
+//------------------------------------------------------------------------------
+//===================================END FILE===================================
+//==============================================================================
