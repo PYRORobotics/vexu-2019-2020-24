@@ -5,7 +5,7 @@
 //==============================================================================
 // File:		bno055.cpp
 // Author:	Brandon Rice
-// Created: 4 August, 2019
+// Created: 4 August 2019
 //
 // Description:
 // ------------
@@ -22,8 +22,8 @@
 using namespace okapi;
 
 
-// Global Objects Created
-// -----------------------
+// Global Objects Created in bno055.hpp
+// ------------------------------------
 
 okapi::BNO055 BNO055_Main(16);
 
@@ -95,7 +95,7 @@ void t_update_BNO055(void*)
                 double heading;
 								myStream >> heading;
 								heading -= 180;
-                BNO055_Main.update(heading);
+                BNO055_Main.set(heading);
 						}
 
 						// If we want the digits, put them into stream

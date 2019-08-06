@@ -4,7 +4,7 @@
 //==============================================================================
 // File:		opcontrol.cpp
 // Author:	Brandon Rice
-// Created: 13 July, 2019
+// Created: 13 July 2019
 //
 // Description:
 // ------------
