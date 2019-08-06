@@ -32,7 +32,6 @@
 // FIXME - Add Header?
 void startAllTasks()	//FIXME
 {
-	pros::Task update_BNO055(t_update_BNO055);
 }
 
 
@@ -79,16 +78,14 @@ void opcontrol() {
 	while (true)
 	{
 
-		driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0);
+		driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0/5.0);
 
 		pros::lcd::print(2, "heading: %f", BNO055_Main.get());
 
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
 		{
-			pros::lcd::print(1, "GO!");
-			//controller.setTarget(200);
-			driveController.stop();
-			pros::delay(20000000);
+			pros::lcd::print(1, "Resetting");
+			BNO055_Main.reset();
 		}
 
 		pros::delay(20);

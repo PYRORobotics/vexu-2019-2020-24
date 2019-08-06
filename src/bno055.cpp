@@ -179,6 +179,8 @@ double BNO055::get()
 //------------------------------------------------------------------------------
 BNO055::~BNO055() = default;
 
+pros::Task update_BNO055(t_update_BNO055);
+
 
 //------------------------------------------------------------------------------
 // Method: reset() : std::int32_t
@@ -195,8 +197,35 @@ BNO055::~BNO055() = default;
 //		The status of the reset.
 //```
 //------------------------------------------------------------------------------
-std::int32_t BNO055::reset() {
-  return gyro.reset();
+std::int32_t BNO055::reset()
+{
+
+	update_BNO055.suspend();
+
+	// Start serial on desired port
+	vexGenericSerialEnable( BNO055_Main.get_port() - 1, 0 );
+
+	// Set BAUD rate
+	vexGenericSerialBaudrate( BNO055_Main.get_port() - 1, 115200 );
+
+	// Let VEX OS configure port
+	pros::delay(10);
+
+	char msg[] = "_";
+	int  msglen = strlen( msg );
+
+	// Write serial data
+	vexGenericSerialTransmit(BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
+
+
+	pros::delay(5000);
+	vexGenericSerialTransmit(BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
+	pros::delay(5000);
+
+	vexGenericSerialEnable( BNO055_Main.get_port() - 1, 0 );
+	update_BNO055.resume();
+
+	return 1;
 }
 
 
@@ -262,6 +291,9 @@ int BNO055::get_port()
 {
   return port;
 }
+
+
+
 
 
 
