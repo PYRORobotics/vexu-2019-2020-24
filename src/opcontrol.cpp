@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <math.h>
 //==================================START FILE==================================
 //==============================================================================
 // File:		opcontrol.cpp
@@ -28,11 +28,110 @@
 // Function Defintions
 // -------------------
 
-
-// FIXME - Add Header?
-void startAllTasks()	//FIXME
-{
-}
+// void u_ultrasonic_csv(void*)
+// {
+//
+// 	// std::string	profile_file_name = std::to_string(pros::millis());
+//
+//
+//   std::string line;
+//   char filepath[1000];
+//   strcpy(filepath, "/usd/usdata2");
+//   // strcat(filepath, profile_file_name.c_str());
+//   strcat(filepath, ".csv");
+//   FILE* save_file;
+// 	//save_file = fopen(filepath, "w");
+//   //fputs("USLeft, USFront, USRight, USLeft Cartesian X, USLeft Cartesian Y, USFront Cartesian X, USFront Cartesian Y, USRight Cartesian X, USRight Cartesian Y, XEst, YEst, Heading\n", save_file);
+// 	//fclose(save_file);
+// 	  while(1){
+// 	    //std::cout << "Start saving!!!\n";
+// 	    save_file = fopen(filepath, "a");
+//
+// 			int usleftvalue = Ultrasonic_Left.get_value();
+// 			int usfrontvalue = Ultrasonic_Front.get_value();
+// 			int usrightvalue = Ultrasonic_Right.get_value();
+//
+//
+// 			char value[5];
+// 			itoa(usleftvalue, value, 10);
+//       fputs(value, save_file);
+//       fputs(",", save_file);
+//
+// 			itoa(usfrontvalue, value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			itoa(usrightvalue, value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			if(usleftvalue > 30 && usleftvalue < 2500)
+// 			{
+// 			itoa((int)(-(usleftvalue + in_to_mm(9)) * sin(radians(Robot24.telemetry.heading)) + Robot24.telemetry.x), value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			itoa((int)(-(usleftvalue + in_to_mm(9)) * cos(radians(Robot24.telemetry.heading)) + Robot24.telemetry.y), value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+// 		}
+// 		else{fputs(",", save_file);
+// 	fputs(",", save_file);}
+//
+//
+// 		if(usfrontvalue > 30 && usfrontvalue < 2500)
+// 		{
+// 			itoa((int)(-(usfrontvalue + in_to_mm(9)) * sin(radians(Robot24.telemetry.heading)) + Robot24.telemetry.x), value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			itoa((int)(-(usfrontvalue + in_to_mm(9)) * cos(radians(Robot24.telemetry.heading)) + Robot24.telemetry.y), value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+// 		}
+// 		else{fputs(",", save_file);fputs(",", save_file);}
+//
+// 		if(usrightvalue > 30 && usrightvalue < 2500)
+// 		{
+//
+// 			itoa((int)(-(usrightvalue + in_to_mm(9)) * sin(radians(Robot24.telemetry.heading)) + Robot24.telemetry.x), value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			itoa((int)(-(usrightvalue + in_to_mm(9)) * cos(radians(Robot24.telemetry.heading)) + Robot24.telemetry.y), value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+// 		}
+// 		else{fputs(",", save_file);fputs(",", save_file);}
+//
+// 			itoa((int)Robot24.telemetry.x, value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			itoa((int)Robot24.telemetry.y, value, 10);
+// 			fputs(value, save_file);
+// 			fputs(",", save_file);
+//
+// 			itoa((int)Robot24.telemetry.heading, value, 10);
+// 			fputs(value, save_file);
+// 	    fputs("\n", save_file);
+//
+//
+// 	    fclose(save_file);
+// 			pros::delay(200);
+//
+// 	  }
+//
+//
+// 	}
+//
+//
+//
+// // FIXME - Add Header?
+// void startAllTasks()	//FIXME
+// {
+// 	pros::Task us_task(u_ultrasonic_csv);
+// }
 
 
 //------------------------------------------------------------------------------
@@ -54,11 +153,9 @@ void startAllTasks()	//FIXME
 //------------------------------------------------------------------------------
 void opcontrol() {
 
-	startAllTasks();
+	//startAllTasks();
 
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
 
 	const okapi::QLength WHEEL_DIAMETER = 3.95_in;
 	const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
@@ -66,7 +163,7 @@ void opcontrol() {
 
 	//auto controller = okapi::AsyncControllerFactory::posPID({-1, 2}, BNO055_Main, 0.001, 0.0, 0.0001);
 	auto driveController = ChassisControllerFactory::create(
-	   {1,1}, {2,2},
+	   {1,1}, {-2,-2},
 	   okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
 	   okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
 	   okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
@@ -74,13 +171,17 @@ void opcontrol() {
 	   {WHEEL_DIAMETER, CHASSIS_WIDTH}
 	 );
 
-
+/*
 	while (true)
 	{
+		//driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0*1.8);
 
-		driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-BNO055_Main.get())/180.0/5.0);
+		driveController.arcade(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X)/127.0);
 
 		pros::lcd::print(2, "heading: %f", BNO055_Main.get());
+
+		pros::lcd::print(4, "US: %d", Ultrasonic_Left.get_value());
+
 
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
 		{
@@ -89,7 +190,15 @@ void opcontrol() {
 		}
 
 		pros::delay(20);
+	}*/
+	while(pros::millis() < 20000)
+	{
+		int output = (int)Robot24.PositionPIDController.calculate(3600/8/PI*10, Robot24.left_mtr.get_position());
+		pros::lcd::print(3, "Output: %d", output);
+		Robot24.left_mtr = output;
+		pros::delay(20);
 	}
+
 }
 
 

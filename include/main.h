@@ -36,6 +36,9 @@
 
 #include "api.h"
 #include "bno055.hpp"
+#include "robot.hpp"
+#include "math.hpp"
+#include "ultrasonic_cluster.hpp"
 
 /**
  * You should add more #includes here

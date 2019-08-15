@@ -25,7 +25,8 @@ using namespace okapi;
 // Global Objects Created in bno055.hpp
 // ------------------------------------
 
-okapi::BNO055 BNO055_Main(16);
+okapi::BNO055 BNO055_Main(6);
+pros::Task update_BNO055(t_update_BNO055);
 
 
 // Function Defintions
@@ -178,8 +179,6 @@ double BNO055::get()
 //```
 //------------------------------------------------------------------------------
 BNO055::~BNO055() = default;
-
-pros::Task update_BNO055(t_update_BNO055);
 
 
 //------------------------------------------------------------------------------
