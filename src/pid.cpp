@@ -73,6 +73,8 @@ double PIDImpl::calculate( double setpoint, double pv )
     // Calculate total output
     double output = Pout + Iout + Dout;
 
+    // Graphs: https://www.desmos.com/calculator/cdvoh9kvus
+
     if(pv <= 0.2 * setpoint)
     {
       pros::lcd::print(1, "LIMITING");
