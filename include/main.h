@@ -36,6 +36,7 @@
 
 #include "api.h"
 #include "bno055.hpp"
+#include "screen.hpp"
 
 /**
  * You should add more #includes here

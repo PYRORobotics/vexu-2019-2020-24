@@ -17,7 +17,10 @@
 
 // Function Defintions
 // -------------------
-
+void u_screen(void*)
+{
+	Screen v5Screen;
+}
 
 //------------------------------------------------------------------------------
 // Function: initialize() : void
@@ -40,7 +43,8 @@
 //------------------------------------------------------------------------------
 void initialize()
 {
-	pros::lcd::initialize();
+	//pros::lcd::initialize();
+	pros::Task a(u_screen);
 }
 
 
