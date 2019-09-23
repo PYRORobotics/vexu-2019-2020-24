@@ -1,16 +1,15 @@
 #include "../include/pros/adi.h"
-#include "bno055.hpp"
+#include "arduino.h"
 
 //==================================START FILE==================================
 //==============================================================================
-// File:		bno055.cpp
+// File:		arduino.cpp
 // Author:	Brandon Rice
 // Created: 4 August 2019
 //
 // Description:
 // ------------
-// This file contains the definitions of the BNO055 class (inherited from
-// okapi::ADIGyro).
+// This file contains the definitions of the Arduino class and subclasses.
 //
 //------------------------------------------------------------------------------
 
@@ -25,7 +24,10 @@ using namespace okapi;
 // Global Objects Created in bno055.hpp
 // ------------------------------------
 
-okapi::BNO055 BNO055_Main(16);
+//okapi::BNO055 BNO055_Main(16);
+
+
+PYRO_Arduino Arduino(16);
 
 
 // Function Defintions
@@ -54,10 +56,10 @@ void t_update_BNO055(void*)
 {
 
 	// Start serial on desired port
-	vexGenericSerialEnable( BNO055_Main.get_port() - 1, 0 );
+	vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
 
 	// Set BAUD rate
-	vexGenericSerialBaudrate( BNO055_Main.get_port() - 1, 115200 );
+	vexGenericSerialBaudrate( Arduino.BNO055_Main.get_port() - 1, 115200 );
 
 	// Let VEX OS configure port
 	pros::delay(10);
@@ -71,7 +73,7 @@ void t_update_BNO055(void*)
 		int len = 256;
 
 		// Get serial data
-		int32_t nRead = vexGenericSerialReceive(BNO055_Main.get_port() - 1, buffer, len);
+		int32_t nRead = vexGenericSerialReceive(Arduino.BNO055_Main.get_port() - 1, buffer, len);
 
 		// Now parse the data
 		if (nRead >= 9) {
@@ -95,7 +97,7 @@ void t_update_BNO055(void*)
                 double heading;
 								myStream >> heading;
 								heading -= 180;
-                BNO055_Main.set(heading);
+                Arduino.BNO055_Main.set(heading);
 						}
 
 						// If we want the digits, put them into stream
@@ -115,6 +117,27 @@ void t_update_BNO055(void*)
 
 // Class Defintions
 // ----------------
+
+//------------------------------------------------------------------------------
+// Method: PYRO_Arduino() :
+// ----------------------------
+// Description:
+// 		Sets up the an Arduino object plugged into the smart port defined as a
+//		parameter.
+//
+// Parameters:
+//```
+//		port (the v5 port number that the BNO055 is plugged into)
+//```
+// Objects to Initialize:
+//```
+//		BNO055_Main
+//```
+//------------------------------------------------------------------------------
+PYRO_Arduino::PYRO_Arduino(int port) : BNO055_Main(port)
+{
+	this->port = port;
+}
 
 
 //------------------------------------------------------------------------------
@@ -203,10 +226,10 @@ std::int32_t BNO055::reset()
 	update_BNO055.suspend();
 
 	// Start serial on desired port
-	vexGenericSerialEnable( BNO055_Main.get_port() - 1, 0 );
+	vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
 
 	// Set BAUD rate
-	vexGenericSerialBaudrate( BNO055_Main.get_port() - 1, 115200 );
+	vexGenericSerialBaudrate( Arduino.BNO055_Main.get_port() - 1, 115200 );
 
 	// Let VEX OS configure port
 	pros::delay(10);
@@ -215,14 +238,14 @@ std::int32_t BNO055::reset()
 	int  msglen = strlen( msg );
 
 	// Write serial data
-	vexGenericSerialTransmit(BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
+	vexGenericSerialTransmit( Arduino.BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
 
 
 	pros::delay(5000);
-	vexGenericSerialTransmit(BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
+	vexGenericSerialTransmit( Arduino.BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
 	pros::delay(5000);
 
-	vexGenericSerialEnable( BNO055_Main.get_port() - 1, 0 );
+	vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
 	update_BNO055.resume();
 
 	return 1;

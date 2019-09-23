@@ -35,7 +35,8 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
-#include "bno055.h"
+#include "arduino.h"
+#include "init.h"
 
 /**
  * You should add more #includes here

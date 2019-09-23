@@ -5,8 +5,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _SENSORS_HPP_
-#define _SENSORS_HPP_
+#ifndef _ARDUINO_HPP_
+#define _ARDUINO_HPP_
 
 #include "api.h"
 #include "okapi/api/control/controllerInput.hpp"
@@ -24,6 +24,7 @@ extern "C" int32_t vexGenericSerialTransmit( uint32_t index, uint8_t *buffer, in
 
 
 namespace okapi {
+
 class BNO055 : public ADIGyro {
   public:
   /**
@@ -69,9 +70,22 @@ class BNO055 : public ADIGyro {
   double value;
   int port;
 };
+
+
+class PYRO_Arduino
+{
+  public:
+    PYRO_Arduino(int port);
+    okapi::BNO055 BNO055_Main;
+  private:
+    int port;
+};
+
+
 } // namespace okapi
 
 extern void t_update_BNO055(void*);
-extern okapi::BNO055 BNO055_Main;
+//extern okapi::BNO055 BNO055_Main;
+extern okapi::PYRO_Arduino Arduino;
 
 #endif

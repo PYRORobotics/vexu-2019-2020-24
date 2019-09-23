@@ -17,6 +17,22 @@
 
 // Function Defintions
 // -------------------
+void init_chassis()
+{
+	const okapi::QLength WHEEL_DIAMETER = 3.95_in;
+	const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
+	const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
+
+	//auto controller = okapi::AsyncControllerFactory::posPID({-1, 2}, BNO055_Main, 0.001, 0.0, 0.0001);
+	okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
+		 {1,1}, {2,2},
+		 okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
+		 okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
+		 okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
+		 ratio,
+		 {WHEEL_DIAMETER, CHASSIS_WIDTH}
+	 );
+}
 
 
 //------------------------------------------------------------------------------
