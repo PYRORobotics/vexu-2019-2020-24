@@ -59,9 +59,25 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
+	okapi::MotorGroup left_motors({1,-2});
+    okapi::MotorGroup right_motors({-3,4});
 
 
+    const okapi::QLength WHEEL_DIAMETER = 3.95_in;
+    const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
+    const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
+    okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
+            {1,-2}, {3,-4},
+            okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
+            okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
+            okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
+            ratio,
+            {WHEEL_DIAMETER, CHASSIS_WIDTH}
+    );
 
+
+    bool arcade = false;
+	bool voltageControl = false;
 
 	while (true)
 	{
@@ -71,11 +87,46 @@ void opcontrol() {
 
 		//pros::lcd::print(2, "heading: %f", Arduino.BNO055_Main.get());
 
-		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+		/*if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
 		{
 			pros::lcd::print(1, "Resetting");
 			Arduino.BNO055_Main.reset();
+		}*/
+
+		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
+		    arcade = true;
 		}
+        else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+            arcade = false;
+        }
+
+        if(master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
+            voltageControl = true;
+        }
+        else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
+            voltageControl = false;
+        }
+
+        if(voltageControl) {
+            if (arcade) {
+                driveController.arcade((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) / 127,
+                                       (float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                                       0.05);
+            } else {
+                driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                                     (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
+                                     0.05);
+            }
+        }
+        else{
+            if (arcade) {
+                left_motors.moveVelocity(((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * (200.0/127.0)) + ((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0)));
+                right_motors.moveVelocity(((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * (200.0/127.0)) - ((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0)));
+            } else {
+                left_motors.moveVelocity((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0));
+                right_motors.moveVelocity((float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * (200.0/127.0));
+            }
+        }
 
 		pros::delay(20);
 	}
