@@ -55,6 +55,7 @@ void startAllTasks()	//FIXME
 void opcontrol() {
 
 	//startAllTasks();
+    pros::Task pos_tracking(calculatePos, NULL);
 
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
@@ -82,6 +83,8 @@ void opcontrol() {
 	while (true)
 	{
 		pros::lcd::print(1, "%f", ADIGyro('A').get());
+        pros::lcd::print(2, "X_POS: %f", X_Pos);
+        pros::lcd::print(3, "Y_POS: %f", Y_Pos);
 
 		//driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-Arduino.BNO055_Main.get())/180.0/5.0);
 

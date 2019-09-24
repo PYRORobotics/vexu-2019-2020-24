@@ -37,6 +37,7 @@
 #include "api.h"
 #include "arduino.h"
 #include "init.h"
+#include "field_pos.h"
 
 /**
  * You should add more #includes here
