@@ -54,7 +54,7 @@ void startAllTasks()	//FIXME
 //------------------------------------------------------------------------------
 void opcontrol() {
 
-	startAllTasks();
+	//startAllTasks();
 
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
@@ -65,10 +65,11 @@ void opcontrol() {
 
 	while (true)
 	{
+		pros::lcd::print(1, "%f", ADIGyro('A').get());
 
-		driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-Arduino.BNO055_Main.get())/180.0/5.0);
+		//driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-Arduino.BNO055_Main.get())/180.0/5.0);
 
-		pros::lcd::print(2, "heading: %f", Arduino.BNO055_Main.get());
+		//pros::lcd::print(2, "heading: %f", Arduino.BNO055_Main.get());
 
 		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
 		{

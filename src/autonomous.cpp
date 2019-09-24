@@ -46,7 +46,24 @@
 //		None
 //```
 //------------------------------------------------------------------------------
-void autonomous() {}
+using namespace okapi;
+void autonomous() {
+  pros::lcd::print(0, "AUTON");
+  okapi::AsyncPosPIDController controller = AsyncControllerFactory::posPID(
+    {1, -2, 3, -4},
+    ADIGyro('A'),//Arduino.BNO055_Main,
+    0.001,
+    0.0,
+    0.0001);
+
+    controller.setTarget(300.0);
+    controller.waitUntilSettled();
+    pros::lcd::print(1, "%f", ADIGyro('A').get());
+    while(1)
+    {
+      pros::delay(20);
+    }
+}
 
 
 

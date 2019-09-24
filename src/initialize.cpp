@@ -25,13 +25,23 @@ void init_chassis()
 
 	//auto controller = okapi::AsyncControllerFactory::posPID({-1, 2}, BNO055_Main, 0.001, 0.0, 0.0001);
 	okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-		 {1,1}, {2,2},
+		 {1,-2}, {3,-4},
 		 okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
 		 okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
 		 okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
 		 ratio,
 		 {WHEEL_DIAMETER, CHASSIS_WIDTH}
 	 );
+
+
+
+	  okapi::AsyncMotionProfileController MotionController = AsyncControllerFactory::motionProfile(
+	    10.0,  // Maximum linear velocity of the Chassis in m/s
+	    0.5,  // Maximum linear acceleration of the Chassis in m/s/s
+	    10.0, // Maximum linear jerk of the Chassis in m/s/s/s
+	    driveController // Chassis Controller
+	  );
+
 }
 
 
