@@ -52,16 +52,19 @@ void startAllTasks()	//FIXME
 //		None
 //```
 //------------------------------------------------------------------------------
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Motor left_mtr(1);
+pros::Motor right_mtr(2);
+okapi::MotorGroup left_motors({1,-2});
+okapi::MotorGroup right_motors({-3,4});
+
+okapi::MotorGroup lift_motors({5,6,-7,-9});
 void opcontrol() {
 
 	//startAllTasks();
-    pros::Task pos_tracking(calculatePos, NULL);
+    //pros::Task pos_tracking(calculatePos, NULL);
 
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-	okapi::MotorGroup left_motors({1,-2});
-    okapi::MotorGroup right_motors({-3,4});
+
 
 
     const okapi::QLength WHEEL_DIAMETER = 3.95_in;
@@ -96,6 +99,7 @@ void opcontrol() {
 			Arduino.BNO055_Main.reset();
 		}*/
 
+		liftTeleop();
 		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
 		    arcade = true;
 		}

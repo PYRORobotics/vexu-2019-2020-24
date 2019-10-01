@@ -5,6 +5,13 @@
 #include "okapi/api.hpp"
 
 using namespace okapi;
+using pros::delay;
+
+extern void liftTeleop();
+
+extern pros::Controller master;
+
+extern okapi::MotorGroup lift_motors;
 
 extern void init_chassis();
 
