@@ -191,9 +191,27 @@ void opcontrol() {
 
 		pros::delay(20);
 	}*/
+	while(pros::millis() < 10000)
+	{
+		int output = (int)Robot24.PositionPIDController.calculate(3600/10/PI*10, Robot24.left_mtr.get_position());
+		pros::lcd::print(3, "Output: %d", output);
+		Robot24.left_mtr = output;
+		pros::delay(20);
+	}
+
+	Robot24.left_mtr.tare_position();
+
 	while(pros::millis() < 20000)
 	{
-		int output = (int)Robot24.PositionPIDController.calculate(3600/8/PI*10, Robot24.left_mtr.get_position());
+		int output = (int)Robot24.PositionPIDController.calculate(3600/2/PI*10, Robot24.left_mtr.get_position());
+		pros::lcd::print(3, "Output: %d", output);
+		Robot24.left_mtr = output;
+		pros::delay(20);
+	}
+	Robot24.left_mtr.tare_position();
+	while(pros::millis() < 30000)
+	{
+		int output = (int)Robot24.PositionPIDController.calculate(3600/4/PI*10, Robot24.left_mtr.get_position());
 		pros::lcd::print(3, "Output: %d", output);
 		Robot24.left_mtr = output;
 		pros::delay(20);
