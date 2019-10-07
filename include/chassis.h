@@ -16,6 +16,8 @@ namespace okapi
       const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
       const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
 
+      const float WHEEL_DIAMETER_INCHES = 3.95;
+
       okapi::MotorGroup left_motors;
       okapi::MotorGroup right_motors;
 

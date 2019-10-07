@@ -124,7 +124,8 @@ void PYROChassis::set_target_position(double target_position)
 void PYROChassis::drive_PID()
 {
   int output = (int) PositionPIDController.calculate(pos_pid_data.target_position,
-                     left_motors.getPosition(), &pos_pid_data.error);
+                     left_motors.getPosition() * WHEEL_DIAMETER_INCHES * PI / 3600,
+                     &pos_pid_data.error);
   left_motors.moveVelocity(output);
   right_motors.moveVelocity(output);
 }
@@ -152,10 +153,7 @@ void PYROChassis::drive_PID_sync(double distance)
   set_target_position(distance);
   do
   {
-    int output = (int) PositionPIDController.calculate(pos_pid_data.target_position,
-                       left_motors.getPosition(), &pos_pid_data.error);
-    left_motors.moveVelocity(output);
-    right_motors.moveVelocity(output);
+    drive_PID();
   } while(pos_pid_data.error > 5);
 }
 

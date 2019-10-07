@@ -81,7 +81,7 @@ void opcontrol() {
 
 	while(1)
 	{
-		chassis.drive_PID_sync(500);
+		chassis.drive_PID_sync(24);
 	}
 
 	while (true)
