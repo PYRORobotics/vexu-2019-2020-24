@@ -20,9 +20,23 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 100, -100, 0.5, 0, 0),
                               driveController // Chassis Controller
                             ))
 {
-
   left_motors.setBrakeMode(AbstractMotor::brakeMode::brake);
   right_motors.setBrakeMode(AbstractMotor::brakeMode::brake);
+  pos_pid_data.error = 0;
+  pos_pid_data.target_position = 0;
 }
 
 okapi::PYROChassis chassis;
+
+void PYROChassis::set_target_position(double target_position)
+{
+  pos_pid_data.target_position = target_position;
+}
+
+void PYROChassis::drive_PID()
+{
+  int output = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+                     left_motors.getPosition(), &pos_pid_data.error);
+  left_motors.moveVelocity(output);
+  right_motors.moveVelocity(output);
+}

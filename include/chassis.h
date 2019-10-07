@@ -19,9 +19,12 @@ namespace okapi
       okapi::MotorGroup left_motors;
       okapi::MotorGroup right_motors;
 
+      PIDData pos_pid_data;
+
     public:
       PYROChassis();
-      
+      void set_target_position(double);
+      void drive_PID();
       PIDController PositionPIDController;
 
       okapi::ChassisControllerPID driveController;

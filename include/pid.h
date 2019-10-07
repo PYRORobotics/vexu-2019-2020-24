@@ -18,16 +18,22 @@ loop:
   goto loop
 */
 
+struct PIDData
+{
+  double error;
+  double target_position;
+};
+
 class PIDImpl;
 class PIDController
 {
     public:
-        // Kp -  proportional gain
-        // Ki -  Integral gain
-        // Kd -  derivative gain
         // dt -  loop interval time
         // max - maximum value of manipulated variable
         // min - minimum value of manipulated variable
+        // Kp -  proportional gain
+        // Ki -  Integral gain
+        // Kd -  derivative gain
         PIDController( double dt, double max, double min, double Kp, double Kd, double Ki );
 
         // Returns the manipulated variable given a setpoint and current process value
