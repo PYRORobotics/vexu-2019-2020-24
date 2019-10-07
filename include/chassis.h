@@ -25,10 +25,17 @@ namespace okapi
       PYROChassis();
       void set_target_position(double);
       void drive_PID();
+      void drive_PID_sync(double);
+      static void update_differential_pos(void*)
+      {
+
+      }
       PIDController PositionPIDController;
 
       okapi::ChassisControllerPID driveController;
       okapi::AsyncMotionProfileController MotionController;
+
+      pros::Task t_update_differential_pos;
 
     };
 }

@@ -79,6 +79,11 @@ void opcontrol() {
     bool arcade = false;
 	bool voltageControl = false;
 
+	while(1)
+	{
+		chassis.drive_PID_sync(500);
+	}
+
 	while (true)
 	{
 		pros::lcd::print(1, "%f", ADIGyro('A').get());
