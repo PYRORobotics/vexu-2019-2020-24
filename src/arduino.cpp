@@ -11,6 +11,8 @@
 // ------------
 // This file contains the definitions of the Arduino class and subclasses.
 //
+// Credits: https://www.vexforum.com/t/use-v5-smart-port-as-generic-serial-device-pros/57821/25
+//
 //------------------------------------------------------------------------------
 
 
