@@ -79,6 +79,8 @@ void opcontrol() {
     bool arcade = false;
 	bool voltageControl = false;
 
+
+
 	while (true)
 	{
 		pros::lcd::print(1, "%f", ADIGyro('A').get());
