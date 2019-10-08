@@ -30,7 +30,12 @@ namespace okapi
       void drive_PID_sync(double);
       static void update_differential_pos(void*)
       {
-
+        int i = 0;
+        while(1)
+        {
+          pros::lcd::print(6, "%d", i++);
+          pros::delay(20);
+        }
       }
       PIDController PositionPIDController;
 

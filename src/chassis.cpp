@@ -69,7 +69,7 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 100, -100, 0.5, 0, 0),
                                     {WHEEL_DIAMETER, CHASSIS_WIDTH}
                             )),
                             MotionController(AsyncControllerFactory::motionProfile(
-                              10.0,  // Maximum linear velocity of the Chassis in m/s
+                              0.5,  // Maximum linear velocity of the Chassis in m/s
                               0.5,  // Maximum linear acceleration of the Chassis in m/s/s
                               10.0, // Maximum linear jerk of the Chassis in m/s/s/s
                               driveController // Chassis Controller
@@ -154,7 +154,8 @@ void PYROChassis::drive_PID_sync(double distance)
   do
   {
     drive_PID();
-  } while(pos_pid_data.error > 5);
+    pros::delay(20);
+  } while(pos_pid_data.error > 0.5);
 }
 
 

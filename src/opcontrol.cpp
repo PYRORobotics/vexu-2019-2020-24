@@ -79,10 +79,7 @@ void opcontrol() {
     bool arcade = false;
 	bool voltageControl = false;
 
-	while(1)
-	{
-		chassis.drive_PID_sync(24);
-	}
+
 
 	while (true)
 	{
