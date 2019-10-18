@@ -12,11 +12,17 @@ class PYROLift {
     public:
         void loopTeleop();
         float getMotorTemps();
-        PYROLift(okapi::MotorGroup motors, int pneumaticFloorPort, int pneumaticDoorPort);
+        PYROLift(int motorTopRight, int motorBottomRight, int motorTopLeft, int motorBottomLeft, int pneumaticFloorPort, int pneumaticDoorPort);
+        float getLiftHeight();
     private:
         okapi::MotorGroup liftMotors;
         int cubeCount;
         float getAngleForHeight(float inches);
+        void moveLiftToHeight(float inches, int maxVelocity);
+        float getMotorDegreesFromLiftDegrees(float degrees);
+        void stackCube();
+
+
 
 };
 

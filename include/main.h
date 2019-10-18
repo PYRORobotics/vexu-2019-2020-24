@@ -65,6 +65,8 @@ using namespace okapi;
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern pros::Controller master;
 void autonomous(void);
 void initialize(void);
 void disabled(void);

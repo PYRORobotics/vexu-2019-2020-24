@@ -49,7 +49,7 @@ void startAllTasks()	//FIXME
 //```
 // Returns:
 //```
-//		None
+//		Nonepros::Controller master
 //```
 //------------------------------------------------------------------------------
 void opcontrol() {
