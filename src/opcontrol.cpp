@@ -52,11 +52,12 @@ void startAllTasks()	//FIXME
 //		Nonepros::Controller master
 //```
 //------------------------------------------------------------------------------
+pros::Controller master(pros::E_CONTROLLER_MASTER);
 void opcontrol() {
 
 	//startAllTasks();
 
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
+
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 	okapi::MotorGroup left_motors({1,-2});
@@ -79,9 +80,13 @@ void opcontrol() {
     bool arcade = false;
 	bool voltageControl = false;
 
+	PYROLift robotLift(1,2,3,4,5,6);
+
 	while(1)
 	{
-		chassis.drive_PID_sync(24);
+		//chassis.drive_PID_sync(24);
+        robotLift.loopTeleop();
+		pros::delay(10);
 	}
 
 	while (true)

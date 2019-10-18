@@ -6,7 +6,7 @@
 #define VEXU_2019_2020_24_LIFT_H
 
 
-#include <okapi/impl/device/motor/motorGroup.hpp>
+//#include <okapi/impl/device/motor/motorGroup.hpp>
 
 class PYROLift {
     public:
