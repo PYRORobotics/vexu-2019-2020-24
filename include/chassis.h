@@ -42,7 +42,7 @@ namespace okapi
       okapi::ChassisControllerPID driveController;
       okapi::AsyncMotionProfileController MotionController;
 
-      pros::Task t_update_differential_pos;
+      //pros::Task t_update_differential_pos;
 
     };
 }

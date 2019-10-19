@@ -207,7 +207,7 @@ double BNO055::get()
 //------------------------------------------------------------------------------
 BNO055::~BNO055() = default;
 
-pros::Task update_BNO055(t_update_BNO055);
+///pros::Task update_BNO055(t_update_BNO055);
 
 
 //------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ pros::Task update_BNO055(t_update_BNO055);
 std::int32_t BNO055::reset()
 {
 
-	update_BNO055.suspend();
+	///update_BNO055.suspend();
 
 	// Start serial on desired port
 	vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
@@ -251,7 +251,7 @@ std::int32_t BNO055::reset()
 
 
 	//vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
-	update_BNO055.resume();
+	///update_BNO055.resume();
 
 	return 1;
 }
