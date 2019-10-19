@@ -59,6 +59,8 @@ void PYROLift::stackCube(){
 
 
 }
+bool doorActivated = false;
+bool floorActivated = false;
 void PYROLift::loopTeleop(){
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
 
@@ -81,6 +83,16 @@ void PYROLift::loopTeleop(){
     }
     else{
         liftMotors.moveAbsolute(liftTarget, 50);
+    }
+
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
+        doorActivated = !doorActivated;
+        pistonDoor.set_value(doorActivated);
+    }
+
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
+        floorActivated = !floorActivated;
+        pistonFloor.set_value(floorActivated);
     }
 }
 
