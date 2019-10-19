@@ -84,7 +84,6 @@ class PYRO_Arduino
 
 } // namespace okapi
 
-extern void t_update_BNO055(void*);
 //extern okapi::BNO055 BNO055_Main;
 extern okapi::PYRO_Arduino Arduino;
 

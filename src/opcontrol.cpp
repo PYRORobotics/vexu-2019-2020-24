@@ -83,7 +83,7 @@ void opcontrol() {
 
 	while (true)
 	{
-		pros::lcd::print(1, "%f", ADIGyro('A').get());
+		pros::lcd::print(1, "%f", Arduino.BNO055_Main.get());
 
 		//driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-Arduino.BNO055_Main.get())/180.0/5.0);
 
@@ -97,6 +97,7 @@ void opcontrol() {
 
 		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
 		    arcade = true;
+				Arduino.BNO055_Main.reset();
 		}
         else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
             arcade = false;

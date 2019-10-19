@@ -67,6 +67,7 @@ void t_update_BNO055(void*)
 	pros::delay(10);
 
 
+
 	while (true)
 	{
 
@@ -76,6 +77,7 @@ void t_update_BNO055(void*)
 
 		// Get serial data
 		int32_t nRead = vexGenericSerialReceive(Arduino.BNO055_Main.get_port() - 1, buffer, len);
+		//pros::lcd::print(3, "at while true %d", nRead);
 
 		// Now parse the data
 		if (nRead >= 9) {
@@ -98,7 +100,8 @@ void t_update_BNO055(void*)
 								recordAngle = false;
                 double heading;
 								myStream >> heading;
-								heading -= 180;
+								if(heading > 180)
+									heading -= 360;
                 Arduino.BNO055_Main.set(heading);
 						}
 
@@ -240,14 +243,14 @@ std::int32_t BNO055::reset()
 	int  msglen = strlen( msg );
 
 	// Write serial data
+	for(int i = 0; i < 500; i++){
 	vexGenericSerialTransmit( Arduino.BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
+	pros::delay(100);
+	}
 
 
-	pros::delay(5000);
-	vexGenericSerialTransmit( Arduino.BNO055_Main.get_port() - 1, (uint8_t *)msg, msglen);
-	pros::delay(5000);
 
-	vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
+	//vexGenericSerialEnable( Arduino.BNO055_Main.get_port() - 1, 0 );
 	update_BNO055.resume();
 
 	return 1;
