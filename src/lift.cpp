@@ -9,9 +9,10 @@ const int maxVelocity = 20;
 const float INCHES_PIVOT_TO_PIVOT = 16.0;
 const float LIFT_GEAR_RATIO = 7.0;
 const int maxVelocityDown = maxVelocity;
-const float TICKS_PER_MOTOR_DEGREE = 900/360; //green cartdriges
+//const float TICKS_PER_MOTOR_DEGREE = 900/360; //green cartdriges
+const float TICKS_PER_MOTOR_DEGREE = 1.0; //green cartdriges
 const float STARTING_DEGREES = 42.0;
-const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 7.5; //the minus 7.5 is the height addition caused by the middle tower
+const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 0.0; //the minus 7.5 is the height addition caused by the middle tower
 int liftTarget = 10;
 
 float degreesToRadians(float degrees){
@@ -50,7 +51,7 @@ void PYROLift::moveLiftToHeight(float inches, int Velocity){
 }
 
 float PYROLift::getLiftHeight(){
-    return (2*(INCHES_PIVOT_TO_PIVOT * ((-cos(((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) + STARTING_DEGREES) * pi/180) + 1)/1)) - HEIGHT_OFFSET);
+    return (2*(INCHES_PIVOT_TO_PIVOT * ((-cos((((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) * (1.0/7.0)) + STARTING_DEGREES) * pi/180.0) + 1)/1)) - HEIGHT_OFFSET);
 }
 
 void PYROLift::stackCube(){

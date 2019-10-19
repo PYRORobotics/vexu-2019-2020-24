@@ -80,12 +80,14 @@ void opcontrol() {
     bool arcade = false;
 	bool voltageControl = false;
 
-	PYROLift robotLift(1,2,3,4,5,6);
+	PYROLift robotLift(11,12,1,2,5,6);
 
 	while(1)
 	{
 		//chassis.drive_PID_sync(24);
         robotLift.loopTeleop();
+        //printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printf("Lift height: %fin\n", robotLift.getLiftHeight());
 		pros::delay(10);
 	}
 
