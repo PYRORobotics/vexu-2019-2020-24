@@ -61,6 +61,9 @@ void PYROLift::stackCube(){
 }
 bool doorActivated = false;
 bool floorActivated = false;
+
+pros::ADIDigitalOut pistonFloor (7);
+pros::ADIDigitalOut pistonDoor (8);
 void PYROLift::loopTeleop(){
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
 
