@@ -67,7 +67,7 @@ void opcontrol() {
     const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
     const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
     okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-            {1,-2}, {3,-4},
+            {M_CHASSIS_LF,-M_CHASSIS_LR}, {M_CHASSIS_RF,-M_CHASSIS_RR},
             okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
             okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
             okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
@@ -80,10 +80,13 @@ void opcontrol() {
 	bool voltageControl = false;
 
 
-
+	okapi::ADIEncoder LEFT('A', 'B', true);
+	okapi::ADIEncoder RIGHT('C', 'D');
 	while (true)
 	{
-		pros::lcd::print(1, "%f", Arduino.BNO055_Main.get());
+
+
+		printf("%f %f\n", LEFT.get(), RIGHT.get());
 
 		//driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-Arduino.BNO055_Main.get())/180.0/5.0);
 

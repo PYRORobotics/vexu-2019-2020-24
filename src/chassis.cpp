@@ -1,6 +1,7 @@
 #include "chassis.h"
 #include "../include/pros/adi.h"
 #include "arduino.h"
+#include "init.h"
 
 //==================================START FILE==================================
 //==============================================================================
@@ -57,11 +58,14 @@ PYROChassis chassis;
 //    t_update_differential_pos (pros::Task)
 //```
 //------------------------------------------------------------------------------
-PYROChassis::PYROChassis(): PositionPIDController(20, 100, -100, 0.5, 0, 0),
-                            left_motors({1,-2}),
-                            right_motors({-3,4}),
+PYROChassis::PYROChassis(): PositionPIDController(20, 500, -500, 0.5, 0, 0),
+                            left_motors({-M_CHASSIS_LF,M_CHASSIS_LR}),
+                            right_motors({M_CHASSIS_RF,-M_CHASSIS_RR}),
+                            encoder_left(ADIEncoder('A', 'B', 0)),
+                            encoder_right(ADIEncoder('C', 'D', 1)),
                             driveController(ChassisControllerFactory::create(
                                     left_motors, right_motors,
+                                    encoder_left, encoder_right,
                                     okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
                                     okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
                                     okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
@@ -130,6 +134,18 @@ void PYROChassis::drive_PID()
   right_motors.moveVelocity(output);
 }
 
+void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
+{
+  int output = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+                     (left->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
+                     &pos_pid_data.error);
+
+  pros::lcd::print(6, "%f", pos_pid_data.error);
+  pros::lcd::print(7, "%d", output);
+  left_motors.moveVelocity(output);
+  right_motors.moveVelocity(output);
+}
+
 
 //------------------------------------------------------------------------------
 // Method: drive_PID() :
@@ -148,14 +164,21 @@ void PYROChassis::drive_PID()
 //		void
 //```
 //------------------------------------------------------------------------------
-void PYROChassis::drive_PID_sync(double distance)
+void PYROChassis::drive_PID_sync(double distance, bool useIdler)
 {
   set_target_position(distance);
+  encoder_left.reset();
+  encoder_right.reset();
   do
   {
-    drive_PID();
+    if(!useIdler)
+      drive_PID();
+    else drive_PID(&encoder_left, &encoder_right);
     pros::delay(20);
   } while(pos_pid_data.error > 0.5);
+  left_motors.moveVelocity(0);
+  right_motors.moveVelocity(0);
+
 }
 
 

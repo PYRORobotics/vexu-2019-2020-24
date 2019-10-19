@@ -98,6 +98,7 @@ double PIDImpl::calculate( double setpoint, double pv, double *err )
     else if( output < _min )
         output = _min;
 
+    output = _max;
     // Save error to previous error
     _pre_error = error;
 
