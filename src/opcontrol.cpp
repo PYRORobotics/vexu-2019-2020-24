@@ -68,7 +68,7 @@ void opcontrol() {
     const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
     const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
     okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-            {1,-2}, {3,-4},
+            {-8,9}, {-18,19},
             okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
             okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
             okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
@@ -88,6 +88,9 @@ void opcontrol() {
         robotLift.loopTeleop();
         //printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         printf("Lift height: %fin\n", robotLift.getLiftHeight());
+        driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                             (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
+                             0.05);
 		pros::delay(10);
 	}
 
