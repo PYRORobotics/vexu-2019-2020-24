@@ -1,9 +1,16 @@
-.vscode/
+# Compiled Object files
+*.o
+*.obj
+
+# Executables
+*.bin
+*.elf
+
+# PROS
 bin/
+.vscode/
 compile_commands.json
 temp.log
-
-.idea/
-cmake-build-debug/
-src/patch.c
-CMakeLists.txt
+temp.errors
+*.ini
+.d/

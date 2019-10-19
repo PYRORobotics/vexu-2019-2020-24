@@ -73,8 +73,8 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 100, -100, 0.5, 0, 0),
                               0.5,  // Maximum linear acceleration of the Chassis in m/s/s
                               10.0, // Maximum linear jerk of the Chassis in m/s/s/s
                               driveController // Chassis Controller
-                            )),
-                            t_update_differential_pos(update_differential_pos,NULL)
+                            ))///,
+                            ///t_update_differential_pos(update_differential_pos,NULL)
 {
   left_motors.setBrakeMode(AbstractMotor::brakeMode::brake);
   right_motors.setBrakeMode(AbstractMotor::brakeMode::brake);
