@@ -56,8 +56,14 @@ PIDImpl::PIDImpl( double dt, double max, double min, double Kp, double Kd, doubl
 double PIDImpl::calculate( double setpoint, double pv, double *err )
 {
 
+
+
+
     // Calculate error
     double error = setpoint - pv;
+
+    if(setpoint < 0)
+    error = -error;
 
     // Proportional term
     double Pout = _Kp * error;
@@ -93,12 +99,19 @@ double PIDImpl::calculate( double setpoint, double pv, double *err )
     pros::lcd::print(2, "max: %f", _max);
 
     // Restrict to max/min
-    if( output > _max )
+    if( fabs(output) > _max )
+    {
         output = _max;
-    else if( output < _min )
-        output = _min;
+}
+    else if( fabs(output) < _min )
+    {
+      output = _min;
+    }
 
-    output = _max;
+    if(setpoint < 0)
+    output = -output;
+
+
     // Save error to previous error
     _pre_error = error;
 

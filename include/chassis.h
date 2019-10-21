@@ -32,6 +32,8 @@ namespace okapi
       void drive_PID();
       void drive_PID(okapi::ADIEncoder*, okapi::ADIEncoder*);
       void drive_PID_sync(double, bool = true);
+      void turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*);
+      void turn_PID_sync(double, bool = true);
       static void update_differential_pos(void*)
       {
         int i = 0;

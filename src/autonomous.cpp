@@ -57,6 +57,8 @@ void autonomous() {
     // chassis.MotionController.waitUntilSettled();
 
     chassis.drive_PID_sync(60);
+    pros::delay(500);
+    chassis.drive_PID_sync(-60);
     pros::lcd::print(3, "DONE WITH AUTON");
 }
 

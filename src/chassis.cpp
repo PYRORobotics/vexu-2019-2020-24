@@ -58,7 +58,7 @@ PYROChassis chassis;
 //    t_update_differential_pos (pros::Task)
 //```
 //------------------------------------------------------------------------------
-PYROChassis::PYROChassis(): PositionPIDController(20, 500, -500, 0.5, 0, 0),
+PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005),
                             left_motors({-M_CHASSIS_LF,M_CHASSIS_LR}),
                             right_motors({M_CHASSIS_RF,-M_CHASSIS_RR}),
                             encoder_left(ADIEncoder('A', 'B', 0)),
@@ -136,14 +136,18 @@ void PYROChassis::drive_PID()
 
 void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 {
-  int output = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+  int output_l = (int) PositionPIDController.calculate(pos_pid_data.target_position,
                      (left->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
                      &pos_pid_data.error);
 
+  int output_r = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+                    (right->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
+                    &pos_pid_data.error);
+
   pros::lcd::print(6, "%f", pos_pid_data.error);
-  pros::lcd::print(7, "%d", output);
-  left_motors.moveVelocity(output);
-  right_motors.moveVelocity(output);
+  pros::lcd::print(7, "%d", output_l);
+  left_motors.moveVelocity(output_l);
+  right_motors.moveVelocity(output_r);
 }
 
 
@@ -181,6 +185,44 @@ void PYROChassis::drive_PID_sync(double distance, bool useIdler)
 
 }
 
+
+
+
+
+
+void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
+{
+  int output_l = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+                     (left->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
+                     &pos_pid_data.error);
+
+  int output_r = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+                    (right->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
+                    &pos_pid_data.error);
+
+  pros::lcd::print(6, "%f", pos_pid_data.error);
+  pros::lcd::print(7, "%d", output_l);
+  left_motors.moveVelocity(output_l);
+  right_motors.moveVelocity(output_r);
+}
+
+void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
+{
+
+  set_target_position(degrees);
+  encoder_left.reset();
+  encoder_right.reset();
+  do
+  {
+    if(!useIdler)
+      drive_PID();
+    else turn_PID(&encoder_left, &encoder_right);
+    pros::delay(20);
+  } while(pos_pid_data.error > 0.5);
+  left_motors.moveVelocity(0);
+  right_motors.moveVelocity(0);
+
+}
 
 
 //------------------------------------------------------------------------------
