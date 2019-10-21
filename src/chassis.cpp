@@ -196,8 +196,8 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
                      (left->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
                      &pos_pid_data.error);
 
-  int output_r = (int) PositionPIDController.calculate(pos_pid_data.target_position,
-                    (right->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
+  int output_r = - (int) PositionPIDController.calculate(pos_pid_data.target_position,
+                    (-right->get()) * WHEEL_DIAMETER_INCHES * PI / 360,
                     &pos_pid_data.error);
 
   pros::lcd::print(6, "%f", pos_pid_data.error);
@@ -209,7 +209,7 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 {
 
-  set_target_position(degrees);
+  set_target_position(degrees / 360 * PI * WHEELBASE);
   encoder_left.reset();
   encoder_right.reset();
   do

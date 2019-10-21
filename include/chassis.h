@@ -7,6 +7,8 @@
 #include "pid.h"
 #include "okapi/api.hpp"
 
+#define WHEELBASE 16.5
+
 namespace okapi
 {
 
