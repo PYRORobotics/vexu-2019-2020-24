@@ -8,6 +8,7 @@
 #include "okapi/api.hpp"
 
 #define WHEELBASE 16.5
+#define IDLER_WHEEL_DIAMETER 2.83
 
 namespace okapi
 {
