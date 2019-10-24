@@ -44,6 +44,7 @@
 #include "init.h"
 #include "chassis.h"
 #include "piston.h"
+#include "screen.h"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

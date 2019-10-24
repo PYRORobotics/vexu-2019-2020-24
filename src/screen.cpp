@@ -1,4 +1,4 @@
-#include "screen.hpp"
+#include "screen.h"
 
 /* Colors */
 lv_color_t Screen::COLOR_ASU_MAROON;

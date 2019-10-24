@@ -19,15 +19,15 @@ class Screen
     static lv_style_t style_btn_main;
 
     /* Objects */
-    lv_obj_t * Screen_Base;
+    lv_obj_t *Screen_Base;
 
-    lv_obj_t * Screen_Title_Page_Loading;
-    lv_obj_t * Screen_Title_Page_Main;
-    lv_obj_t * Screen_Title_Image_Loading;
-    lv_obj_t * Screen_Title_Image_Main;
-    lv_obj_t * Screen_Title_Btn_Continue;
+    lv_obj_t *Screen_Title_Page_Loading;
+    lv_obj_t *Screen_Title_Page_Main;
+    lv_obj_t *Screen_Title_Image_Loading;
+    lv_obj_t *Screen_Title_Image_Main;
+    lv_obj_t *Screen_Title_Btn_Continue;
 
-    lv_obj_t * Screen_Generic_Label;
+    lv_obj_t *Screen_Generic_Label;
 
 };
 

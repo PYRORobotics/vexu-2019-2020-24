@@ -67,7 +67,7 @@ void init_chassis()
 void initialize()
 {
 	//pros::lcd::initialize();
-	pros::Task a(u_screen);
+	//pros::Task a(u_screen);
 }
 
 
