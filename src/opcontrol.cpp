@@ -85,9 +85,16 @@ void opcontrol() {
 	while(1)
 	{
 		//chassis.drive_PID_sync(24);
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
+            robotLift.tare();
+		}
+
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+		    robotLift.moveLiftToHeight(30, 25);
+		}
         robotLift.loopTeleop();
         //printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        printf("Lift height: %fin\n", robotLift.getLiftHeight());
+        printf("Lift height: %fin, Lift angle: %f degrees, Calculated Angle: %f degrees, Actual Motor Pos: %f, Calculated Motor Pos: %f\n", robotLift.getLiftHeight(), robotLift.getLiftAngle(), robotLift.getAngleForHeight(robotLift.getLiftHeight()), robotLift.getMotorPos(), robotLift.getMotorDegreesFromLiftDegrees(robotLift.getAngleForHeight(robotLift.getLiftHeight())));
         driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
                              (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
                              0.05);

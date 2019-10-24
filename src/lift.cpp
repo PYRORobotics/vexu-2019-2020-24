@@ -11,8 +11,8 @@ const float LIFT_GEAR_RATIO = 7.0;
 const int maxVelocityDown = maxVelocity;
 //const float TICKS_PER_MOTOR_DEGREE = 900/360; //green cartdriges
 const float TICKS_PER_MOTOR_DEGREE = 1.0; //green cartdriges
-const float STARTING_DEGREES = 42.0;
-const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 0.0; //the minus 7.5 is the height addition caused by the middle tower
+const float STARTING_DEGREES = 40.5;
+const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 2.0; //the minus 7.5 is the height addition caused by the middle tower
 int liftTarget = 10;
 
 float degreesToRadians(float degrees){
@@ -39,19 +39,25 @@ PYROLift::PYROLift(
 }
 
 float PYROLift::getAngleForHeight(float inches){
-    return (acos(inches/INCHES_PIVOT_TO_PIVOT)) * 180/pi;
+    //return ((asin(((inches - HEIGHT_OFFSET)/2)/INCHES_PIVOT_TO_PIVOT)) * 180/pi)/1 + 45;
+    return acos(-((inches + HEIGHT_OFFSET)/(2 * INCHES_PIVOT_TO_PIVOT)) + 1) * 180/pi;
 }
 
 float PYROLift::getMotorDegreesFromLiftDegrees(float degrees){
-    return degrees * LIFT_GEAR_RATIO;
+    return (degrees-STARTING_DEGREES) * LIFT_GEAR_RATIO;
 }
 
 void PYROLift::moveLiftToHeight(float inches, int Velocity){
-    liftMotors.moveAbsolute(TICKS_PER_MOTOR_DEGREE * getMotorDegreesFromLiftDegrees(getAngleForHeight(PICKUP_POSITION)), Velocity);
+    //liftMotors.moveAbsolute(TICKS_PER_MOTOR_DEGREE * getMotorDegreesFromLiftDegrees(getAngleForHeight(inches)), Velocity);
+    liftTarget = (TICKS_PER_MOTOR_DEGREE * getMotorDegreesFromLiftDegrees(getAngleForHeight(inches)));
 }
 
 float PYROLift::getLiftHeight(){
-    return (2*(INCHES_PIVOT_TO_PIVOT * ((-cos((((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) * (1.0/7.0)) + STARTING_DEGREES) * pi/180.0) + 1)/1)) - HEIGHT_OFFSET);
+    return (2*(INCHES_PIVOT_TO_PIVOT * (-cos((((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) * (1.0/7.0)) + STARTING_DEGREES) * pi/180.0) + 1)) - HEIGHT_OFFSET);
+}
+
+float PYROLift::getLiftAngle(){
+    return ((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) * (1.0/LIFT_GEAR_RATIO)) + STARTING_DEGREES;
 }
 
 void PYROLift::stackCube(){
@@ -65,10 +71,18 @@ bool floorActivated = false;
 pros::ADIDigitalOut pistonFloor (7);
 pros::ADIDigitalOut pistonDoor (8);
 
-MotorGroup intake({6,-15});
-void PYROLift::loopTeleop(){
+//MotorGroup intake({6,-15});
+
+MotorGroup intake( {Motor(6, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees),
+                   Motor(15, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees)});
+
+void PYROLift::manualControl(){
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
+        intake.tarePosition();
+    }
+
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
-        intake.moveVoltage(-12000);
+        intake.moveAbsolute(-190, 100);
     }
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
         intake.moveVoltage(12000);
@@ -85,11 +99,11 @@ void PYROLift::loopTeleop(){
     }
 
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
-        liftMotors.moveVelocity(50);
+        liftMotors.moveVelocity(25);
         liftTarget = liftMotors.getPosition();
     }
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-        liftMotors.moveVelocity(-50);
+        liftMotors.moveVelocity(-25);
         liftTarget = liftMotors.getPosition();
     }
     else{
@@ -105,6 +119,25 @@ void PYROLift::loopTeleop(){
         floorActivated = !floorActivated;
         pistonFloor.set_value(floorActivated);
     }
+}
+void PYROLift::loopTeleop(){
+    if(true){
+        manualControl();
+    }
+
+}
+
+void PYROLift::tare(){
+    liftMotors.moveVelocity(-25);
+    pros::delay(500);
+    while(abs(liftMotors.getActualVelocity()) > 10){
+        pros::delay(10);
+    }
+    liftMotors.tarePosition();
+}
+
+float PYROLift::getMotorPos() {
+    return liftMotors.getPosition();
 }
 
 

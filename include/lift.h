@@ -14,13 +14,19 @@ class PYROLift {
         float getMotorTemps();
         PYROLift(int motorTopRight, int motorBottomRight, int motorTopLeft, int motorBottomLeft, int pneumaticFloorPort, int pneumaticDoorPort);
         float getLiftHeight();
+        float getLiftAngle();
+        float getAngleForHeight(float inches);
+        float getMotorDegreesFromLiftDegrees(float degrees);
+        float getMotorPos();
+        void moveLiftToHeight(float inches, int maxVelocity);
+        void tare();
     private:
         okapi::MotorGroup liftMotors;
         int cubeCount;
-        float getAngleForHeight(float inches);
-        void moveLiftToHeight(float inches, int maxVelocity);
-        float getMotorDegreesFromLiftDegrees(float degrees);
+
+
         void stackCube();
+        void manualControl();
 
 
 
