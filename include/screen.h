@@ -9,6 +9,16 @@ class Screen
     Screen();
     ~Screen();
     void setup_styles();
+    pros::Task t_screen;
+    static void update(void*)
+    {
+      int i = 0;
+      while(1)
+      {
+        pros::lcd::print(6, "%d", i++);
+        pros::delay(20);
+      }
+    }
 
   private:
     /* Colors */

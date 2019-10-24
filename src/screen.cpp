@@ -1,5 +1,16 @@
 #include "screen.h"
 
+/* TO EXPORT IMAGES TO SD CARD
+
+https://www.vexforum.com/t/lvgl-image-not-displaying/63612/15
+
+Update 9/27/2019
+For PROS kernel 3.2.0, which contains lvgl version 5.3, the new (or is that current) image converter should be used.
+Select “True color with Alpha” for the color format
+Select “Binary RGB888” for the output format
+*/
+
+
 /* Colors */
 lv_color_t Screen::COLOR_ASU_MAROON;
 lv_color_t Screen::COLOR_ASU_GOLD;
@@ -7,7 +18,7 @@ lv_color_t Screen::COLOR_ASU_GOLD;
 /* Styles */
 lv_style_t Screen::style_btn_main;
 
-
+//Screen screen;
 
 
 
@@ -86,9 +97,9 @@ void Screen::setup_styles()
 
 }
 
-Screen::Screen()
+Screen::Screen() : t_screen (pros::Task(update, (void*)NULL, TASK_PRIORITY_DEFAULT,
+                TASK_STACK_DEPTH_DEFAULT, "My Task"))
 {
-
   setup_styles();
 
   lv_fs_drv_t pcfs_drv;                         /*A driver descriptor*/
