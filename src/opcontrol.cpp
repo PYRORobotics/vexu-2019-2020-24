@@ -54,31 +54,32 @@ void startAllTasks()	//FIXME
 //------------------------------------------------------------------------------
 void opcontrol() {
 
-	//startAllTasks();
-
+	// //startAllTasks();
+	//
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-	okapi::MotorGroup left_motors({1,-2});
-    okapi::MotorGroup right_motors({-3,4});
-
-
-    const okapi::QLength WHEEL_DIAMETER = 3.95_in;
-    const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
-    const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
-    okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-            {M_CHASSIS_LF,-M_CHASSIS_LR}, {M_CHASSIS_RF,-M_CHASSIS_RR},
-            okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
-            okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
-            okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
-            ratio,
-            {WHEEL_DIAMETER, CHASSIS_WIDTH}
-    );
-
+	// pros::Motor left_mtr(1);
+	// pros::Motor right_mtr(2);
+	// okapi::MotorGroup left_motors({1,-2});
+  //   okapi::MotorGroup right_motors({-3,4});
+	//
+	//
+  //   const okapi::QLength WHEEL_DIAMETER = 3.95_in;
+  //   const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
+  //   const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
+  //   okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
+  //           {M_CHASSIS_LF,-M_CHASSIS_LR}, {M_CHASSIS_RF,-M_CHASSIS_RR},
+  //           okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
+  //           okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
+  //           okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
+  //           ratio,
+  //           {WHEEL_DIAMETER, CHASSIS_WIDTH}
+  //   );
+	//
 
     bool arcade = false;
 	bool voltageControl = false;
 
+pros::ADIUltrasonic ultrasonic ('e', 'f');
 
 	okapi::ADIEncoder LEFT('A', 'B', true);
 	okapi::ADIEncoder RIGHT('C', 'D');
@@ -115,24 +116,29 @@ void opcontrol() {
 
         if(voltageControl) {
             if (arcade) {
-                driveController.arcade((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) / 127,
+                chassis.driveController.arcade((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) / 127,
                                        (float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
                                        0.05);
             } else {
-                driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
                                      (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
                                      0.05);
             }
         }
         else{
-            if (arcade) {
-                left_motors.moveVelocity(((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * (200.0/127.0)) + ((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0)));
-                right_motors.moveVelocity(((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * (200.0/127.0)) - ((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0)));
-            } else {
-                left_motors.moveVelocity((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0));
-                right_motors.moveVelocity((float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * (200.0/127.0));
-            }
+            // if (arcade) {
+            //     left_motors.moveVelocity(((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * (200.0/127.0)) + ((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0)));
+            //     right_motors.moveVelocity(((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X) * (200.0/127.0)) - ((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0)));
+            // } else {
+            //     left_motors.moveVelocity((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * (200.0/127.0));
+            //     right_motors.moveVelocity((float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * (200.0/127.0));
+            // }
         }
+
+		printf("\n%d",ultrasonic.get_value());
+		if(ultrasonic.get_value() > 32) printf(" - No cubes seen!");
+		else if(ultrasonic.get_value() > 12) printf(" - Intake the cube!");
+		else if(ultrasonic.get_value() > 10) printf(" - STACK!");
 
 		pros::delay(20);
 	}

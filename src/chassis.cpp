@@ -59,8 +59,8 @@ PYROChassis chassis;
 //```
 //------------------------------------------------------------------------------
 PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005),
-                            left_motors({-M_CHASSIS_LF,M_CHASSIS_LR}),
-                            right_motors({M_CHASSIS_RF,-M_CHASSIS_RR}),
+                            left_motors({-M_CHASSIS_LF, M_CHASSIS_LM, -M_CHASSIS_LR}),
+                            right_motors({-M_CHASSIS_RF, M_CHASSIS_RM, -M_CHASSIS_RR}),
                             encoder_left(ADIEncoder('A', 'B', 0)),
                             encoder_right(ADIEncoder('C', 'D', 1)),
                             driveController(ChassisControllerFactory::create(
@@ -140,7 +140,7 @@ void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
                      (left->get()) * IDLER_WHEEL_DIAMETER * PI / 360,
                      &pos_pid_data.error);
 
-  int output_r = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+  int output_r = - (int) PositionPIDController.calculate(pos_pid_data.target_position,
                     (right->get()) * IDLER_WHEEL_DIAMETER * PI / 360,
                     &pos_pid_data.error);
 
@@ -192,11 +192,11 @@ void PYROChassis::drive_PID_sync(double distance, bool useIdler)
 
 void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 {
-  int output_l = (int) PositionPIDController.calculate(pos_pid_data.target_position,
+  int output_l = -(int) PositionPIDController.calculate(pos_pid_data.target_position,
                      (left->get()) * IDLER_WHEEL_DIAMETER * PI / 360,
                      &pos_pid_data.error);
 
-  int output_r = - (int) PositionPIDController.calculate(pos_pid_data.target_position,
+  int output_r =  (int) PositionPIDController.calculate(pos_pid_data.target_position,
                     (-right->get()) * IDLER_WHEEL_DIAMETER * PI / 360,
                     &pos_pid_data.error);
 

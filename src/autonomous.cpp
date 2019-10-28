@@ -56,11 +56,37 @@ void autonomous() {
     //
     // chassis.MotionController.waitUntilSettled();
 
-    chassis.drive_PID_sync(60);
-    pros::delay(1000);
-    chassis.turn_PID_sync(90);
+
+    // RED
+    chassis.drive_PID_sync(6);
     pros::delay(5000);
+
+    chassis.drive_PID_sync(24);
+    pros::delay(500);
+    chassis.drive_PID_sync(1);
+    pros::delay(5000);
+
+    chassis.drive_PID_sync(-11);
+    pros::delay(1000);
+
     chassis.turn_PID_sync(-90);
+    pros::delay(1000);
+
+    chassis.drive_PID_sync(21.5);
+    pros::delay(5000);
+
+    chassis.drive_PID_sync(12);
+    pros::delay(1000);
+
+    chassis.turn_PID_sync(-45);
+    pros::delay(2000);
+
+    chassis.drive_PID_sync(27);
+    pros::delay(5000);
+
+
+
+
     pros::lcd::print(3, "DONE WITH AUTON");
 }
 
