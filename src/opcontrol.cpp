@@ -49,9 +49,10 @@ void startAllTasks()	//FIXME
 //```
 // Returns:
 //```
-//		None
+//		Nonepros::Controller master
 //```
 //------------------------------------------------------------------------------
+pros::Controller master(pros::E_CONTROLLER_MASTER);
 void opcontrol() {
 
 	// //startAllTasks();
@@ -76,10 +77,10 @@ void opcontrol() {
   //   );
 	//
 
+
     bool arcade = false;
 	bool voltageControl = false;
 
-pros::ADIUltrasonic ultrasonic ('e', 'f');
 
 	okapi::ADIEncoder LEFT('A', 'B', true);
 	okapi::ADIEncoder RIGHT('C', 'D');

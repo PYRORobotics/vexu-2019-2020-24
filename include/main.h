@@ -43,8 +43,11 @@
 #include "arduino.h"
 #include "init.h"
 #include "chassis.h"
+
+#include "lift.h"
 #include "piston.h"
 #include "screen.h"
+
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -66,6 +69,8 @@ using namespace okapi;
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern pros::Controller master;
 void autonomous(void);
 void initialize(void);
 void disabled(void);
