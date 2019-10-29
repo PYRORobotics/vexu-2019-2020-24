@@ -67,7 +67,7 @@ void init_chassis()
 void initialize()
 {
 	//pros::lcd::initialize();
-	//Screen screen;
+	Screen screen;
 }
 
 

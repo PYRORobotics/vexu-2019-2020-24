@@ -192,7 +192,7 @@ void PYROChassis::drive_PID_sync(double distance, bool useIdler)
 
 void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 {
-  int output_l = -(int) PositionPIDController.calculate(pos_pid_data.target_position,
+  int output_l = (int) PositionPIDController.calculate(pos_pid_data.target_position,
                      (left->get()) * IDLER_WHEEL_DIAMETER * PI / 360,
                      &pos_pid_data.error);
 

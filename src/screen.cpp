@@ -17,6 +17,32 @@ lv_color_t Screen::COLOR_ASU_GOLD;
 
 /* Styles */
 lv_style_t Screen::style_btn_main;
+lv_style_t Screen::style_bg;
+
+/* Objects */
+lv_obj_t *Screen::Screen_Title_Page_Main;
+lv_obj_t *Screen::Screen_Title_PYRO;
+lv_obj_t *Screen::Screen_Title_Btn_Continue;
+lv_obj_t *Screen::Screen_Generic_Label;
+
+lv_obj_t *Screen::Screen_Main_BG;
+
+lv_obj_t *Screen::Screen_Mode_Select_Main;
+lv_obj_t *Screen::Screen_Mode_Select_Comp;
+lv_obj_t *Screen::Screen_Mode_Select_Comp_Label;
+lv_obj_t *Screen::Screen_Mode_Select_Debug;
+lv_obj_t *Screen::Screen_Mode_Select_Debug_Label;
+
+lv_obj_t *Screen::Screen_CompSelect_Back;
+lv_obj_t *Screen::Screen_CompSelect_Back_Label;
+lv_obj_t *Screen::Screen_Battery_Percent_Label;
+
+
+
+/* Button Action Functions */
+//static lv_res_t button_title_continue_action(lv_obj_t * btn);
+
+
 
 //Screen screen;
 
@@ -89,11 +115,18 @@ void Screen::setup_styles()
 
 
   lv_style_copy(&Screen::style_btn_main, &lv_style_btn_rel);
-  style_btn_main.body.main_color = COLOR_ASU_GOLD;
-  style_btn_main.body.grad_color = COLOR_ASU_GOLD;
-  style_btn_main.text.color = LV_COLOR_BLACK;
-  style_btn_main.line.color = COLOR_ASU_GOLD;
+  style_btn_main.body.main_color = LV_COLOR_BLACK;
+  style_btn_main.body.grad_color = LV_COLOR_BLACK;
+  style_btn_main.text.color = LV_COLOR_WHITE;
+  style_btn_main.body.border.color = COLOR_ASU_GOLD;
+  style_btn_main.body.border.width = 3;
+  style_btn_main.body.padding.hor = 5;
+  style_btn_main.body.padding.ver = 5;
   style_btn_main.body.radius = 3;
+
+  lv_style_copy(&Screen::style_bg, &lv_style_plain_color);
+  Screen::style_bg.body.main_color = LV_COLOR_BLACK;
+  Screen::style_bg.body.grad_color = LV_COLOR_BLACK;
 
 }
 
@@ -114,43 +147,89 @@ Screen::Screen() : t_screen (pros::Task(update, (void*)NULL, TASK_PRIORITY_DEFAU
   pcfs_drv.tell = pcfs_tell;
   lv_fs_add_drv(&pcfs_drv);
 
+  pros::delay(20);
+
+
+
   Screen_Title_Page_Main = lv_page_create(lv_scr_act(), NULL);
-  lv_obj_set_size(Screen_Title_Page_Main, 500, 260);
+  lv_obj_set_size(Screen_Title_Page_Main, 480, 240);
   lv_obj_align(Screen_Title_Page_Main, NULL, LV_ALIGN_CENTER, 0, 0);
-  lv_page_set_style(Screen_Title_Page_Main, LV_PAGE_STYLE_BG, &lv_style_plain);
+  lv_page_set_style(Screen_Title_Page_Main, LV_PAGE_STYLE_BG, &Screen::style_bg);
 
-  Screen_Title_Image_Loading = lv_img_create(Screen_Title_Page_Main, NULL);
-  lv_img_set_src(Screen_Title_Image_Loading, "D:/usd/img_title_loading_asu.bin");
+  Screen_Title_PYRO = lv_img_create(lv_scr_act(), NULL);
+  lv_img_set_src(Screen_Title_PYRO, "D:/usd/img_pyro_large.bin");
+  lv_obj_align(Screen_Title_PYRO, NULL, LV_ALIGN_CENTER, 0, 0);
 
-  pros::delay(2000);
-
-  lv_img_set_src(Screen_Title_Image_Loading, "D:/usd/img_title_loading_rrr.bin");
-
-  pros::delay(1500);
-
-  lv_obj_del(Screen_Title_Image_Loading);
-
-
-  Screen_Title_Page_Loading = lv_page_create(lv_scr_act(), NULL);
-  lv_obj_set_size(Screen_Title_Page_Loading, 500, 260);
-  lv_obj_align(Screen_Title_Page_Loading, NULL, LV_ALIGN_CENTER, 0, 0);
-  lv_page_set_style(Screen_Title_Page_Loading, LV_PAGE_STYLE_BG, &lv_style_plain);
-
-  Screen_Title_Image_Main = lv_img_create(Screen_Title_Page_Loading, NULL);
-  lv_img_set_src(Screen_Title_Image_Main, "D:/usd/img_title_loading_main.bin");
-  lv_obj_align(Screen_Title_Image_Main, NULL, LV_ALIGN_CENTER, 0, 0);
-
-
-  Screen_Title_Btn_Continue = lv_btn_create(lv_scr_act(), NULL);
+  Screen_Title_Btn_Continue = lv_btn_create(Screen_Title_PYRO, NULL);
   //lv_obj_set_event_cb(btn1, event_handler);
-  lv_obj_align(Screen_Title_Btn_Continue, Screen_Title_Page_Loading, LV_ALIGN_IN_BOTTOM_MID, 12, 10);
-  lv_obj_set_size(Screen_Title_Btn_Continue, 100, 50);
-
+  lv_obj_align(Screen_Title_Btn_Continue, Screen_Title_PYRO, LV_ALIGN_IN_BOTTOM_MID, 0, 15);
+  lv_obj_set_size(Screen_Title_Btn_Continue, 110, 50);
   lv_obj_set_style(Screen_Title_Btn_Continue, &style_btn_main);
+  lv_btn_set_action(Screen_Title_Btn_Continue, LV_BTN_ACTION_CLICK, button_title_continue_action);
+
   Screen_Generic_Label = lv_label_create(Screen_Title_Btn_Continue, NULL);
   lv_label_set_text(Screen_Generic_Label, "CONTINUE");
 
 
+
+
+  Screen_Mode_Select_Main = lv_page_create(lv_scr_act(), NULL);
+  lv_obj_set_size(Screen_Mode_Select_Main, 480, 260);
+  lv_obj_align(Screen_Mode_Select_Main, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_page_set_style(Screen_Mode_Select_Main, LV_PAGE_STYLE_BG, &Screen::style_bg);
+
+  Screen_Main_BG = lv_img_create(Screen_Mode_Select_Main, NULL);
+  lv_img_set_src(Screen_Main_BG, "D:/usd/img_bg.bin");
+  lv_obj_align(Screen_Main_BG, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_hidden(Screen_Main_BG, 1);
+
+  lv_obj_t * Screen_Battery_Percent_Label = lv_label_create(Screen_Main_BG, NULL);
+  lv_obj_align(Screen_Battery_Percent_Label, Screen_Main_BG, LV_ALIGN_IN_BOTTOM_RIGHT, -10, 2); /*Align to the top*/
+
+
+  Screen_Mode_Select_Comp = lv_btn_create(Screen_Mode_Select_Main, NULL);
+  //lv_obj_set_event_cb(btn1, event_handler);
+  lv_obj_align(Screen_Mode_Select_Comp, Screen_Mode_Select_Main, LV_ALIGN_CENTER, -140, -10);
+  lv_obj_set_size(Screen_Mode_Select_Comp, 180, 100);
+  lv_obj_set_style(Screen_Mode_Select_Comp, &style_btn_main);
+  lv_btn_set_action(Screen_Mode_Select_Comp, LV_BTN_ACTION_CLICK, button_competition_select);
+
+  Screen_Mode_Select_Comp_Label = lv_label_create(Screen_Mode_Select_Comp, NULL);
+  lv_label_set_text(Screen_Mode_Select_Comp_Label, "Competition");
+
+  Screen_Mode_Select_Debug = lv_btn_create(Screen_Mode_Select_Main, NULL);
+  //lv_obj_set_event_cb(btn1, event_handler);
+  lv_obj_align(Screen_Mode_Select_Debug, Screen_Mode_Select_Comp, LV_ALIGN_CENTER, 230-27, -8);
+  lv_obj_set_size(Screen_Mode_Select_Debug, 180, 100);
+  lv_obj_set_style(Screen_Mode_Select_Debug, &style_btn_main);
+  lv_btn_set_action(Screen_Mode_Select_Debug, LV_BTN_ACTION_CLICK, button_title_continue_action);
+
+  Screen_Mode_Select_Debug_Label = lv_label_create(Screen_Mode_Select_Debug, NULL);
+  lv_label_set_text(Screen_Mode_Select_Debug_Label, "Debugging");
+
+  lv_obj_set_hidden(Screen_Mode_Select_Main, 1);
+
+
+
+
+  Screen_CompSelect_Back = lv_btn_create(Screen_Mode_Select_Main, NULL);
+  //lv_obj_set_event_cb(btn1, event_handler);
+  lv_obj_align(Screen_CompSelect_Back, Screen_Mode_Select_Main, LV_ALIGN_IN_BOTTOM_LEFT, 10, -47);
+  lv_obj_set_size(Screen_CompSelect_Back, 100, 30);
+  lv_obj_set_style(Screen_CompSelect_Back, &style_btn_main);
+  lv_btn_set_action(Screen_CompSelect_Back, LV_BTN_ACTION_CLICK, button_competition_back);
+
+  Screen_CompSelect_Back_Label = lv_label_create(Screen_CompSelect_Back, NULL);
+  lv_label_set_text(Screen_CompSelect_Back_Label, "Back");
+  lv_obj_set_hidden(Screen_CompSelect_Back, 1);
+
+
+
+
+  Screen_End_Image = lv_img_create(lv_scr_act(), NULL);
+  lv_img_set_src(Screen_End_Image, "D:/usd/img_innovate.bin");
+  lv_obj_align(Screen_End_Image, NULL, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_hidden(Screen_End_Image, 1);
 }
 
 Screen::~Screen()
