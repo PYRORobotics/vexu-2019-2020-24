@@ -49,14 +49,15 @@ void startAllTasks()	//FIXME
 //```
 // Returns:
 //```
-//		None
+//		Nonepros::Controller master
 //```
 //------------------------------------------------------------------------------
+pros::Controller master(pros::E_CONTROLLER_MASTER);
 void opcontrol() {
 
 	//startAllTasks();
 
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
+
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 	okapi::MotorGroup left_motors({1,-2});
@@ -67,7 +68,8 @@ void opcontrol() {
     const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
     const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
     okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-            {M_CHASSIS_LF,-M_CHASSIS_LR}, {M_CHASSIS_RF,-M_CHASSIS_RR},
+
+            {-8,9,-10}, {-18,19,-20},
             okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
             okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
             okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
@@ -78,7 +80,6 @@ void opcontrol() {
 
     bool arcade = false;
 	bool voltageControl = false;
-
 
 	okapi::ADIEncoder LEFT('A', 'B', true);
 	okapi::ADIEncoder RIGHT('C', 'D');
