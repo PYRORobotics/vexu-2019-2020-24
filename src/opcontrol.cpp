@@ -68,7 +68,7 @@ void opcontrol() {
     const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
     const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
     okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-            {-8,9}, {-18,19},
+            {-8,9,-10}, {-18,19,-20},
             okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
             okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
             okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn

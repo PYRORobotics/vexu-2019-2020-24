@@ -20,17 +20,15 @@ class PYROLift {
         float getMotorPos();
         void moveLiftToHeight(float inches, int maxVelocity);
         void tare();
+        void collectCube();
+        void intakeAndCollect();
     private:
         okapi::MotorGroup liftMotors;
         int cubeCount;
-
-
-        void stackCube();
         void manualControl();
-
-
-
 };
+
+extern PYROLift robotLift;
 
 
 #endif //VEXU_2019_2020_24_LIFT_H
