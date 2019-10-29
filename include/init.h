@@ -10,6 +10,9 @@
 #define M_CHASSIS_RF 18
 #define M_CHASSIS_RM 19
 #define M_CHASSIS_RR 20
+#define M_INTAKE_L 6
+#define M_INTAKE_R 15
+
 
 using namespace okapi;
 

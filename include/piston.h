@@ -1,3 +1,6 @@
+#ifndef _PISTON_H_
+#define _PISTON_H_
+
 #include "api.h"
 
 class Piston
@@ -14,3 +17,5 @@ public:
   void set(bool);
   void toggle();
 };
+
+#endif

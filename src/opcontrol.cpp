@@ -136,11 +136,6 @@ void opcontrol() {
             // }
         }
 
-		printf("\n%d",ultrasonic.get_value());
-		if(ultrasonic.get_value() > 32) printf(" - No cubes seen!");
-		else if(ultrasonic.get_value() > 12) printf(" - Intake the cube!");
-		else if(ultrasonic.get_value() > 10) printf(" - STACK!");
-
 		pros::delay(20);
 	}
 }

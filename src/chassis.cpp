@@ -224,6 +224,13 @@ void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 
 }
 
+void PYROChassis::drive_seconds(int speed, double sec)
+{
+  left_motors.moveVelocity(speed);
+  right_motors.moveVelocity(-speed);
+  pros::delay(sec*1000);
+}
+
 
 //------------------------------------------------------------------------------
 //===================================END FILE===================================

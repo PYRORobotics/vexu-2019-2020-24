@@ -15,12 +15,16 @@ const float STARTING_DEGREES = 40.5;
 const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 2.0; //the minus 7.5 is the height addition caused by the middle tower
 const float HOVER_HEIGHT = 25.0;
 const int ULTRASONIC_THRESHOLD = 70;
-int liftTarget = 10;
-PYROLift robotLift(11,12,1,2,5,6);
+int PYROLift::liftTarget = 10;
+PYROLift lift(11,12,1,2,5,6);
 
+okapi::MotorGroup PYROLift::liftMotors({
+    Motor(11, false, AbstractMotor::gearset::red),
+    Motor(12, false, AbstractMotor::gearset::red),
+    Motor(1, true, AbstractMotor::gearset::red),
+    Motor(2, true, AbstractMotor::gearset::red)}
+  );
 
-MotorGroup intake( {Motor(6, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees),
-                    Motor(15, true, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees)});
 
 pros::ADIUltrasonic ultrasonic('e' , 'f');
 
@@ -35,12 +39,8 @@ PYROLift::PYROLift(
         int motorBottomLeft,
         int pneumaticFloorPort,
         int pneumaticDoorPort) :
-        liftMotors({
-            Motor(motorTopRight, false, AbstractMotor::gearset::red),
-            Motor(motorBottomRight, false, AbstractMotor::gearset::red),
-            Motor(motorTopLeft, true, AbstractMotor::gearset::red),
-            Motor(motorBottomLeft, true, AbstractMotor::gearset::red)}
-            ){
+        piston_door(8),
+        piston_floor(7){
 
     cubeCount = 0;
 
@@ -70,14 +70,14 @@ float PYROLift::getLiftAngle(){
 }
 
 void PYROLift::intakeAndCollect(){
-    intake.moveVoltage(12000);
+    intake.motors.moveVoltage(12000);
     while(master.get_digital(pros::E_CONTROLLER_DIGITAL_B) && ((ultrasonic.get_value() > ULTRASONIC_THRESHOLD) || (ultrasonic.get_value() == -1))){
         printf("Ultrasonic: %d\n", ultrasonic.get_value());
         pros::delay(10);
     }
-    intake.moveVoltage(1000);
+    intake.motors.moveVoltage(1000);
     collectCube();
-    intake.moveVoltage(0);
+    intake.motors.moveVoltage(0);
 }
 
 void PYROLift::collectCube(){
@@ -102,17 +102,17 @@ pros::ADIDigitalOut pistonDoor (8);
 
 void PYROLift::manualControl(){
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
-        intake.tarePosition();
+        intake.motors.tarePosition();
     }
 
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
-        intake.moveAbsolute(-190, 100);
+        intake.motors.moveAbsolute(-190, 100);
     }
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
-        intake.moveVoltage(12000);
+        intake.motors.moveVoltage(12000);
     }
     else{
-        intake.moveVoltage(0);
+        intake.motors.moveVoltage(0);
     }
 
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
