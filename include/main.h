@@ -43,7 +43,10 @@
 #include "arduino.h"
 #include "init.h"
 #include "chassis.h"
+
 #include "lift.h"
+#include "piston.h"
+
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

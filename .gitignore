@@ -15,8 +15,8 @@ temp.errors
 *.ini
 .d/
 
-#charles
+#Charles
 .idea/
 cmake-build-debug/
-src/patch.c
 CMakeLists.txt
+src/patch.c

@@ -5,7 +5,7 @@
         "target": "v5",
         "templates": {
             "kernel": {
-                "location": "/home/charles/.config/pros/templates/kernel@3.2.0",
+                "location": "C:\\Users\\Brandon\\AppData\\Roaming\\PROS\\templates\\kernel@3.2.0",
                 "metadata": {
                     "cold_addr": "58720256",
                     "cold_output": "bin/cold.package.bin",
