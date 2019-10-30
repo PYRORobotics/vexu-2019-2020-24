@@ -1,9 +1,28 @@
 #include "pid.h"
-
 #include <iostream>
 #include <cmath>
 
+//==================================START FILE==================================
+//==============================================================================
+// File:		pid.cpp
+// Author:	bradley219, Brandon Rice
+// Created: 7 October 2019
+// Last Modified: 29 October 2019
+//
+// Description:
+// ------------
+// This file contains the definitions of the PIDImpl class used in
+// PositionPIDController.
+//
+// Credits: https://gist.github.com/bradley219/5373998
+//
+//------------------------------------------------------------------------------
+
+
+// File Setup
+// ----------
 using namespace std;
+
 
 class PIDImpl
 {
@@ -55,9 +74,6 @@ PIDImpl::PIDImpl( double dt, double max, double min, double Kp, double Kd, doubl
 
 double PIDImpl::calculate( double setpoint, double pv, double *err )
 {
-
-
-
 
     // Calculate error
     double error = setpoint - pv;
@@ -124,3 +140,7 @@ double PIDImpl::calculate( double setpoint, double pv, double *err )
 PIDImpl::~PIDImpl()
 {
 }
+
+//------------------------------------------------------------------------------
+//===================================END FILE===================================
+//==============================================================================
