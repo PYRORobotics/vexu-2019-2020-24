@@ -53,6 +53,10 @@ void startAllTasks()	//FIXME
 //```
 //------------------------------------------------------------------------------
 pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+void liftTask(void*){
+    lift.loopTeleop();
+}
 void opcontrol() {
 
 	// //startAllTasks();
@@ -84,11 +88,17 @@ void opcontrol() {
 
 	okapi::ADIEncoder LEFT('A', 'B', true);
 	okapi::ADIEncoder RIGHT('C', 'D');
+    pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
+                            TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
 	while (true)
 	{
 
 
 		printf("%f %f\n", LEFT.get(), RIGHT.get());
+        chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                                     (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
+                                     0.05);
+        //lift.loopTeleop();
 
 		//driveController.driveVector(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)/127.0, (0-Arduino.BNO055_Main.get())/180.0/5.0);
 
@@ -99,7 +109,7 @@ void opcontrol() {
 			pros::lcd::print(1, "Resetting");
 			Arduino.BNO055_Main.reset();
 		}*/
-
+        /*
 		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
 		    arcade = true;
 				Arduino.BNO055_Main.reset();
@@ -114,6 +124,7 @@ void opcontrol() {
         else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
             voltageControl = false;
         }
+
 
         if(voltageControl) {
             if (arcade) {
@@ -135,7 +146,7 @@ void opcontrol() {
             //     right_motors.moveVelocity((float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * (200.0/127.0));
             // }
         }
-
+        */
 		pros::delay(20);
 	}
 }

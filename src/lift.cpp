@@ -13,20 +13,20 @@ const int maxVelocityDown = maxVelocity;
 const float TICKS_PER_MOTOR_DEGREE = 1.0; //green cartdriges
 const float STARTING_DEGREES = 40.5;
 const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 2.0; //the minus 7.5 is the height addition caused by the middle tower
-const float HOVER_HEIGHT = 25.0;
+const float HOVER_HEIGHT = 11.0;
 const int ULTRASONIC_THRESHOLD = 70;
 int PYROLift::liftTarget = 10;
 PYROLift lift(11,12,1,2,5,6);
 
 okapi::MotorGroup PYROLift::liftMotors({
     Motor(11, false, AbstractMotor::gearset::red),
-    Motor(12, false, AbstractMotor::gearset::red),
-    Motor(1, true, AbstractMotor::gearset::red),
+    Motor(13, false, AbstractMotor::gearset::red),
+    Motor(3, true, AbstractMotor::gearset::red),
     Motor(2, true, AbstractMotor::gearset::red)}
   );
 
 
-pros::ADIUltrasonic ultrasonic('e' , 'f');
+pros::ADIDigitalIn breakbeam('e');
 
 float degreesToRadians(float degrees){
 
@@ -71,12 +71,14 @@ float PYROLift::getLiftAngle(){
 
 void PYROLift::intakeAndCollect(){
     intake.motors.moveVoltage(12000);
-    while(master.get_digital(pros::E_CONTROLLER_DIGITAL_B) && ((ultrasonic.get_value() > ULTRASONIC_THRESHOLD) || (ultrasonic.get_value() == -1))){
-        printf("Ultrasonic: %d\n", ultrasonic.get_value());
+    while(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && breakbeam.get_value()){
+        printf("breakbeam: %d\n", breakbeam.get_value());
         pros::delay(10);
     }
-    intake.motors.moveVoltage(1000);
-    collectCube();
+    if(!breakbeam.get_value()) {
+        intake.motors.moveVoltage(5000);
+        collectCube();
+    }
     intake.motors.moveVoltage(0);
 }
 
@@ -101,13 +103,14 @@ pros::ADIDigitalOut pistonDoor (8);
 
 
 void PYROLift::manualControl(){
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
+    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
         intake.motors.tarePosition();
     }
 
-    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)){
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
         intake.motors.moveAbsolute(-190, 100);
     }
+
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
         intake.motors.moveVoltage(12000);
     }
@@ -115,18 +118,19 @@ void PYROLift::manualControl(){
         intake.motors.moveVoltage(0);
     }
 
+
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
         liftTarget += 25;
     }
-    else if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+    else if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
         liftTarget -= 25;
     }
 
-    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
         liftMotors.moveVelocity(50);
         liftTarget = liftMotors.getPosition();
     }
-    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
         liftMotors.moveVelocity(-50);
         liftTarget = liftMotors.getPosition();
     }
@@ -134,25 +138,38 @@ void PYROLift::manualControl(){
         liftMotors.moveAbsolute(liftTarget, 50);
     }
 
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
-        doorActivated = !doorActivated;
-        pistonDoor.set_value(doorActivated);
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        //doorActivated = !doorActivated;
+        pistonDoor.set_value(true);
+    }
+    else{
+        pistonDoor.set_value(false);
     }
 
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
-        floorActivated = !floorActivated;
-        pistonFloor.set_value(floorActivated);
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+        //floorActivated = !floorActivated;
+        pistonFloor.set_value(true);
+    }
+    else{
+        pistonFloor.set_value(false);
     }
 }
 void PYROLift::loopTeleop(){
-    if(true){
-        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
-            intakeAndCollect();
+    while(true) {
+        if (true) {
+            if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)) {
+                intakeAndCollect();
+            }
+            manualControl();
         }
-        manualControl();
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
+            tare();
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+            moveLiftToHeight(30, 50);
+        }
+        printf("Breakbeam: %d\n", breakbeam.get_value());
     }
-    printf("Ultrasonic: %d\n", ultrasonic.get_value());
-
 }
 
 void PYROLift::tare(){
