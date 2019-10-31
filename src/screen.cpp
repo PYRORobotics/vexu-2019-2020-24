@@ -1,14 +1,28 @@
 #include "screen.h"
 
-/* TO EXPORT IMAGES TO SD CARD
+//==================================START FILE==================================
+//==============================================================================
+// File:		screen.cpp
+// Author:	Brandon Rice
+// Created: 17 October 2019
+// Last Modified: 20 October 2019
+//
+// Description:
+// ------------
+// This file contains the definitions of the Piston class.
+//
+// NOTE: TO EXPORT IMAGES TO SD CARD
+//
+// https://www.vexforum.com/t/lvgl-image-not-displaying/63612/15
+//
+// Update 9/27/2019
+// For PROS kernel 3.2.0, which contains lvgl version 5.3, the new (or is that current) image converter should be used.
+// Select “True color with Alpha” for the color format
+// Select “Binary RGB888” for the output format
+//------------------------------------------------------------------------------
 
-https://www.vexforum.com/t/lvgl-image-not-displaying/63612/15
 
-Update 9/27/2019
-For PROS kernel 3.2.0, which contains lvgl version 5.3, the new (or is that current) image converter should be used.
-Select “True color with Alpha” for the color format
-Select “Binary RGB888” for the output format
-*/
+
 
 
 /* Colors */
@@ -102,6 +116,31 @@ static lv_fs_res_t pcfs_tell( void * file_p, uint32_t * pos_p)
     return LV_FS_RES_OK;
 }
 
+
+// Class Defintions
+// ----------------
+
+//------------------------------------------------------------------------------
+// Method: PYROChassis() :
+// ----------------------------
+// Description:
+// 		Constructs a PYROChassis object containing a Position PID Controller and
+//    other okapi chassis objects.
+//
+// Parameters:
+//```
+//		NONE
+//```
+// Objects to Initialize:
+//```
+//		PositionPIDController (PIDController),
+//    left_motors (okapi::MotorGroup),
+//    right_motors (okapi::MotorGroup),
+//    driveController (okapi::ChassisControllerPID),
+//    MotionController (okapi::AsyncMotionProfileController)
+//    N/A: t_update_differential_pos (pros::Task)
+//```
+//------------------------------------------------------------------------------
 void Screen::setup_styles()
 {
 
@@ -236,3 +275,7 @@ Screen::~Screen()
 {
   //lv_obj_del(Screen_Title_Page_Main);
 }
+
+//------------------------------------------------------------------------------
+//===================================END FILE===================================
+//==============================================================================

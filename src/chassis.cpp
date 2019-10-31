@@ -5,9 +5,10 @@
 
 //==================================START FILE==================================
 //==============================================================================
-// File:		chassis.cpp
-// Author:	Brandon Rice
+// File:    chassis.cpp
+// Author:  Brandon Rice
 // Created: 7 October 2019
+// Last Modified: 29 October 2019
 //
 // Description:
 // ------------
@@ -16,22 +17,14 @@
 //------------------------------------------------------------------------------
 
 
-
 // File Setup
 // ----------
-
 using namespace okapi;
 
 
-// Global Objects Created in bno055.hpp
-// ------------------------------------
-
+// Global/Static Objects
+// ---------------------
 PYROChassis chassis;
-
-
-// Function Defintions
-// -------------------
-
 
 
 // Class Defintions
@@ -39,23 +32,23 @@ PYROChassis chassis;
 
 //------------------------------------------------------------------------------
 // Method: PYROChassis() :
-// ----------------------------
+// -----------------------
 // Description:
-// 		Constructs a PYROChassis object containing a Position PID Controller and
+//     Constructs a PYROChassis object containing a Position PID Controller and
 //    other okapi chassis objects.
 //
 // Parameters:
 //```
-//		NONE
+//    NONE
 //```
 // Objects to Initialize:
 //```
-//		PositionPIDController (PIDController),
+//    PositionPIDController (PIDController),
 //    left_motors (okapi::MotorGroup),
 //    right_motors (okapi::MotorGroup),
 //    driveController (okapi::ChassisControllerPID),
 //    MotionController (okapi::AsyncMotionProfileController)
-//    t_update_differential_pos (pros::Task)
+//    N/A: t_update_differential_pos (pros::Task)
 //```
 //------------------------------------------------------------------------------
 PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005),
@@ -88,18 +81,18 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005
 
 
 //------------------------------------------------------------------------------
-// Method: set_target_position(double target_position) :
-// ----------------------------
+// Method: set_target_position(double) :
+// -----------------------------------------------------
 // Description:
-// 		Sets the target position (setpoint) used by the Position PID Controller.
+//     Sets the target position (setpoint) used by the Position PID Controller.
 //
 // Parameters:
 //```
-//		double target_position
+//    double target_position
 //```
 // Returns:
 //```
-//		void
+//    void
 //```
 //------------------------------------------------------------------------------
 void PYROChassis::set_target_position(double target_position)
@@ -110,19 +103,19 @@ void PYROChassis::set_target_position(double target_position)
 
 //------------------------------------------------------------------------------
 // Method: drive_PID() :
-// ----------------------------
+// ---------------------
 // Description:
-// 		Calculates the velocity output from the Position PID and sets the
+//     Calculates the velocity output from the Position PID and sets the
 //    left_motors and right_motors motor groups to run at this output value.
-//    NOTE: Place this method in a loop!
+//    NOTE: Place this method in a loop or use drive_PID_sync() instead!
 //
 // Parameters:
 //```
-//		NONE
+//    NONE
 //```
 // Returns:
 //```
-//		void
+//    void
 //```
 //------------------------------------------------------------------------------
 void PYROChassis::drive_PID()
@@ -134,6 +127,22 @@ void PYROChassis::drive_PID()
   right_motors.moveVelocity(output);
 }
 
+
+//------------------------------------------------------------------------------
+// Method: drive_PID(okapi::ADIEncoder*, okapi::ADIEncoder*) :
+// -----------------------------------------------------------
+// Description:
+//     Overloaded function to make use of external adi quadrature encoders.
+//
+// Parameters:
+//```
+//    NONE
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 {
   int output_l = (int) PositionPIDController.calculate(pos_pid_data.target_position,
@@ -152,20 +161,20 @@ void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 
 
 //------------------------------------------------------------------------------
-// Method: drive_PID() :
-// ----------------------------
+// Method: drive_PID_sync(double, bool) :
+// --------------------------
 // Description:
-// 		Calculates the velocity output from the Position PID and sets the
-//    left_motors and right_motors motor groups to run at this output value.
-//    NOTE: Place this method in a loop!
+//     The actual PID "contoller" using drive_PID's calculaitons and outputs.
 //
 // Parameters:
 //```
-//		NONE
+//    double distance - Distance to drive in inches (signed)
+//    bool useIdler - Set to 0 to use the internal motor encoders rather than
+//    external adi quadrature encoders.
 //```
 // Returns:
 //```
-//		void
+//    void
 //```
 //------------------------------------------------------------------------------
 void PYROChassis::drive_PID_sync(double distance, bool useIdler)
@@ -186,10 +195,24 @@ void PYROChassis::drive_PID_sync(double distance, bool useIdler)
 }
 
 
-
-
-
-
+//------------------------------------------------------------------------------
+// Method: turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*) :
+// --------------------
+// Description:
+//     Calculates the velocity output from the Position PID and sets the
+//    left_motors and right_motors motor groups to run at this output value.
+//    One output is negated, such that the robot will point turn.
+//    NOTE: Place this method in a loop or use turn_PID_sync() instead!
+//
+// Parameters:
+//```
+//    NONE
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 {
   int output_l = (int) PositionPIDController.calculate(pos_pid_data.target_position,
@@ -206,6 +229,24 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
   right_motors.moveVelocity(output_r);
 }
 
+
+//------------------------------------------------------------------------------
+// Method: turn_PID_sync(double, bool) :
+// -------------------------------------
+// Description:
+//     The actual PID "contoller" using turn_PID's calculaitons and outputs.
+//
+// Parameters:
+//```
+//    double degrees - Angle to drive in degrees (signed, positive Clockwise)
+//    bool useIdler - Set to 0 to use the internal motor encoders rather than
+//    external adi quadrature encoders.
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 {
 
@@ -224,13 +265,29 @@ void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 
 }
 
+
+//------------------------------------------------------------------------------
+// Method: drive_seconds(int, double) :
+// ------------------------------------
+// Description:
+//     Runs the motors at int speed (RPM) for sec seconds.
+//
+// Parameters:
+//```
+//    int speed - RPM to drive motors at (signed, positive forward)
+//    double sec - seconds to drive at this speed (sync.)
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROChassis::drive_seconds(int speed, double sec)
 {
   left_motors.moveVelocity(speed);
   right_motors.moveVelocity(-speed);
   pros::delay(sec*1000);
 }
-
 
 //------------------------------------------------------------------------------
 //===================================END FILE===================================

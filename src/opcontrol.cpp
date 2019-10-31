@@ -3,8 +3,9 @@
 //==================================START FILE==================================
 //==============================================================================
 // File:		opcontrol.cpp
-// Author:	Brandon Rice
+// Author:	Brandon Rice, Charles Jefferies
 // Created: 13 July 2019
+// Last Modified: 29 October 2019
 //
 // Description:
 // ------------
@@ -24,16 +25,8 @@
 //------------------------------------------------------------------------------
 
 
-
 // Function Defintions
 // -------------------
-
-
-// FIXME - Add Header?
-void startAllTasks()	//FIXME
-{
-}
-
 
 //------------------------------------------------------------------------------
 // Function: opcontrol() : void
@@ -58,29 +51,6 @@ void liftTask(void*){
     lift.loopTeleop();
 }
 void opcontrol() {
-
-	// //startAllTasks();
-	//
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	// pros::Motor left_mtr(1);
-	// pros::Motor right_mtr(2);
-	// okapi::MotorGroup left_motors({1,-2});
-  //   okapi::MotorGroup right_motors({-3,4});
-	//
-	//
-  //   const okapi::QLength WHEEL_DIAMETER = 3.95_in;
-  //   const okapi::QLength CHASSIS_WIDTH = 16.5_in;//13.9_in;//14.19_in;//13.625_in;
-  //   const okapi::AbstractMotor::GearsetRatioPair ratio = okapi::AbstractMotor::gearset::green;// * (1.0382);
-  //   okapi::ChassisControllerPID driveController = ChassisControllerFactory::create(
-  //           {M_CHASSIS_LF,-M_CHASSIS_LR}, {M_CHASSIS_RF,-M_CHASSIS_RR},
-  //           okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
-  //           okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
-  //           okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
-  //           ratio,
-  //           {WHEEL_DIAMETER, CHASSIS_WIDTH}
-  //   );
-	//
-
 
     bool arcade = false;
 	bool voltageControl = false;
@@ -150,8 +120,6 @@ void opcontrol() {
 		pros::delay(20);
 	}
 }
-
-
 
 //------------------------------------------------------------------------------
 //===================================END FILE===================================

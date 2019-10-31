@@ -1,8 +1,24 @@
-//
-// Created by charles on 10/7/19.
-//
-
 #include "main.h"
+
+//==================================START FILE==================================
+//==============================================================================
+// File:		chassis.cpp
+// Author:	Charles Jeffries, Brandon Rice
+// Created: 7 October 2019
+// Last Modified: 29 October 2019
+//
+// Description:
+// ------------
+// This file contains the definitions of the PYROLift class.
+//
+//------------------------------------------------------------------------------
+
+
+// Global/Static Objects
+// ---------------------
+
+
+
 //degrees for lift to go down to to pick up cube from ground
 const float PICKUP_POSITION = 4.0;
 const int maxVelocity = 20;
@@ -188,3 +204,7 @@ float PYROLift::getMotorPos() {
 float PYROLift::getMotorTemps(){
     return liftMotors.getTemperature();
 }
+
+//------------------------------------------------------------------------------
+//===================================END FILE===================================
+//==============================================================================
