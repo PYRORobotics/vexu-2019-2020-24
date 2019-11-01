@@ -35,10 +35,10 @@ int PYROLift::liftTarget = 10;
 PYROLift lift(11,12,1,2,5,6);
 
 okapi::MotorGroup PYROLift::liftMotors({
-    Motor(11, false, AbstractMotor::gearset::red),
     Motor(13, false, AbstractMotor::gearset::red),
-    Motor(3, true, AbstractMotor::gearset::red),
-    Motor(2, true, AbstractMotor::gearset::red)}
+    Motor(14, false, AbstractMotor::gearset::red),
+    Motor(2, true, AbstractMotor::gearset::red),
+    Motor(3, true, AbstractMotor::gearset::red)}
   );
 
 
@@ -171,10 +171,16 @@ void PYROLift::manualControl(){
     }
 }
 void PYROLift::loopTeleop(){
+    moveLiftToHeight(HOVER_HEIGHT, 50);
     while(true) {
         if (true) {
-            if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)) {
-                intakeAndCollect();
+            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+                if(getLiftHeight() > 10) {
+                    intakeAndCollect();
+                }
+                else{
+                    moveLiftToHeight(HOVER_HEIGHT, 50);
+                }
             }
             manualControl();
         }
