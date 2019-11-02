@@ -232,9 +232,9 @@ void PYROLift::intakeAndCollect(){
 //------------------------------------------------------------------------------
 void PYROLift::collectCube(){
 
-    liftMotors.moveVelocity(-50);
+    liftMotors.moveVelocity(-60);
     pros::delay(250);
-    while(abs(liftMotors.getActualVelocity()) > 10){
+    while(abs(liftMotors.getActualVelocity()) > 3){
         pros::delay(10);
     }
     moveLiftToHeight(HOVER_HEIGHT, 50);
@@ -346,6 +346,11 @@ void PYROLift::loopTeleop(){
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
             moveLiftToHeight(30, 50);
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+            pistonFloor.set_value(true);
+            pros::delay(50);
+            pistonFloor.set_value(false);
         }
         printf("Breakbeam: %d\n", breakbeam.get_value());
     }
