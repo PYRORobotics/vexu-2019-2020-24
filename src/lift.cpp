@@ -360,6 +360,11 @@ void PYROLift::loopTeleop(){
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
             moveLiftToHeight(30, 50);
         }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+            pistonFloor.set_value(true);
+            pros::delay(50);
+            pistonFloor.set_value(false);
+        }
         printf("Breakbeam: %d\n", breakbeam.get_value());
     }
 }
