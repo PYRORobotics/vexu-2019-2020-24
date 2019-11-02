@@ -2,8 +2,8 @@
 
 //==================================START FILE==================================
 //==============================================================================
-// File:		piston.cpp
-// Author:	Brandon Rice
+// File:    piston.cpp
+// Author:  Brandon Rice
 // Created: 17 October 2019
 // Last Modified: 17 October 2019
 //
@@ -18,24 +18,19 @@
 // ----------------
 
 //------------------------------------------------------------------------------
-// Method: PYROChassis() :
-// ----------------------------
+// Method: Piston(char, int8_t) :
+// ------------------------------
 // Description:
-// 		Constructs a PYROChassis object containing a Position PID Controller and
-//    other okapi chassis objects.
+//     Constructs a Piston (pneumatic acturator) object.
 //
 // Parameters:
 //```
-//		NONE
+//    char port - the 3-wire port (A-H) the piston is plugged into.
+//    int8_t starting_state - whether the piston starts retracted or extended.
 //```
 // Objects to Initialize:
 //```
-//		PositionPIDController (PIDController),
-//    left_motors (okapi::MotorGroup),
-//    right_motors (okapi::MotorGroup),
-//    driveController (okapi::ChassisControllerPID),
-//    MotionController (okapi::AsyncMotionProfileController)
-//    N/A: t_update_differential_pos (pros::Task)
+//    adi (pros::ADIDigitalOut)
 //```
 //------------------------------------------------------------------------------
 Piston::Piston(char port, int8_t starting_state): adi(port)
@@ -44,24 +39,88 @@ Piston::Piston(char port, int8_t starting_state): adi(port)
   state = starting_state;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: extend() :
+// ------------------
+// Description:
+//     Extends the piston.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void Piston::extend()
 {
   adi.set_value(1);
   state = 1;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: retract() :
+// -------------------
+// Description:
+//     Retracts the piston.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void Piston::retract()
 {
   adi.set_value(0);
   state = 0;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: set(bool) :
+// -------------------
+// Description:
+//     Sets the piston to be extended (1) or retracted (0).
+//
+// Parameters:
+//```
+//    bool output - extended (1) or retracted (0)
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void Piston::set(bool output)
 {
   adi.set_value(output);
   state = output;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: toggle() :
+// ------------------
+// Description:
+//     Toggles the piston between being extended or retracted.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void Piston::toggle()
 {
   if(state == 1)

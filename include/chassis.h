@@ -7,6 +7,20 @@
 #include "pid.h"
 #include "okapi/api.hpp"
 
+//==================================START FILE==================================
+//==============================================================================
+// File:    chassis.h
+// Author:  Brandon Rice
+// Created: 7 October 2019
+// Last Modified: 29 October 2019
+//
+// Description:
+// ------------
+// The header file for chassis.cpp, containing the class declaration of
+// PYROChassis.
+//
+//------------------------------------------------------------------------------
+
 #define WHEELBASE 16.5
 #define IDLER_WHEEL_DIAMETER 2.83
 
@@ -59,5 +73,8 @@ namespace okapi
 
 extern okapi::PYROChassis chassis;
 
+//------------------------------------------------------------------------------
+//===================================END FILE===================================
+//==============================================================================
 
 #endif

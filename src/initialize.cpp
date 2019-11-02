@@ -39,7 +39,7 @@
 //------------------------------------------------------------------------------
 void initialize()
 {
-	//pros::lcd::initialize();
+	//pros::lcd::initialize(); // Uncomment to use PROS's LCD
 	Screen screen;
 }
 

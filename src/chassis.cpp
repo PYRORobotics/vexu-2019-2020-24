@@ -82,7 +82,7 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005
 
 //------------------------------------------------------------------------------
 // Method: set_target_position(double) :
-// -----------------------------------------------------
+// -------------------------------------
 // Description:
 //     Sets the target position (setpoint) used by the Position PID Controller.
 //
@@ -162,7 +162,7 @@ void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 
 //------------------------------------------------------------------------------
 // Method: drive_PID_sync(double, bool) :
-// --------------------------
+// --------------------------------------
 // Description:
 //     The actual PID "contoller" using drive_PID's calculaitons and outputs.
 //
@@ -197,7 +197,7 @@ void PYROChassis::drive_PID_sync(double distance, bool useIdler)
 
 //------------------------------------------------------------------------------
 // Method: turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*) :
-// --------------------
+// ----------------------------------------------------------
 // Description:
 //     Calculates the velocity output from the Position PID and sets the
 //    left_motors and right_motors motor groups to run at this output value.

@@ -2,8 +2,8 @@
 
 //==================================START FILE==================================
 //==============================================================================
-// File:		chassis.cpp
-// Author:	Charles Jeffries, Brandon Rice
+// File:    lift.cpp
+// Author:  Charles Jeffries, Brandon Rice
 // Created: 7 October 2019
 // Last Modified: 29 October 2019
 //
@@ -17,14 +17,13 @@
 // Global/Static Objects
 // ---------------------
 
-
-
 //degrees for lift to go down to to pick up cube from ground
 const float PICKUP_POSITION = 4.0;
 const int maxVelocity = 20;
 const float INCHES_PIVOT_TO_PIVOT = 16.0;
 const float LIFT_GEAR_RATIO = 7.0;
 const int maxVelocityDown = maxVelocity;
+
 //const float TICKS_PER_MOTOR_DEGREE = 900/360; //green cartdriges
 const float TICKS_PER_MOTOR_DEGREE = 1.0; //green cartdriges
 const float STARTING_DEGREES = 40.5;
@@ -33,58 +32,174 @@ const float HOVER_HEIGHT = 11.0;
 const int ULTRASONIC_THRESHOLD = 70;
 int PYROLift::liftTarget = 10;
 PYROLift lift(11,12,1,2,5,6);
-
 okapi::MotorGroup PYROLift::liftMotors({
     Motor(13, false, AbstractMotor::gearset::red),
     Motor(14, false, AbstractMotor::gearset::red),
     Motor(2, true, AbstractMotor::gearset::red),
     Motor(3, true, AbstractMotor::gearset::red)}
   );
-
-
 pros::ADIDigitalIn breakbeam('e');
+bool doorActivated = false;
+bool floorActivated = false;
+pros::ADIDigitalOut pistonFloor (7);
+pros::ADIDigitalOut pistonDoor (8);
 
-float degreesToRadians(float degrees){
 
-}
 
-PYROLift::PYROLift(
-        int motorTopRight,
-        int motorBottomRight,
-        int motorTopLeft,
-        int motorBottomLeft,
-        int pneumaticFloorPort,
-        int pneumaticDoorPort) :
-        piston_door(8),
-        piston_floor(7){
+// Class Defintions
+// ----------------
 
+//------------------------------------------------------------------------------
+// Method: PYROLift() :
+// --------------------
+// Description:
+//     Constructs a PYROLift object (includes magazine and cube hold pistons).
+//
+// Parameters:
+//```
+//    int motorTopRight,
+//    int motorBottomRight,
+//    int motorTopLeft,
+//    int motorBottomLeft,
+//    int pneumaticFloorPort,
+//    int pneumaticDoorPort
+//```
+// Objects to Initialize:
+//```
+//    piston_door (Piston),
+//    piston_floor (Piston),
+//```
+//------------------------------------------------------------------------------
+PYROLift::PYROLift( int motorTopRight,
+                    int motorBottomRight,
+                    int motorTopLeft,
+                    int motorBottomLeft,
+                    int pneumaticFloorPort,
+                    int pneumaticDoorPort) : piston_door(8), piston_floor(7)
+{
     cubeCount = 0;
-
-
 }
 
+
+//------------------------------------------------------------------------------
+// Method: getAngleForHeight(float) : float
+// ----------------------------------------
+// Description:
+//     Converts the input lift height to degrees, for use in collectCube().
+//
+// Parameters:
+//```
+//    float inches - the vertical measure of the lift's height (inches).
+//```
+// Returns:
+//```
+//    float
+//```
+//------------------------------------------------------------------------------
 float PYROLift::getAngleForHeight(float inches){
     //return ((asin(((inches - HEIGHT_OFFSET)/2)/INCHES_PIVOT_TO_PIVOT)) * 180/pi)/1 + 45;
     return acos(-((inches + HEIGHT_OFFSET)/(2 * INCHES_PIVOT_TO_PIVOT)) + 1) * 180/pi;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: getMotorDegreesFromLiftDegrees(float) : float
+// -----------------------------------------------------
+// Description:
+//     Converts the input lift degrees to motor degrees, for use in collectCube().
+//
+// Parameters:
+//```
+//    float inches - the vertical measure of the lift's height (inches).
+//```
+// Returns:
+//```
+//    float
+//```
+//------------------------------------------------------------------------------
 float PYROLift::getMotorDegreesFromLiftDegrees(float degrees){
     return (degrees-STARTING_DEGREES) * LIFT_GEAR_RATIO;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: moveLiftToHeight(float, int) :
+// --------------------------------------
+// Description:
+//     Sets the liftTarget member to a set height for use in external task control.
+//
+// Parameters:
+//```
+//    float inches - how high the lift should move to (inches)
+//    int Velocity - not currently used
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROLift::moveLiftToHeight(float inches, int Velocity){
     //liftMotors.moveAbsolute(TICKS_PER_MOTOR_DEGREE * getMotorDegreesFromLiftDegrees(getAngleForHeight(inches)), Velocity);
     liftTarget = (TICKS_PER_MOTOR_DEGREE * getMotorDegreesFromLiftDegrees(getAngleForHeight(inches)));
 }
 
+
+//------------------------------------------------------------------------------
+// Method: getLiftHeight() : float
+// -------------------------------
+// Description:
+//     Returns the current height of the lift (inches).
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    float
+//```
+//------------------------------------------------------------------------------
 float PYROLift::getLiftHeight(){
     return (2*(INCHES_PIVOT_TO_PIVOT * (-cos((((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) * (1.0/7.0)) + STARTING_DEGREES) * pi/180.0) + 1)) - HEIGHT_OFFSET);
 }
 
+
+//------------------------------------------------------------------------------
+// Method: getLiftAngle() : float
+// ------------------------------
+// Description:
+//     Returns the current angle of the lift (degrees).
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    float
+//```
+//------------------------------------------------------------------------------
 float PYROLift::getLiftAngle(){
     return ((liftMotors.getPosition()/TICKS_PER_MOTOR_DEGREE) * (1.0/LIFT_GEAR_RATIO)) + STARTING_DEGREES;
 }
 
+
+//------------------------------------------------------------------------------
+// Method: intakeAndCollect() :
+// ----------------------------
+// Description:
+//     Runs the intake until a cube is in position, then fires the lift down to
+//     collect the cube via collectCube().
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROLift::intakeAndCollect(){
     intake.motors.moveVoltage(12000);
     while(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && breakbeam.get_value()){
@@ -98,6 +213,23 @@ void PYROLift::intakeAndCollect(){
     intake.motors.moveVoltage(0);
 }
 
+
+//------------------------------------------------------------------------------
+// Method: collectCube() :
+// -----------------------
+// Description:
+//     Runs the lift down to collect a cube, then runs the lift back up to the
+//     HOVER_HEIGHT.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROLift::collectCube(){
 
     liftMotors.moveVelocity(-50);
@@ -109,15 +241,23 @@ void PYROLift::collectCube(){
     liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
     cubeCount++;
 }
-bool doorActivated = false;
-bool floorActivated = false;
-
-pros::ADIDigitalOut pistonFloor (7);
-pros::ADIDigitalOut pistonDoor (8);
-
-//MotorGroup intake({6,-15});
 
 
+//------------------------------------------------------------------------------
+// Method: manualControl() :
+// -------------------------
+// Description:
+//     Allows the driver to control the lift in opcontrol.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROLift::manualControl(){
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
         intake.motors.tarePosition();
@@ -170,6 +310,23 @@ void PYROLift::manualControl(){
         pistonFloor.set_value(false);
     }
 }
+
+
+//------------------------------------------------------------------------------
+// Method: manualControl() :
+// -------------------------
+// Description:
+//     The task method containing the logic for controlling the lift during opcontrol.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROLift::loopTeleop(){
     moveLiftToHeight(HOVER_HEIGHT, 50);
     while(true) {
@@ -194,6 +351,22 @@ void PYROLift::loopTeleop(){
     }
 }
 
+
+//------------------------------------------------------------------------------
+// Method: tare() :
+// ----------------
+// Description:
+//     Zeroes the lift by running the lift downward until its velocity is 0.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
 void PYROLift::tare(){
     liftMotors.moveVelocity(-25);
     pros::delay(500);
@@ -203,10 +376,42 @@ void PYROLift::tare(){
     liftMotors.tarePosition();
 }
 
+
+//------------------------------------------------------------------------------
+// Method: getMotorPos() : float
+// -----------------------------
+// Description:
+//     Returns the liftMotors encoder position.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    float
+//```
+//------------------------------------------------------------------------------
 float PYROLift::getMotorPos() {
     return liftMotors.getPosition();
 }
 
+
+//------------------------------------------------------------------------------
+// Method: getMotorTemps() : float
+// -------------------------------
+// Description:
+//     Returns the liftMotors temperature.
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    float
+//```
+//------------------------------------------------------------------------------
 float PYROLift::getMotorTemps(){
     return liftMotors.getTemperature();
 }

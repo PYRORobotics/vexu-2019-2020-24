@@ -2,8 +2,8 @@
 
 //==================================START FILE==================================
 //==============================================================================
-// File:		intake.cpp
-// Author:	Brandon Rice
+// File:    intake.cpp
+// Author:  Brandon Rice
 // Created: 28 October 2019
 // Last Modified: 29 October 2019
 //
@@ -31,11 +31,11 @@ PYROIntake intake;
 // Method: PYROIntake() :
 // ----------------------
 // Description:
-// 		Constructs a PYROIntake object and initialize child motor groups.
+//     Constructs a PYROIntake object and initialize child motor groups.
 //
 // Parameters:
 //```
-//		NONE
+//    NONE
 //```
 // Objects to Initialize:
 //```

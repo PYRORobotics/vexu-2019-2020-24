@@ -91,6 +91,8 @@ void autonomousSelector(autonID id)
 //------------------------------------------------------------------------------
 void autonomous()
 {
+    // selectedAutonID=blue0; // Use to hardcode auton routine
+
     // Initialize objects for auton
     lift.piston_floor.retract();
     lift.piston_door.retract();
@@ -125,7 +127,9 @@ void auton_red0()
 {
     //-----START RED AUTON-----//
     // Drive forward to prevent lift colliding with the field wall
-    chassis.drive_PID_sync(2);
+    chassis.drive_PID_sync(6);
+    chassis.drive_PID_sync(-4);
+
 
     // Tare the lift (requires the lift task to stop clamping)
     lifttaskauto.suspend(); // Not needed?
@@ -134,12 +138,12 @@ void auton_red0()
 
     lift.moveLiftToHeight(8, 50);
 
+
     // Tare the lift (requires the lift task to stop clamping)
     lifttaskauto.suspend();
     lift.tare();
     lifttaskauto.resume();
     pros::delay(500);
-
     // Done calibrating the lift, start routine
 
     // Turn on intake
@@ -147,7 +151,7 @@ void auton_red0()
 
     // Intake first field cube
     chassis.drive_PID_sync(6);
-    pros::delay(500);
+    //pros::delay(500);
 
     // Collect first field cube (requires the lift task to stop clamping)
     lifttaskauto.suspend();
@@ -156,7 +160,7 @@ void auton_red0()
 
     // Stop the intake and open it to "T" position
     intake.motors.moveVelocity(0);
-    pros::delay(500);
+    pros::delay(200);
     intake.motors.moveRelative(-190, 100);
 
     // Simultaniously increase lift height for 4 cube stack
@@ -164,11 +168,11 @@ void auton_red0()
 
     // Line up near 4 cube stack
     chassis.drive_PID_sync(22.5);
-    pros::delay(500);
+    pros::delay(300);
 
     // Slowly drive into stack
-    chassis.drive_PID_sync(1);
-    pros::delay(500);
+    chassis.drive_PID_sync(1.25);
+    pros::delay(300);
 
     // Collect 4 cube stack (requires the lift task to stop clamping)
     lifttaskauto.suspend();
@@ -178,18 +182,18 @@ void auton_red0()
 
     // Drive backward
     chassis.drive_PID_sync(-17);
-    pros::delay(1000);
+    pros::delay(300);
 
     // Turn to face 7th cube
     chassis.turn_PID_sync(-90);
-    pros::delay(1000);
+    pros::delay(300);
 
     // Resume intake for intaking 7th cube
     intake.motors.moveVelocity(80);
 
     // Drive into 7th cube
     chassis.drive_PID_sync(15);
-    pros::delay(500);
+    pros::delay(300);
 
     // Collect 7th cube (requires the lift task to stop clamping)
     lifttaskauto.suspend();
@@ -198,34 +202,44 @@ void auton_red0()
 
     // Stop the intake and open it to "T" position (to place stack in corner)
     intake.motors.moveVelocity(0);
-    pros::delay(500);
+    pros::delay(300);
     intake.motors.moveRelative(-190, 100);
 
     // Turn to face the goal
     chassis.turn_PID_sync(-45);
-    pros::delay(1000);
+    pros::delay(300);
 
     // Approch the goal with drive PID
     chassis.drive_PID_sync(18);
     // Drive time-based up and over threshold into corner (encoder wheels not accurate)
     chassis.drive_seconds(50,1.5);
-    pros::delay(500);
+    pros::delay(300);
+
+    chassis.drive_seconds(-50,0.2);
+    chassis.drive_seconds(0,0.2);
+
+    //chassis.drive_PID_sync(-1.25);
+    //pros::delay(500);
+
 
     // Place stack on floor
     lift.moveLiftToHeight(0.1, 50);
-    pros::delay(1500); // Wait for stack to settle
+    pros::delay(1000); // Wait for stack to settle
 
     // Release piston holding cubes
     lift.piston_floor.extend();
-    pros::delay(500);
+    pros::delay(300);
+
+    lift.moveLiftToHeight(41, 50);
+    pros::delay(3000);
 
     // Open door
-    lift.piston_door.extend();
-    pros::delay(500);
+    // lift.piston_door.extend();
+    // pros::delay(500);
 
     // Back away from stack
     chassis.drive_PID_sync(-10);
-
+    lift.moveLiftToHeight(6, 50);
     //-----END RED AUTON-----//
 }
 
@@ -249,7 +263,9 @@ void auton_blue0()
 {
   //-----START BLUE AUTON-----//
   // Drive forward to prevent lift colliding with the field wall
-  chassis.drive_PID_sync(2);
+  chassis.drive_PID_sync(6);
+  chassis.drive_PID_sync(-4);
+
 
   // Tare the lift (requires the lift task to stop clamping)
   lifttaskauto.suspend(); // Not needed?
@@ -258,12 +274,13 @@ void auton_blue0()
 
   lift.moveLiftToHeight(8, 50);
 
+
+
   // Tare the lift (requires the lift task to stop clamping)
   lifttaskauto.suspend();
   lift.tare();
   lifttaskauto.resume();
   pros::delay(500);
-
   // Done calibrating the lift, start routine
 
   // Turn on intake
@@ -271,7 +288,7 @@ void auton_blue0()
 
   // Intake first field cube
   chassis.drive_PID_sync(6);
-  pros::delay(500);
+  //pros::delay(500);
 
   // Collect first field cube (requires the lift task to stop clamping)
   lifttaskauto.suspend();
@@ -280,7 +297,7 @@ void auton_blue0()
 
   // Stop the intake and open it to "T" position
   intake.motors.moveVelocity(0);
-  pros::delay(500);
+  pros::delay(200);
   intake.motors.moveRelative(-190, 100);
 
   // Simultaniously increase lift height for 4 cube stack
@@ -288,11 +305,11 @@ void auton_blue0()
 
   // Line up near 4 cube stack
   chassis.drive_PID_sync(22.5);
-  pros::delay(500);
+  pros::delay(300);
 
   // Slowly drive into stack
-  chassis.drive_PID_sync(1);
-  pros::delay(500);
+  chassis.drive_PID_sync(1.25);
+  pros::delay(300);
 
   // Collect 4 cube stack (requires the lift task to stop clamping)
   lifttaskauto.suspend();
@@ -302,18 +319,18 @@ void auton_blue0()
 
   // Drive backward
   chassis.drive_PID_sync(-17);
-  pros::delay(1000);
+  pros::delay(300);
 
   // Turn to face 7th cube
   chassis.turn_PID_sync(90);
-  pros::delay(1000);
+  pros::delay(300);
 
   // Resume intake for intaking 7th cube
   intake.motors.moveVelocity(80);
 
   // Drive into 7th cube
   chassis.drive_PID_sync(15);
-  pros::delay(500);
+  pros::delay(300);
 
   // Collect 7th cube (requires the lift task to stop clamping)
   lifttaskauto.suspend();
@@ -322,35 +339,46 @@ void auton_blue0()
 
   // Stop the intake and open it to "T" position (to place stack in corner)
   intake.motors.moveVelocity(0);
-  pros::delay(500);
+  pros::delay(300);
   intake.motors.moveRelative(-190, 100);
 
   // Turn to face the goal
-  chassis.turn_PID_sync(45);
-  pros::delay(1000);
+  chassis.turn_PID_sync(55);
+  pros::delay(300);
 
   // Approch the goal with drive PID
   chassis.drive_PID_sync(18);
   // Drive time-based up and over threshold into corner (encoder wheels not accurate)
   chassis.drive_seconds(50,1.5);
-  pros::delay(500);
+  pros::delay(300);
+
+  chassis.drive_seconds(-50,0.2);
+  chassis.drive_seconds(0,0.2);
+
+  //chassis.drive_PID_sync(-1.25);
+  //pros::delay(500);
+
 
   // Place stack on floor
   lift.moveLiftToHeight(0.1, 50);
-  pros::delay(1500); // Wait for stack to settle
+  pros::delay(1000); // Wait for stack to settle
 
   // Release piston holding cubes
   lift.piston_floor.extend();
-  pros::delay(500);
+  pros::delay(300);
+
+  lift.moveLiftToHeight(41, 50);
+  pros::delay(3000);
 
   // Open door
-  lift.piston_door.extend();
-  pros::delay(500);
+  // lift.piston_door.extend();
+  // pros::delay(500);
 
   // Back away from stack
   chassis.drive_PID_sync(-10);
+  lift.moveLiftToHeight(6, 50);
 
-  //-----END RED AUTON-----//
+  //-----END BLUE AUTON-----//
 }
 
 

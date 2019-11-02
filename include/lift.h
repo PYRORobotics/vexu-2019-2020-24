@@ -1,14 +1,22 @@
-//
-// Created by charles on 10/7/19.
-//
-
 #ifndef _LIFT_H_
 #define _LIFT_H_
 
 #include "piston.h"
 #include "okapi/api.hpp"
 
-//#include <okapi/impl/device/motor/motorGroup.hpp>
+//==================================START FILE==================================
+//==============================================================================
+// File:    lift.h
+// Author:  Charles Jeffries, Brandon Rice
+// Created: 7 October 2019
+// Last Modified: 29 October 2019
+//
+// Description:
+// ------------
+// The header file for lift.cpp, containing the class declaration of PYROLift.
+//
+//------------------------------------------------------------------------------
+
 
 class PYROLift {
     public:
@@ -43,5 +51,8 @@ class PYROLift {
 
 extern PYROLift lift;
 
+//------------------------------------------------------------------------------
+//===================================END FILE===================================
+//==============================================================================
 
-#endif //VEXU_2019_2020_24_LIFT_H
+#endif
