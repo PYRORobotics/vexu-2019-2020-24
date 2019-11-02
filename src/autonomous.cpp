@@ -91,7 +91,7 @@ void autonomousSelector(autonID id)
 //------------------------------------------------------------------------------
 void autonomous()
 {
-    // selectedAutonID=blue0; // Use to hardcode auton routine
+    selectedAutonID=red0; // Use to hardcode auton routine
 
     // Initialize objects for auton
     lift.piston_floor.retract();
@@ -126,6 +126,9 @@ void autonomous()
 void auton_red0()
 {
     //-----START RED AUTON-----//
+
+    lift.moveLiftToHeight(8, 50);
+
     // Drive forward to prevent lift colliding with the field wall
     chassis.drive_PID_sync(6);
     chassis.drive_PID_sync(-4);
@@ -136,7 +139,7 @@ void auton_red0()
     lift.tare(); // Not needed?
     lifttaskauto.resume(); // Not needed?
 
-    lift.moveLiftToHeight(8, 50);
+    lift.moveLiftToHeight(11, 50);
 
 
     // Tare the lift (requires the lift task to stop clamping)
@@ -147,7 +150,7 @@ void auton_red0()
     // Done calibrating the lift, start routine
 
     // Turn on intake
-    intake.motors.moveVelocity(150);
+    intake.motors.moveVelocity(200);
 
     // Intake first field cube
     chassis.drive_PID_sync(6);
@@ -171,7 +174,7 @@ void auton_red0()
     pros::delay(300);
 
     // Slowly drive into stack
-    chassis.drive_PID_sync(1.25);
+    chassis.drive_PID_sync(1.75);
     pros::delay(300);
 
     // Collect 4 cube stack (requires the lift task to stop clamping)
@@ -189,11 +192,12 @@ void auton_red0()
     pros::delay(300);
 
     // Resume intake for intaking 7th cube
-    intake.motors.moveVelocity(80);
+    intake.motors.moveVelocity(200);
 
     // Drive into 7th cube
     chassis.drive_PID_sync(15);
     pros::delay(300);
+    intake.motors.moveVelocity(80);
 
     // Collect 7th cube (requires the lift task to stop clamping)
     lifttaskauto.suspend();
@@ -212,7 +216,7 @@ void auton_red0()
     // Approch the goal with drive PID
     chassis.drive_PID_sync(18);
     // Drive time-based up and over threshold into corner (encoder wheels not accurate)
-    chassis.drive_seconds(50,1.5);
+    chassis.drive_seconds(50,3.5);
     pros::delay(300);
 
     chassis.drive_seconds(-50,0.2);
@@ -262,6 +266,9 @@ void auton_red0()
 void auton_blue0()
 {
   //-----START BLUE AUTON-----//
+
+  lift.moveLiftToHeight(11, 50);
+
   // Drive forward to prevent lift colliding with the field wall
   chassis.drive_PID_sync(6);
   chassis.drive_PID_sync(-4);
@@ -272,7 +279,8 @@ void auton_blue0()
   lift.tare(); // Not needed?
   lifttaskauto.resume(); // Not needed?
 
-  lift.moveLiftToHeight(8, 50);
+
+  lift.moveLiftToHeight(11, 50);
 
 
 
@@ -349,7 +357,7 @@ void auton_blue0()
   // Approch the goal with drive PID
   chassis.drive_PID_sync(18);
   // Drive time-based up and over threshold into corner (encoder wheels not accurate)
-  chassis.drive_seconds(50,1.5);
+  chassis.drive_seconds(50,3.5);
   pros::delay(300);
 
   chassis.drive_seconds(-50,0.2);

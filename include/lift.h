@@ -37,6 +37,7 @@ class PYROLift {
         static int liftTarget;
         static void auton(void*)
         {
+            liftMotors.tarePosition();
           while(pros::competition::is_autonomous())
           {
             liftMotors.moveAbsolute(liftTarget, 50);
