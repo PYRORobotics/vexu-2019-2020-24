@@ -232,9 +232,22 @@ void PYROLift::intakeAndCollect(){
 //------------------------------------------------------------------------------
 void PYROLift::collectCube(){
 
-    liftMotors.moveVelocity(-50);
+    liftMotors.moveVelocity(-60);
     pros::delay(250);
-    while(abs(liftMotors.getActualVelocity()) > 10){
+    while(abs(liftMotors.getActualVelocity()) > 3){
+        pros::delay(10);
+    }
+    moveLiftToHeight(HOVER_HEIGHT, 50);
+    liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
+    cubeCount++;
+}
+
+
+void PYROLift::collectCube(int velocity){
+
+    liftMotors.moveVelocity(-abs(velocity));
+    pros::delay(250);
+    while(abs(liftMotors.getActualVelocity()) > 3){
         pros::delay(10);
     }
     moveLiftToHeight(HOVER_HEIGHT, 50);

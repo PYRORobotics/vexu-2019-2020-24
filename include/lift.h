@@ -31,6 +31,7 @@ class PYROLift {
         void moveLiftToHeight(float inches, int maxVelocity);
         void tare();
         void collectCube();
+        void collectCube(int);
         void intakeAndCollect();
         Piston piston_door;
         Piston piston_floor;
