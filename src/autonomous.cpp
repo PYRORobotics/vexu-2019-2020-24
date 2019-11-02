@@ -201,17 +201,19 @@ void auton_red0()
 
     // Collect 7th cube (requires the lift task to stop clamping)
     lifttaskauto.suspend();
-    lift.collectCube();
+    lift.collectCube(100);
     lifttaskauto.resume();
 
     // Stop the intake and open it to "T" position (to place stack in corner)
     intake.motors.moveVelocity(0);
     pros::delay(300);
-    intake.motors.moveRelative(-190, 100);
 
     // Turn to face the goal
     chassis.turn_PID_sync(-45);
     pros::delay(300);
+
+    intake.motors.moveRelative(-190, 100);
+
 
     // Approch the goal with drive PID
     chassis.drive_PID_sync(18);
@@ -342,17 +344,19 @@ void auton_blue0()
 
   // Collect 7th cube (requires the lift task to stop clamping)
   lifttaskauto.suspend();
-  lift.collectCube();
+  lift.collectCube(100);
   lifttaskauto.resume();
 
   // Stop the intake and open it to "T" position (to place stack in corner)
   intake.motors.moveVelocity(0);
   pros::delay(300);
-  intake.motors.moveRelative(-190, 100);
 
   // Turn to face the goal
   chassis.turn_PID_sync(55);
   pros::delay(300);
+
+  intake.motors.moveRelative(-190, 100);
+
 
   // Approch the goal with drive PID
   chassis.drive_PID_sync(18);
