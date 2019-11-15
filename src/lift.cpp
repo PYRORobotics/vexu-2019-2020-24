@@ -387,7 +387,7 @@ void PYROLift::loopTeleop(){
             tare();
         }
 
-        //macro to lift the height to drop a cube in the medium or short towers
+        //macro to lift the height to the medium or short towers
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
             moveLiftToHeight(30, 50);
         }
@@ -407,7 +407,7 @@ void PYROLift::loopTeleop(){
 // Method: tare() :
 // ----------------
 // Description:
-//     Zeroes the lift by running the lift downward until its velocity is 0.
+//     Zeroes the lift by running the lift downward until its velocity is close to 0.
 //
 // Parameters:
 //```
