@@ -17,33 +17,55 @@
 // Global/Static Objects
 // ---------------------
 
-//degrees for lift to go down to to pick up cube from ground
-const float PICKUP_POSITION = 4.0;
-const int maxVelocity = 20;
+//degrees for lift to go down to to pick up cube from ground (NOT USED)
+//const float PICKUP_POSITION = 4.0;
+
+//lmits the velocity of the lift (NOT USED)
+//const int maxVelocity = 20;
+
+//limits the velocity of the lift while traveling down (NOT USED)
+//const int maxVelocityDown = maxVelocity;
+
+//the distance between the pivot points ont he lift arms. This is essentially the hypotenuse in the height calculations
 const float INCHES_PIVOT_TO_PIVOT = 16.0;
+
+//The gear ratio between the lift motors and the lift arms themselves.
 const float LIFT_GEAR_RATIO = 7.0;
-const int maxVelocityDown = maxVelocity;
 
 //const float TICKS_PER_MOTOR_DEGREE = 900/360; //green cartdriges
-const float TICKS_PER_MOTOR_DEGREE = 1.0; //green cartdriges
+
+//set to 1 because okapi motors return degrees already if the correct gearset is specified
+const float TICKS_PER_MOTOR_DEGREE = 1.0;
+
+//the angle that the lift arms are at when the lift is in the tare position
 const float STARTING_DEGREES = 40.5;
-const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 2.0; //the minus 7.5 is the height addition caused by the middle tower
+
+//The linear height offset that is applied to lift height calculations.
+//This takes into account the fact that if the lift were at 0 degrees it would be below ground, as well as the fact that the stages have spacing between them
+const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) + 1)/1)) - 2.0;
+
+//The height that the lift should return to after collecting a cube.
+//11 inches leaves a satisfactory about of clearance between cubes while also minimizing travel time for cube collection
 const float HOVER_HEIGHT = 11.0;
-const int ULTRASONIC_THRESHOLD = 70;
+
+//initially set the lift target to a tiny bit above 0 (approximately 1.4 degrees) so that the motors do not bind against the hard stops
 int PYROLift::liftTarget = 10;
+
 PYROLift lift(11,12,1,2,5,6);
+
 okapi::MotorGroup PYROLift::liftMotors({
-    Motor(13, false, AbstractMotor::gearset::red),
-    Motor(14, false, AbstractMotor::gearset::red),
-    Motor(2, true, AbstractMotor::gearset::red),
-    Motor(3, true, AbstractMotor::gearset::red)}
-  );
+                                               Motor(13, false, AbstractMotor::gearset::red),
+                                               Motor(14, false, AbstractMotor::gearset::red),
+                                               Motor(2, true, AbstractMotor::gearset::red),
+                                               Motor(3, true, AbstractMotor::gearset::red)}
+);
+
 pros::ADIDigitalIn breakbeam('e');
+
 bool doorActivated = false;
 bool floorActivated = false;
 pros::ADIDigitalOut pistonFloor (7);
 pros::ADIDigitalOut pistonDoor (8);
-
 
 
 // Class Defintions
@@ -85,7 +107,7 @@ PYROLift::PYROLift( int motorTopRight,
 // Method: getAngleForHeight(float) : float
 // ----------------------------------------
 // Description:
-//     Converts the input lift height to degrees, for use in collectCube().
+//     Converts the input lift height to degrees, for use in moveLiftToHeight(). This is the implementation of the second equation on page XX of the engineering notebook.
 //
 // Parameters:
 //```
@@ -106,7 +128,7 @@ float PYROLift::getAngleForHeight(float inches){
 // Method: getMotorDegreesFromLiftDegrees(float) : float
 // -----------------------------------------------------
 // Description:
-//     Converts the input lift degrees to motor degrees, for use in collectCube().
+//     Converts the input lift degrees to motor degrees, for use in moveLiftToHeight(). This takes into account the gear ratio between the motors and the lift arms, as well as the starting position of the lift arms.
 //
 // Parameters:
 //```
@@ -148,7 +170,7 @@ void PYROLift::moveLiftToHeight(float inches, int Velocity){
 // Method: getLiftHeight() : float
 // -------------------------------
 // Description:
-//     Returns the current height of the lift (inches).
+//     Returns the current height of the lift in inches. This is the implementation of the first formula on page XX of the engineering notebook.
 //
 // Parameters:
 //```
@@ -168,7 +190,7 @@ float PYROLift::getLiftHeight(){
 // Method: getLiftAngle() : float
 // ------------------------------
 // Description:
-//     Returns the current angle of the lift (degrees).
+//     Returns the current angle of the lift in degrees, taking into account the gear ration between the motor and the lift arms, as well as the starting position of the lift
 //
 // Parameters:
 //```
@@ -218,7 +240,7 @@ void PYROLift::intakeAndCollect(){
 // Method: collectCube() :
 // -----------------------
 // Description:
-//     Runs the lift down to collect a cube, then runs the lift back up to the
+//     Runs the lift down until the lif tmotors slow to < 3 RPM  to collect a cube, then runs the lift back up to the
 //     HOVER_HEIGHT.
 //
 // Parameters:
@@ -242,7 +264,7 @@ void PYROLift::collectCube(){
     cubeCount++;
 }
 
-
+//overload for manually specifying the velocity at which the lift moves down.
 void PYROLift::collectCube(int velocity){
 
     liftMotors.moveVelocity(-abs(velocity));
@@ -272,14 +294,17 @@ void PYROLift::collectCube(int velocity){
 //```
 //------------------------------------------------------------------------------
 void PYROLift::manualControl(){
+    //tare the intake position
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2)){
         intake.motors.tarePosition();
     }
 
+    //flip the intake motors back
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
         intake.motors.moveAbsolute(-190, 100);
     }
 
+    //manual override to just move the intake without picking up a cube
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
         intake.motors.moveVoltage(12000);
     }
@@ -287,7 +312,7 @@ void PYROLift::manualControl(){
         intake.motors.moveVoltage(0);
     }
 
-
+    //manual control to move the lift or down by a small amount, useful for placing stacks.
     if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
         liftTarget += 25;
     }
@@ -295,6 +320,7 @@ void PYROLift::manualControl(){
         liftTarget -= 25;
     }
 
+    //manual control to move the lift at a constant velocity, useful for moving the lift to a height that has not been pre set
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
         liftMotors.moveVelocity(50);
         liftTarget = liftMotors.getPosition();
@@ -307,6 +333,8 @@ void PYROLift::manualControl(){
         liftMotors.moveAbsolute(liftTarget, 50);
     }
 
+
+    //hold the bottom left paddle on the controller to open the door of the magazine
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
         //doorActivated = !doorActivated;
         pistonDoor.set_value(true);
@@ -315,6 +343,7 @@ void PYROLift::manualControl(){
         pistonDoor.set_value(false);
     }
 
+    //hold the bottom right paddle on the controller to open the floor of the magazine
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
         //floorActivated = !floorActivated;
         pistonFloor.set_value(true);
@@ -343,23 +372,27 @@ void PYROLift::manualControl(){
 void PYROLift::loopTeleop(){
     moveLiftToHeight(HOVER_HEIGHT, 50);
     while(true) {
-        if (true) {
-            if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-                if(getLiftHeight() > 10) {
-                    intakeAndCollect();
-                }
-                else{
-                    moveLiftToHeight(HOVER_HEIGHT, 50);
-                }
+        manualControl();
+        //run the automated cube collection routine
+        if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+            if (getLiftHeight() > 10) {
+                intakeAndCollect();
+            } else {
+                moveLiftToHeight(HOVER_HEIGHT, 50);
             }
-            manualControl();
         }
+
+        //tare the lift position
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
             tare();
         }
+
+        //macro to lift the height to the medium or short towers
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
             moveLiftToHeight(30, 50);
         }
+
+        //macro to drop exactly one cube out of the floor of the intake, useful for placing cubes in towers
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
             pistonFloor.set_value(true);
             pros::delay(50);
@@ -374,7 +407,7 @@ void PYROLift::loopTeleop(){
 // Method: tare() :
 // ----------------
 // Description:
-//     Zeroes the lift by running the lift downward until its velocity is 0.
+//     Zeroes the lift by running the lift downward until its velocity is close to 0.
 //
 // Parameters:
 //```
