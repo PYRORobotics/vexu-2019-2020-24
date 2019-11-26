@@ -421,7 +421,7 @@ void PYROLift::loopTeleop(){
 void PYROLift::tare(){
     liftMotors.moveVelocity(-25);
     pros::delay(500);
-    while(abs(liftMotors.getActualVelocity()) > 10){
+    while(abs(liftMotors.getActualVelocity()) > 10) {
         pros::delay(10);
     }
     liftMotors.tarePosition();
