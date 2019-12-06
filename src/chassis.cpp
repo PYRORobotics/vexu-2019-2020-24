@@ -253,6 +253,8 @@ void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
   set_target_position(degrees / 360 * PI * WHEELBASE * 92/95);
   encoder_left.reset();
   encoder_right.reset();
+  pos_pid_data.error = 0;
+  pros::delay(100);
   do
   {
     if(!useIdler)

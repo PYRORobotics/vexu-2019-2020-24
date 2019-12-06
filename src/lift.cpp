@@ -207,7 +207,7 @@ void PYROLift::intakeAndCollect(){
         pros::delay(10);
     }
     if(!breakbeam.get_value()) {
-        intake.motors.moveVoltage(5000);
+        intake.motors.moveVoltage(10000);
         collectCube();
     }
     intake.motors.moveVoltage(0);
@@ -362,7 +362,7 @@ void PYROLift::loopTeleop(){
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
             pistonFloor.set_value(true);
-            pros::delay(50);
+            pros::delay(33);
             pistonFloor.set_value(false);
         }
         printf("Breakbeam: %d\n", breakbeam.get_value());
