@@ -229,7 +229,7 @@ void PYROLift::intakeAndCollect(){
         pros::delay(10);
     }
     if(!breakbeam.get_value()) {
-        intake.motors.moveVoltage(10000);
+        intake.motors.moveVoltage(12000);
         collectCube();
     }
     intake.motors.moveVoltage(0);
