@@ -77,9 +77,85 @@ class PYRO_Arduino
   public:
     PYRO_Arduino(int port);
     okapi::BNO055 BNO055_Main;
+    static okapi::BNO055* bno;
+    static void update_differential_pos(void*)
+    {
+      while(1)
+      {
+        std::cout << "lolololololol" << std::endl;
+        // Start serial on desired port
+        vexGenericSerialEnable( bno->get_port() - 1, 0 );
+
+        // Set BAUD rate
+        vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+        // Let VEX OS configure port
+        pros::delay(10);
+
+
+
+        while (true)
+        {
+
+
+          // Buffer to store serial data
+          uint8_t buffer[256];
+          int len = 256;
+
+          // Get serial data
+          int32_t nRead = vexGenericSerialReceive(bno->get_port() - 1, buffer, len);
+          //pros::lcd::print(3, "at while true %d", nRead);
+
+          // Now parse the data
+          if (nRead >= 9) {
+            std::cout << "lolololololol\n" << std::endl;
+
+              // Stream to put the characters in
+              std::stringstream myStream("");
+              bool recordAngle = false;
+
+              // Go through characters
+              for (int i = 0; i < nRead; i++) {
+                  // Get current char
+                  char thisDigit = (char)buffer[i];
+
+                  // If its special, then don't record the value
+                  if (thisDigit == 'D' || thisDigit == 'I' || thisDigit == 'A')
+                      recordAngle = false;
+
+                  // Finished recieving angle, so put into variable
+                  if (thisDigit == 'E') {
+                      recordAngle = false;
+                      double heading;
+                      myStream >> heading;
+                      if(heading > 180)
+                        heading -= 360;
+                      bno->set(heading);
+                      std::cout << heading << std::endl;
+
+                  }
+
+                  // If we want the digits, put them into stream
+                  if (recordAngle)
+                      myStream << (char)buffer[i];
+
+                  // If the digit is 'A', then the following data is the angle
+                  if (thisDigit == 'A')
+                      recordAngle = true;
+
+
+
+              }
+            }
+            pros::delay(20);
+          }
+      }
+    }
+    pros::Task t_arduino_update;
   private:
     int port;
 };
+
 
 
 } // namespace okapi

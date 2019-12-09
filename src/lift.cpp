@@ -225,7 +225,7 @@ float PYROLift::getLiftAngle(){
 void PYROLift::intakeAndCollect(){
     intake.motors.moveVoltage(12000);
     while(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && breakbeam.get_value()){
-        printf("breakbeam: %d\n", breakbeam.get_value());
+        //printf("breakbeam: %d\n", breakbeam.get_value());
         pros::delay(10);
     }
     if(!breakbeam.get_value()) {
@@ -398,7 +398,7 @@ void PYROLift::loopTeleop(){
             pros::delay(33);
             pistonFloor.set_value(false);
         }
-        printf("Breakbeam: %d\n", breakbeam.get_value());
+        //printf("Breakbeam: %d\n", breakbeam.get_value());
     }
 }
 
