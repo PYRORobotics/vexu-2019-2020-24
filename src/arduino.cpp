@@ -143,6 +143,33 @@ PYRO_Arduino::PYRO_Arduino(int port) : BNO055_Main(port), t_arduino_update(updat
 }
 
 
+
+
+void PYRO_Arduino::setClock()
+{
+  try
+  {
+  // Start serial on desired port
+  vexGenericSerialEnable( bno->get_port() - 1, 0 );
+
+  // Set BAUD rate
+  vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+  // Let VEX OS configure port
+  pros::delay(10);
+
+    // Buffer to store serial data
+    uint8_t buffer[6] = "C";
+    int len = 6;
+
+    // Get serial data
+    vexGenericSerialTransmit(bno->get_port() - 1, buffer, len);
+    pros::delay(10);
+
+    }
+    catch(...){}
+}
+
 //------------------------------------------------------------------------------
 // Method: BNO055() :
 // ----------------------------

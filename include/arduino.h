@@ -84,6 +84,8 @@ class PYRO_Arduino
     {
       while(1)
       {
+        try
+        {
         // Start serial on desired port
         vexGenericSerialEnable( bno->get_port() - 1, 0 );
 
@@ -131,7 +133,7 @@ class PYRO_Arduino
               count++;
             }
 
-            if(*ptr == 2)
+            if(*ptr == 2 && *(ptr+1)=='R')
             {
 
               int checksum = 0;
@@ -159,7 +161,40 @@ class PYRO_Arduino
 
               if((char)checksum == (char)key)
               {
-                std::cout << ++i << "yay\n";
+
+                //ptr-=58*sizeof(char);
+                ptr = input;// + 2*sizeof(char);
+
+                char c_str[58] = {0};
+                for(int i = 0; i < 58; i++)
+                {
+                  c_str[i] = *ptr;
+                  ptr+=sizeof(char);
+                }
+                //ptr+=sizeof(char);
+
+                std::string s_str(c_str);
+
+                std::string s_heading = s_str.substr(2,7);
+
+                float heading = stof(s_heading);
+                if(heading > 180)
+                 heading -= 360;
+                bno->set(heading);
+
+                std::cout << ++i << " yay: " << heading<< std::endl;
+
+                while(vexGenericSerialReceive(bno->get_port() - 1, buffer, len) > 0){pros::delay(1);}
+                pros::delay(80);
+
+
+if(i % 20 == 0) reset();
+
+
+
+
+
+
               }
             }
             //
@@ -215,10 +250,42 @@ class PYRO_Arduino
           }
 
             }
+
+
+          }
+          catch(...){}
             pros::delay(20);
+
 
       }
     }
+    static void reset()
+    {
+      try
+      {
+      // Start serial on desired port
+      vexGenericSerialEnable( bno->get_port() - 1, 0 );
+
+      // Set BAUD rate
+      vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+      // Let VEX OS configure port
+      pros::delay(10);
+
+        // Buffer to store serial data
+        char buffer[] = "RESET\n";
+        int len = strlen( buffer );
+
+
+
+              vexGenericSerialTransmit( bno->get_port() - 1, (uint8_t *)buffer, len  );
+        pros::delay(1000);
+
+        }
+        catch(...){}
+    }
+
+    void setClock();
     pros::Task t_arduino_update;
   private:
     int port;
