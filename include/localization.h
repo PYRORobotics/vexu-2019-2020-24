@@ -98,10 +98,52 @@ private:
 
 public:
   OrientationData();
-  void setHeading(double);
-  void setPosition(Point3D, double);
-  void setVelocity(Point3D, double);
-  void setAcceleration(Point3D, double);
+  static void setHeading(double heading)
+  {
+    OrientationData::heading = heading;
+  };
+  static void setPosition(Point3D id, double value)
+  {
+    switch (id) {
+      case x:
+        std::get<0>(OrientationData::position) = value;
+        break;
+      case y:
+        std::get<1>(OrientationData::position) = value;
+        break;
+      case z:
+        std::get<2>(OrientationData::position) = value;
+        break;
+    }
+  };
+  static void setVelocity(Point3D id, double value)
+  {
+    switch (id) {
+      case x:
+        std::get<0>(OrientationData::velocity) = value;
+        break;
+      case y:
+        std::get<1>(OrientationData::velocity) = value;
+        break;
+      case z:
+        std::get<2>(OrientationData::velocity) = value;
+        break;
+    }
+  }
+  static void setAcceleration(Point3D id, double value)
+  {
+    switch (id) {
+      case x:
+        std::get<0>(OrientationData::acceleration) = value;
+        break;
+      case y:
+        std::get<1>(OrientationData::acceleration) = value;
+        break;
+      case z:
+        std::get<2>(OrientationData::acceleration) = value;
+        break;
+    }
+  }
   double getHeading();
   double getPosition(Point3D);
   double getVelocity(Point3D);

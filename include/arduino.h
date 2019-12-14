@@ -176,11 +176,21 @@ class PYRO_Arduino
                 std::string s_str(c_str);
 
                 std::string s_heading = s_str.substr(2,7);
+                std::string s_pitch = s_str.substr(10,7);
+                std::string s_roll = s_str.substr(18,7);
+                std::string s_ax = s_str.substr(24,7);
+                std::string s_ay = s_str.substr(32,7);
+                std::string s_az = s_str.substr(40,7);
+
 
                 float heading = stof(s_heading);
                 if(heading > 180)
                  heading -= 360;
                 bno->set(heading);
+
+                OrientationData::setAcceleration(x,stof(s_ax));
+                OrientationData::setAcceleration(y,stof(s_ay));
+                OrientationData::setAcceleration(z,stof(s_az));
 
                 std::cout << ++i << " yay: " << heading<< std::endl;
 
@@ -188,7 +198,7 @@ class PYRO_Arduino
                 pros::delay(80);
 
 
-if(i % 20 == 0) reset();
+// if(i % 20 == 0) reset();
 
 
 

@@ -66,55 +66,55 @@ OrientationData::OrientationData()
   std::get<2>(acceleration) = 0;
 }
 
-void OrientationData::setHeading(double heading)
-{
-  this->heading = heading;
-}
-
-void OrientationData::setPosition(Point3D id, double value)
-{
-  switch (id) {
-    case x:
-      std::get<0>(position) = value;
-      break;
-    case y:
-      std::get<1>(position) = value;
-      break;
-    case z:
-      std::get<2>(position) = value;
-      break;
-  }
-}
-
-void OrientationData::setVelocity(Point3D id, double value)
-{
-  switch (id) {
-    case x:
-      std::get<0>(velocity) = value;
-      break;
-    case y:
-      std::get<1>(velocity) = value;
-      break;
-    case z:
-      std::get<2>(velocity) = value;
-      break;
-  }
-}
-
-void OrientationData::setAcceleration(Point3D id, double value)
-{
-  switch (id) {
-    case x:
-      std::get<0>(acceleration) = value;
-      break;
-    case y:
-      std::get<1>(acceleration) = value;
-      break;
-    case z:
-      std::get<2>(acceleration) = value;
-      break;
-  }
-}
+// void OrientationData::setHeading(double heading)
+// {
+//   this->heading = heading;
+// }
+//
+// void OrientationData::setPosition(Point3D id, double value)
+// {
+//   switch (id) {
+//     case x:
+//       std::get<0>(position) = value;
+//       break;
+//     case y:
+//       std::get<1>(position) = value;
+//       break;
+//     case z:
+//       std::get<2>(position) = value;
+//       break;
+//   }
+// }
+//
+// void OrientationData::setVelocity(Point3D id, double value)
+// {
+//   switch (id) {
+//     case x:
+//       std::get<0>(velocity) = value;
+//       break;
+//     case y:
+//       std::get<1>(velocity) = value;
+//       break;
+//     case z:
+//       std::get<2>(velocity) = value;
+//       break;
+//   }
+// }
+//
+// void OrientationData::setAcceleration(Point3D id, double value)
+// {
+//   switch (id) {
+//     case x:
+//       std::get<0>(acceleration) = value;
+//       break;
+//     case y:
+//       std::get<1>(acceleration) = value;
+//       break;
+//     case z:
+//       std::get<2>(acceleration) = value;
+//       break;
+//   }
+// }
 
 double OrientationData::getHeading()
 {
