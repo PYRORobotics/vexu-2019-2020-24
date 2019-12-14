@@ -47,6 +47,7 @@
 #include "piston.h"
 #include "screen.h"
 #include "intake.h"
+#include "localization.h"
 
 
 /**

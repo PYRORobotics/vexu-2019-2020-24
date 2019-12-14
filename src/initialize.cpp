@@ -18,6 +18,17 @@
 // Function Defintions
 // -------------------
 
+static void update_localization(void*)
+{
+	while(1)
+	{
+		orientation.setHeading(Arduino.bno->get());
+		//std::cout << "Heading: " << orientation.getHeading();// << std::endl;
+		//std::cout << "; Heading: " << orientation.getAcceleration(x) << std::endl;
+		pros::delay(20);
+	}
+}
+
 //------------------------------------------------------------------------------
 // Function: initialize() :
 // ------------------------
@@ -41,6 +52,8 @@ void initialize()
 {
 	//pros::lcd::initialize(); // Uncomment to use PROS's LCD
 	Screen screen;
+	pros::Task t_update_localization(update_localization,(void*)NULL, TASK_PRIORITY_DEFAULT,
+	                          TASK_STACK_DEPTH_DEFAULT, "task");
 }
 
 

@@ -84,7 +84,7 @@ void opcontrol() {
                             TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
   while (true)
   {
-    printf("%f %f\n", LEFT.get(), RIGHT.get());
+    //printf("%f %f\n", LEFT.get(), RIGHT.get());
     chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
                                  (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
                                  0.05);

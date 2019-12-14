@@ -5,8 +5,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#ifndef _ARDUINO_HPP_
-#define _ARDUINO_HPP_
+#ifndef _ARDUINO_H_
+#define _ARDUINO_H_
 
 #include "api.h"
 #include "okapi/api/control/controllerInput.hpp"
@@ -15,6 +15,8 @@
 
 // Include sstream for serial parsing
 #include <sstream>
+
+#include "localization.h"
 
 // Prototypes for hidden vex functions to bypass PROS bug
 extern "C" int32_t vexGenericSerialReceive( uint32_t index, uint8_t *buffer, int32_t length );
@@ -82,7 +84,6 @@ class PYRO_Arduino
     {
       while(1)
       {
-        std::cout << "lolololololol" << std::endl;
         // Start serial on desired port
         vexGenericSerialEnable( bno->get_port() - 1, 0 );
 
@@ -92,7 +93,8 @@ class PYRO_Arduino
         // Let VEX OS configure port
         pros::delay(10);
 
-
+        int i = 0;
+        int j = 0;
 
         while (true)
         {
@@ -106,49 +108,115 @@ class PYRO_Arduino
           int32_t nRead = vexGenericSerialReceive(bno->get_port() - 1, buffer, len);
           //pros::lcd::print(3, "at while true %d", nRead);
 
-          // Now parse the data
-          if (nRead >= 9) {
-            std::cout << "lolololololol\n" << std::endl;
+          //std::cout << buffer << "|||||";
 
-              // Stream to put the characters in
-              std::stringstream myStream("");
-              bool recordAngle = false;
+          //std::string str( buffer, buffer+256 );
 
-              // Go through characters
-              for (int i = 0; i < nRead; i++) {
-                  // Get current char
-                  char thisDigit = (char)buffer[i];
-
-                  // If its special, then don't record the value
-                  if (thisDigit == 'D' || thisDigit == 'I' || thisDigit == 'A')
-                      recordAngle = false;
-
-                  // Finished recieving angle, so put into variable
-                  if (thisDigit == 'E') {
-                      recordAngle = false;
-                      double heading;
-                      myStream >> heading;
-                      if(heading > 180)
-                        heading -= 360;
-                      bno->set(heading);
-                      std::cout << heading << std::endl;
-
-                  }
-
-                  // If we want the digits, put them into stream
-                  if (recordAngle)
-                      myStream << (char)buffer[i];
-
-                  // If the digit is 'A', then the following data is the angle
-                  if (thisDigit == 'A')
-                      recordAngle = true;
+          //std::cout << str << "asdfghjkl";
 
 
+          char* input = (char*) buffer;
 
+          char* ptr = input;
+
+          if(ptr != NULL)
+          {
+            //if(input[0] != 2)
+            //std::cout << ++j << "oops\n";
+
+            int count = 0;
+            while((*ptr != 2 || *ptr == '\0') && count < 255)
+            {
+              ptr+=sizeof(char);
+              count++;
+            }
+
+            if(*ptr == 2)
+            {
+
+              int checksum = 0;
+
+              while(*ptr!=';')
+              {
+
+
+                checksum += (int) *ptr;
+
+                std::string str(ptr);
+                ptr+=sizeof(char);
+              }
+
+              checksum += (int) *ptr;
+              ptr+=sizeof(char);
+
+              char key = *(ptr);
+
+
+              checksum = checksum % 128 + 3;
+
+              //std::cout << input << "\n";
+              //std::cout << (char)checksum << " = " << key<<std::endl;
+
+              if((char)checksum == (char)key)
+              {
+                std::cout << ++i << "yay\n";
               }
             }
-            pros::delay(20);
+            //
+            //
+            // char delim[] = " ;";
+            //           char* ptr = strtok(input, delim);
+            //           while(ptr!=NULL)
+            //           {
+            //             //std::cout << ptr << std::endl;
+            //             std::string str(ptr);
+            //
+            //
+            //             if(str.at(0) == 'R')
+            //             {
+            //               str.erase(0,1);
+            //
+            //               char * cstr = new char [str.length()+1];
+            //               strcpy (cstr, str.c_str());
+            //
+            //
+            //               char delim[] = ":";
+            //               char* ptr1 = strtok(cstr, delim);
+            //
+            //               int i = 0;
+            //
+            //               while(ptr1!=NULL)
+            //               {
+            //                 //std::cout << ptr << std::endl;
+            //                 std::string str(ptr);
+            //
+            //                 if(i == 0)
+            //                 {
+            //                   double heading = std::stod(str);
+            //                   if(heading > 0.000001 || heading == 0)
+            //                   {
+            //                     if(heading > 180)
+            //                       heading -= 360;
+            //                     bno->set(heading);
+            //                   }
+            //                 }
+            //
+            //                 i++;
+            //               }
+            //             }
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //     }
           }
+
+            }
+            pros::delay(20);
+
       }
     }
     pros::Task t_arduino_update;
