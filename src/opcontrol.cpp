@@ -77,11 +77,11 @@ void opcontrol() {
   bool arcade = false;
   bool voltageControl = false;
 
-  okapi::ADIEncoder LEFT('A', 'B', true);
-  okapi::ADIEncoder RIGHT('C', 'D');
+  // okapi::ADIEncoder LEFT('A', 'B', true);
+  // okapi::ADIEncoder RIGHT('C', 'D');
 
-  pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
-                            TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
+  // pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
+  //                           TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
   while (true)
   {
     //printf("%f %f\n", LEFT.get(), RIGHT.get());

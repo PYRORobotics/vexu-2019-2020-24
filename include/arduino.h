@@ -165,8 +165,8 @@ class PYRO_Arduino
                 //ptr-=58*sizeof(char);
                 ptr = input;// + 2*sizeof(char);
 
-                char c_str[58] = {0};
-                for(int i = 0; i < 58; i++)
+                char c_str[60] = {0};
+                for(int i = 0; i < 60; i++)
                 {
                   c_str[i] = *ptr;
                   ptr+=sizeof(char);
@@ -178,9 +178,9 @@ class PYRO_Arduino
                 std::string s_heading = s_str.substr(2,7);
                 std::string s_pitch = s_str.substr(10,7);
                 std::string s_roll = s_str.substr(18,7);
-                std::string s_ax = s_str.substr(24,7);
-                std::string s_ay = s_str.substr(32,7);
-                std::string s_az = s_str.substr(40,7);
+                std::string s_ax = s_str.substr(26,7);
+                std::string s_ay = s_str.substr(34,7);
+                std::string s_az = s_str.substr(42,7);
 
 
                 float heading = stof(s_heading);
@@ -188,11 +188,41 @@ class PYRO_Arduino
                  heading -= 360;
                 bno->set(heading);
 
-                OrientationData::setAcceleration(x,stof(s_ax));
-                OrientationData::setAcceleration(y,stof(s_ay));
-                OrientationData::setAcceleration(z,stof(s_az));
+                // OrientationData::setAcceleration(x,stof(s_ax));
+                // OrientationData::setAcceleration(y,stof(s_ay));
+                // OrientationData::setAcceleration(z,stof(s_az));
 
-                std::cout << ++i << " yay: " << heading<< std::endl;
+                float temp;
+
+                size_t position = s_ax.find("-");
+                if(position!=std::string::npos)
+                  s_ax = s_ax.substr(position);     // get from position to the end
+
+                position = s_ay.find("-");
+                if(position!=std::string::npos)
+                  s_ay = s_ay.substr(position);     // get from position to the end
+
+                position = s_az.find("-");
+                if(position!=std::string::npos)
+                  s_az = s_az.substr(position);     // get from position to the end
+
+
+                std::stringstream(s_ax) >> temp;
+                OrientationData::setAcceleration(x,temp);
+                std::stringstream(s_ay) >> temp;
+                OrientationData::setAcceleration(y,temp);
+                std::stringstream(s_az) >> temp;
+                OrientationData::setAcceleration(z,temp);
+
+
+                // std::cout << ++i << " yay: " << s_heading << " "
+                // << s_pitch << " "
+                // << s_roll << " "
+                // << s_ax << " "
+                // << s_ay << " "
+                // << s_az << " "
+                // << temp
+                // << std::endl;
 
                 while(vexGenericSerialReceive(bno->get_port() - 1, buffer, len) > 0){pros::delay(1);}
                 pros::delay(80);

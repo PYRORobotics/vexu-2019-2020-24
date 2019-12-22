@@ -4,6 +4,8 @@
 #include "api.h"
 #include <tuple>
 #include "matrix.h"
+#include "stdio.h"
+#include <fstream>
 
 #define REFRESH 0.02
 
@@ -144,10 +146,60 @@ public:
         break;
     }
   }
-  double getHeading();
-  double getPosition(Point3D);
+  static double getHeading() {return heading;}
+  static double getPosition(Point3D id)
+  {
+    switch (id) {
+      case x:
+        return std::get<0>(position);
+      case y:
+        return std::get<1>(position);
+      case z:
+        return std::get<2>(position);
+    }
+  }
   double getVelocity(Point3D);
-  double getAcceleration(Point3D);
+  static double getAcceleration(Point3D id)
+  {
+    switch (id) {
+      case x:
+        return std::get<0>(acceleration);
+      case y:
+        return std::get<1>(acceleration);
+      case z:
+        return std::get<2>(acceleration);
+    }
+  }
+
+  static pros::Mutex mutex_position;
+
+  static void writePosToFile(void*)
+  {
+    FILE* usd_file_write = fopen("/usd/position.csv", "w");
+    fclose(usd_file_write);
+    while(1)
+    {
+      FILE* usd_file_write = fopen("/usd/accel.csv", "a");
+
+      if(usd_file_write != NULL)
+      {
+        std::string str = std::to_string(heading) + "," + std::to_string(std::get<0>(acceleration)) + ","
+        + std::to_string(std::get<1>(acceleration)) + "," + std::to_string(std::get<2>(acceleration));
+        str += "\n";
+
+        std::cout << " "<<str << std::endl;
+
+        const char *cstr = str.c_str();
+        fputs(cstr, usd_file_write);
+        fclose(usd_file_write);
+      }
+      pros::delay(20);
+    }
+
+  }
+
+  pros::Task writeToFile;
+
 };
 
 extern OrientationData orientation;

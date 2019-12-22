@@ -6,6 +6,9 @@
 #include "arduino.h"
 #include "pid.h"
 #include "okapi/api.hpp"
+#include <sstream>
+#include <iomanip>
+
 
 //==================================START FILE==================================
 //==============================================================================
@@ -23,6 +26,8 @@
 
 #define WHEELBASE 16.5
 #define IDLER_WHEEL_DIAMETER 2.83
+extern double ecToDegrees(int ec);
+
 
 namespace okapi
 {
@@ -38,8 +43,8 @@ namespace okapi
       okapi::MotorGroup left_motors;
       okapi::MotorGroup right_motors;
 
-      okapi::ADIEncoder encoder_left;
-      okapi::ADIEncoder encoder_right;
+      static okapi::ADIEncoder encoder_left;
+      static okapi::ADIEncoder encoder_right;
 
       PIDData pos_pid_data;
 
@@ -52,13 +57,49 @@ namespace okapi
       void turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*);
       void turn_PID_sync(double, bool = true);
       void drive_seconds(int,double);
-      static void update_differential_pos(void*)
+      static void update_position(void*)
       {
-        int i = 0;
+        encoder_left.reset();
+        encoder_right.reset();
+
+        double enc_last = 0;
         while(1)
         {
-          pros::lcd::print(6, "%d", i++);
+          // if(OrientationData::mutex_position.take(100))
+          // {
+            // ADIEncoder enc_l('A', 'B', 0);
+            // ADIEncoder enc_r('C', 'D', 1);
+            //OrientationData::setHeading(45);
+
+            float heading = OrientationData::getHeading();
+            // float xheading = abs(heading)>2&&abs(heading) < 180?heading:0;
+
+            std::stringstream tmp;
+            tmp << std::setprecision(3) << std::fixed << sin(PI/180.0*heading);
+            double headingCoeffX = stod(tmp.str());   // new_val = 3.143
+            tmp.str(std::string());                  // clear tmp for future use
+
+            tmp << std::setprecision(3) << std::fixed << cos(PI/180.0*heading);
+            double headingCoeffY = stod(tmp.str());   // new_val = 3.143
+            tmp.str(std::string());                  // clear tmp for future use
+
+
+            double enc_avg =(encoder_left.get() + encoder_right.get())/2.0;
+            double x_new = (ecToDegrees(enc_avg - enc_last))* headingCoeffX + OrientationData::getPosition(x);
+            double y_new = (ecToDegrees(enc_avg - enc_last))* headingCoeffY + OrientationData::getPosition(y);
+
+
+
+            OrientationData::setPosition(x, x_new);
+            OrientationData::setPosition(y, y_new);
+
+            // OrientationData::mutex_position.give();
+          // }
+
+          std::cout << "(x, y, h):" << enc_avg << " ; "<<x_new << ", " << y_new << ", " <<OrientationData::getHeading() << std::endl;
+
           pros::delay(20);
+          enc_last = enc_avg;
         }
       }
       PIDController PositionPIDController;
@@ -66,7 +107,7 @@ namespace okapi
       okapi::ChassisControllerPID driveController;
       okapi::AsyncMotionProfileController MotionController;
 
-      //pros::Task t_update_differential_pos;
+      pros::Task t_update_pos;
 
     };
 }

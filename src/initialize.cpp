@@ -51,7 +51,7 @@ static void update_localization(void*)
 void initialize()
 {
 	//pros::lcd::initialize(); // Uncomment to use PROS's LCD
-	Screen screen;
+	//Screen screen;
 	pros::Task t_update_localization(update_localization,(void*)NULL, TASK_PRIORITY_DEFAULT,
 	                          TASK_STACK_DEPTH_DEFAULT, "task");
 }

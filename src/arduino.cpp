@@ -24,7 +24,7 @@ using namespace okapi;
 
 // Global/Static Objects
 // ---------------------
-PYRO_Arduino Arduino(20);
+PYRO_Arduino Arduino(7);
 okapi::BNO055* PYRO_Arduino::bno = NULL;
 
 

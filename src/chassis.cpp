@@ -27,6 +27,11 @@ using namespace okapi;
 PYROChassis chassis;
 
 
+double ecToDegrees(int ec)
+{
+  return ec/360.0 * PI * IDLER_WHEEL_DIAMETER;
+};
+
 // Class Defintions
 // ----------------
 
@@ -51,11 +56,15 @@ PYROChassis chassis;
 //    N/A: t_update_differential_pos (pros::Task)
 //```
 //------------------------------------------------------------------------------
+
+ADIEncoder PYROChassis::encoder_left('A', 'B', 0);
+ADIEncoder PYROChassis::encoder_right('C', 'D', 1);
+
+
+
 PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005),
                             left_motors({-M_CHASSIS_LF, M_CHASSIS_LM, -M_CHASSIS_LR}),
                             right_motors({-M_CHASSIS_RF, M_CHASSIS_RM, -M_CHASSIS_RR}),
-                            encoder_left(ADIEncoder('A', 'B', 0)),
-                            encoder_right(ADIEncoder('C', 'D', 1)),
                             driveController(ChassisControllerFactory::create(
                                     left_motors, right_motors,
                                     encoder_left, encoder_right,
@@ -71,6 +80,8 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005
                               10.0, // Maximum linear jerk of the Chassis in m/s/s/s
                               driveController // Chassis Controller
                             ))///,
+                            ,t_update_pos(update_position,(void*)NULL, TASK_PRIORITY_DEFAULT,
+                                                      TASK_STACK_DEPTH_DEFAULT, "task")
                             ///t_update_differential_pos(update_differential_pos,NULL)
 {
   left_motors.setBrakeMode(AbstractMotor::brakeMode::brake);

@@ -49,7 +49,8 @@ std::tuple <double, double, double> OrientationData::acceleration;
 
 
 
-OrientationData::OrientationData()
+OrientationData::OrientationData() : writeToFile(writePosToFile,(void*)NULL, TASK_PRIORITY_DEFAULT,
+                          TASK_STACK_DEPTH_DEFAULT, "task")
 {
   heading = 0;
 
@@ -116,22 +117,8 @@ OrientationData::OrientationData()
 //   }
 // }
 
-double OrientationData::getHeading()
-{
-  return heading;
-}
 
-double OrientationData::getPosition(Point3D id)
-{
-  switch (id) {
-    case x:
-      return std::get<0>(position);
-    case y:
-      return std::get<1>(position);
-    case z:
-      return std::get<2>(position);
-  }
-}
+
 
 double OrientationData::getVelocity(Point3D id)
 {
@@ -145,16 +132,16 @@ double OrientationData::getVelocity(Point3D id)
   }
 }
 
-double OrientationData::getAcceleration(Point3D id)
-{
-  switch (id) {
-    case x:
-      return std::get<0>(acceleration);
-    case y:
-      return std::get<1>(acceleration);
-    case z:
-      return std::get<2>(acceleration);
-  }
-}
+// double OrientationData::getAcceleration(Point3D id)
+// {
+//   switch (id) {
+//     case x:
+//       return std::get<0>(acceleration);
+//     case y:
+//       return std::get<1>(acceleration);
+//     case z:
+//       return std::get<2>(acceleration);
+//   }
+// }
 
 OrientationData orientation;
