@@ -89,6 +89,11 @@ void opcontrol() {
                                  (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
                                  0.05);
 
+    // if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+    // {
+    //   Arduino.setClock();
+    // }
+
     pros::delay(20);
   }
 }

@@ -149,25 +149,47 @@ void PYRO_Arduino::setClock()
 {
   try
   {
-  // Start serial on desired port
-  vexGenericSerialEnable( bno->get_port() - 1, 0 );
+    std::cout << "Trying to send SetClock" << std::endl;
+  // // Start serial on desired port
+  // vexGenericSerialEnable( bno->get_port() - 1, 0 );
+  //
+  // // Set BAUD rate
+  // vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
 
-  // Set BAUD rate
-  vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+  FILE* port7 = fopen("/dev/7", "w");
+
 
   // Let VEX OS configure port
   pros::delay(10);
 
     // Buffer to store serial data
-    uint8_t buffer[6] = "C";
-    int len = 6;
+    // uint8_t buffer[6] = "C";
+    // int len = 6;
 
-    // Get serial data
-    vexGenericSerialTransmit(bno->get_port() - 1, buffer, len);
+
+    std::string str = "CLOCK";
+    str += std::to_string(pros::millis());
+    const char *cstr = str.c_str();
+
+
+    fputs(cstr, port7);
+    fclose(port7);
+
+
+    // // Get serial data
+    // vexGenericSerialTransmit(bno->get_port() - 1, buffer, len);
+
+
     pros::delay(10);
+    std::cout << "Successfully SetClock" << std::endl;
+
 
     }
-    catch(...){}
+    catch(...)
+    {
+      std::cout << "ERROR ON SETCLOCK!!!" << std::endl;
+    }
 }
 
 //------------------------------------------------------------------------------

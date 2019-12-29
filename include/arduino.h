@@ -303,26 +303,46 @@ class PYRO_Arduino
     {
       try
       {
-      // Start serial on desired port
-      vexGenericSerialEnable( bno->get_port() - 1, 0 );
+        std::cout << "Trying to send RESET Arduino" << std::endl;
+      // // Start serial on desired port
+      // vexGenericSerialEnable( bno->get_port() - 1, 0 );
+      //
+      // // Set BAUD rate
+      // vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
 
-      // Set BAUD rate
-      vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+      FILE* port7 = fopen("/dev/7", "w");
+
 
       // Let VEX OS configure port
       pros::delay(10);
 
         // Buffer to store serial data
-        char buffer[] = "RESET\n";
-        int len = strlen( buffer );
+        // uint8_t buffer[6] = "C";
+        // int len = 6;
 
 
+        std::string str = "RESET";
+        const char *cstr = str.c_str();
 
-              vexGenericSerialTransmit( bno->get_port() - 1, (uint8_t *)buffer, len  );
-        pros::delay(1000);
+
+        fputs(cstr, port7);
+        fclose(port7);
+
+
+        // // Get serial data
+        // vexGenericSerialTransmit(bno->get_port() - 1, buffer, len);
+
+
+        pros::delay(10);
+        std::cout << "Successfully RESET Arduino" << std::endl;
+
 
         }
-        catch(...){}
+        catch(...)
+        {
+          std::cout << "ERROR ON RESET Arduino!!!" << std::endl;
+        }
     }
 
     void setClock();

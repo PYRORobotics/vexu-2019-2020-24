@@ -96,7 +96,7 @@ namespace okapi
             // OrientationData::mutex_position.give();
           // }
 
-          std::cout << "(x, y, h):" << enc_avg << " ; "<<x_new << ", " << y_new << ", " <<OrientationData::getHeading() << std::endl;
+          // std::cout << "(x, y, h):" << OrientationData::getPosition(x) << ", " << OrientationData::getPosition(y) << ", " <<OrientationData::getHeading() << std::endl;
 
           pros::delay(20);
           enc_last = enc_avg;

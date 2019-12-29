@@ -54,6 +54,10 @@ void initialize()
 	//Screen screen;
 	pros::Task t_update_localization(update_localization,(void*)NULL, TASK_PRIORITY_DEFAULT,
 	                          TASK_STACK_DEPTH_DEFAULT, "task");
+
+	Arduino.setClock();
+	pros::delay(200);
+	Arduino.reset();
 }
 
 

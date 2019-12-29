@@ -175,26 +175,32 @@ public:
 
   static void writePosToFile(void*)
   {
-    FILE* usd_file_write = fopen("/usd/position.csv", "w");
-    fclose(usd_file_write);
-    while(1)
-    {
-      FILE* usd_file_write = fopen("/usd/accel.csv", "a");
-
-      if(usd_file_write != NULL)
-      {
-        std::string str = std::to_string(heading) + "," + std::to_string(std::get<0>(acceleration)) + ","
-        + std::to_string(std::get<1>(acceleration)) + "," + std::to_string(std::get<2>(acceleration));
-        str += "\n";
-
-        std::cout << " "<<str << std::endl;
-
-        const char *cstr = str.c_str();
-        fputs(cstr, usd_file_write);
-        fclose(usd_file_write);
-      }
-      pros::delay(20);
-    }
+    // FILE* usd_file_write = fopen("/usd/position.csv", "w");
+    // fputs(" ", usd_file_write);
+    // fclose(usd_file_write);
+    //
+    // while(1)
+    // {
+    //   FILE* usd_file_write = fopen("/usd/position.csv", "a");
+    //
+    //   if(usd_file_write != NULL)
+    //   {
+    //     // std::string str = std::to_string(heading) + "," + std::to_string(std::get<0>(acceleration)) + ","
+    //     // + std::to_string(std::get<1>(acceleration)) + "," + std::to_string(std::get<2>(acceleration));
+    //     // str += "\n";
+    //
+    //     std::string str = std::to_string(OrientationData::getPosition(x)) + "," + std::to_string(OrientationData::getPosition(y)) + ","
+    //     + std::to_string(OrientationData::getHeading());
+    //     str += "\n";
+    //
+    //     std::cout << " "<<str << std::endl;
+    //
+    //     const char *cstr = str.c_str();
+    //     fputs(cstr, usd_file_write);
+    //     fclose(usd_file_write);
+    //   }
+    //   pros::delay(20);
+    // }
 
   }
 
