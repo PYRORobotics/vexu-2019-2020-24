@@ -57,6 +57,9 @@ namespace okapi
       void turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*);
       void turn_PID_sync(double, bool = true);
       void drive_seconds(int,double);
+
+      void drive_to_coordinate(double, double, double);
+
       static void update_position(void*)
       {
         encoder_left.reset();

@@ -302,6 +302,78 @@ void PYROChassis::drive_seconds(int speed, double sec)
   pros::delay(sec*1000);
 }
 
+
+void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
+{
+  double x0, y0, h0, distance;
+  x0 = OrientationData::getPosition(x);
+  y0 = OrientationData::getPosition(y);
+  h0 = OrientationData::getHeading();
+
+  double distance0 = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+
+  float multiplierl = 1.0;
+  float multiplierr = 1.0;
+
+  float maxSpeed = 10;
+  float kp = 0.1;
+
+  do
+  {
+    if(distance > (distance0 * 3 / 4))
+    {
+      //limit speed
+      maxSpeed = 5;
+    }
+
+    double pidl = distance * kp;
+    double pidr = distance * kp;
+
+    double hn;
+
+    if((y1-y0) == 0)
+    {
+      x1 >= x0? hn = 90 : hn = -90;
+    }
+    else
+    {
+      hn = 180 / PI * ( atan( (x1-x0)/(y1-y0) ) );
+    }
+
+    double heading_delta = h0 - hn;
+
+    if(heading_delta < 0)
+    {
+      multiplierl += 0.1 * (-heading_delta);
+      multiplierr -= 0.1 * (heading_delta);
+    }
+    else
+    {
+      multiplierl -= 0.1 * (heading_delta);
+      multiplierr += 0.1 * (-heading_delta);
+    }
+
+    int speedl = pidl * multiplierl;
+    int speedr = pidr * multiplierr;
+
+    left_motors.moveVelocity(pidl * multiplierl);
+    right_motors.moveVelocity(pidr * multiplierr);
+
+    x0 = OrientationData::getPosition(x);
+    y0 = OrientationData::getPosition(y);
+    h0 = OrientationData::getHeading();
+
+    pros::delay(333);
+
+    distance = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+    std::cout << "Distance: " << distance << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << std::endl;
+
+  } while(distance > 2);
+
+  turn_PID_sync(h1 - h0);
+
+}
+
 //------------------------------------------------------------------------------
 //===================================END FILE===================================
 //==============================================================================
