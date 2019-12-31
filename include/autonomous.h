@@ -17,16 +17,20 @@
 
 enum autonNames
 {
+  notSelected,
   red0,
   blue0,
-  skills0
+  red1,
+  blue1,
+  redSkills0,
+  blueSkills0
 };
 
-typedef autonNames autonID;
+// typedef autonNames autonID;
 
-static autonID selectedAutonID;
+// static autonNames selectedAutonID = notSelected;
 
-extern void autonomousSelector(autonID);
+extern void autonomousSelector(autonNames);
 extern void auton_red0();
 extern void auton_blue0();
 extern void auton_skills0();

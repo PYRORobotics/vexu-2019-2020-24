@@ -34,7 +34,6 @@ using namespace okapi;
 pros::Task lifttaskauto(lift.auton, (void*)NULL, TASK_PRIORITY_DEFAULT,
                 TASK_STACK_DEPTH_DEFAULT, "lift auton task");
 
-
 // Function Defintions
 // -------------------
 
@@ -54,17 +53,27 @@ pros::Task lifttaskauto(lift.auton, (void*)NULL, TASK_PRIORITY_DEFAULT,
 //		None
 //```
 //------------------------------------------------------------------------------
-void autonomousSelector(autonID id)
+void autonomousSelector(autonNames id)
 {
+  std::cout << id << std::endl;
   switch (id) {
     case red0:
+      lv_obj_set_hidden(Screen::Screen_Plate_R,0);
       auton_red0();
       break;
     case blue0:
+      lv_obj_set_hidden(Screen::Screen_Plate_B,0);
       auton_blue0();
       break;
-    case skills0:
+    case redSkills0:
+      lv_obj_set_hidden(Screen::Screen_Plate_R,0);
       auton_skills0();
+      break;
+    case blueSkills0:
+      lv_obj_set_hidden(Screen::Screen_Plate_B,0);
+      auton_skills0();
+      break;
+    default:
       break;
   }
 }
@@ -91,19 +100,20 @@ void autonomousSelector(autonID id)
 //------------------------------------------------------------------------------
 void autonomous()
 {
-    selectedAutonID=skills0; // Use to hardcode auton routine
-
     // Initialize objects for auton
     lift.piston_floor.retract();
     lift.piston_door.retract();
 
+    std::cout << "Auton should be: " << Screen::selectedAuton << std::endl;
+
     // Run selected auton routine
-    autonomousSelector(selectedAutonID);
+    autonomousSelector(Screen::selectedAuton);
 
     // Remove lift task from scheduler
     lifttaskauto.suspend();
     lifttaskauto.remove();
 
+    lv_obj_set_hidden(Screen::Screen_Sponsors,0);
     pros::lcd::print(3, "DONE WITH AUTON");
 }
 

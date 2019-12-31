@@ -288,7 +288,7 @@ class PYRO_Arduino
             //
             //     }
           }
-
+              pros::delay(20);
             }
 
 

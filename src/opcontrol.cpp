@@ -28,6 +28,7 @@
 // Global/Static Objects
 // ---------------------
 pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 
 
 // Function Defintions
@@ -73,29 +74,55 @@ void liftTask(void*)
 //------------------------------------------------------------------------------
 void opcontrol() {
 
-
-  bool arcade = false;
-  bool voltageControl = false;
-
-  // okapi::ADIEncoder LEFT('A', 'B', true);
-  // okapi::ADIEncoder RIGHT('C', 'D');
-
-  // pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
-  //                           TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
-  while (true)
+  while(1) // GUI Command
   {
-    //printf("%f %f\n", LEFT.get(), RIGHT.get());
-    chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
-                                 (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
-                                 0.05);
 
-    if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+    if(Screen::DriverEnabled)
     {
-      // Arduino.setClock();
-      chassis.drive_to_coordinate(0, 20, 0);
+      int startTime = pros::millis();
+
+      if(Screen::Screen_Sponsors != NULL)
+      lv_obj_set_hidden(Screen::Screen_Sponsors,1);
+
+
+      bool arcade = false;
+      bool voltageControl = false;
+
+      // okapi::ADIEncoder LEFT('A', 'B', true);
+      // okapi::ADIEncoder RIGHT('C', 'D');
+
+      // pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
+      //                           TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
+
+      while (Screen::DriverEnabled) // Teleop
+      {
+        //printf("%f %f\n", LEFT.get(), RIGHT.get());
+        chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                                     (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
+                                     0.05);
+
+        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+        {
+          // Arduino.setClock();
+          chassis.drive_to_coordinate(0, 20, 0);
+        }
+
+        if(pros::millis() > 74850 + startTime)
+          lv_obj_set_hidden(Screen::Screen_Innovate,0);
+
+
+
+        pros::delay(20);
+      }
+
+    }
+    else if(Screen::AutonEnabled)
+    {
+      if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+        autonomous();
     }
 
-    pros::delay(20);
+  pros::delay(20);
   }
 }
 
