@@ -12,6 +12,7 @@
 #include "okapi/api/control/controllerInput.hpp"
 #include "okapi/api/device/rotarysensor/continuousRotarySensor.hpp"
 #include "okapi/impl/device/rotarysensor/adiGyro.hpp"
+#include "okapi/api/filter/averageFilter.hpp"
 
 // Include sstream for serial parsing
 #include <sstream>
@@ -79,6 +80,7 @@ class PYRO_Arduino
   public:
     PYRO_Arduino(int port);
     okapi::BNO055 BNO055_Main;
+    inline static bool isCommumnicating = false;
     static okapi::BNO055* bno;
     static void update_differential_pos(void*)
     {
@@ -86,6 +88,7 @@ class PYRO_Arduino
       {
         try
         {
+
         // Start serial on desired port
         vexGenericSerialEnable( bno->get_port() - 1, 0 );
 
@@ -98,8 +101,11 @@ class PYRO_Arduino
         int i = 0;
         int j = 0;
 
+        okapi::AverageFilter<5> avgFilter;
+
         while (true)
         {
+          isCommumnicating = 0;
 
 
           // Buffer to store serial data
@@ -117,6 +123,10 @@ class PYRO_Arduino
           //std::cout << str << "asdfghjkl";
 
 
+          if(avgFilter.filter(nRead) > 0)
+            isCommumnicating = 1;
+
+
           char* input = (char*) buffer;
 
           char* ptr = input;
@@ -126,11 +136,13 @@ class PYRO_Arduino
             //if(input[0] != 2)
             //std::cout << ++j << "oops\n";
 
+
             int count = 0;
             while((*ptr != 2 || *ptr == '\0') && count < 255)
             {
               ptr+=sizeof(char);
               count++;
+              pros::delay(1);
             }
 
             if(*ptr == 2 && *(ptr+1)=='R')
@@ -138,7 +150,7 @@ class PYRO_Arduino
 
               int checksum = 0;
 
-              while(*ptr!=';')
+              while(*ptr!=';' && count<86)
               {
 
 
@@ -146,6 +158,7 @@ class PYRO_Arduino
 
                 std::string str(ptr);
                 ptr+=sizeof(char);
+                pros::delay(1);
               }
 
               checksum += (int) *ptr;
@@ -215,6 +228,7 @@ class PYRO_Arduino
                 OrientationData::setAcceleration(z,temp);
 
 
+
                 // std::cout << ++i << " yay: " << s_heading << " "
                 // << s_pitch << " "
                 // << s_roll << " "
@@ -237,6 +251,8 @@ class PYRO_Arduino
 
               }
             }
+
+
             //
             //
             // char delim[] = " ;";
@@ -288,12 +304,15 @@ class PYRO_Arduino
             //
             //     }
           }
+
               pros::delay(20);
             }
 
 
           }
-          catch(...){}
+          catch(...){
+            isCommumnicating = 0;
+          }
             pros::delay(20);
 
 

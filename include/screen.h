@@ -4,6 +4,7 @@
 #include "api.h"
 #include "autonomous.h"
 #include "display/lv_objx/lv_btnm.h"
+#include "arduino.h"
 
 
 typedef  FILE * pc_file_t;
@@ -620,7 +621,7 @@ return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
           lv_obj_set_hidden(Screen_Bar_Cont2,1);
         }
 
-        if(0) //Fixme: Add static global var in arduino.cpp
+        if(okapi::PYRO_Arduino::isCommumnicating)
         {
           lv_obj_set_hidden(Screen_Bar_Box,0);
         }
