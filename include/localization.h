@@ -97,10 +97,18 @@ private:
   static std::tuple <double, double, double> position;
   static std::tuple <double, double, double> velocity;
   static std::tuple <double, double, double> acceleration;
+  inline static int time = 0;
 
 public:
   OrientationData();
   inline static pros::Mutex mutex;
+  static bool isOld()
+  {
+    if( (pros::millis() - time) < 500 )
+      return 0;
+    else
+      return 1;
+  }
   static void setHeading(double heading)
   {
     OrientationData::heading = heading;
@@ -147,6 +155,8 @@ public:
         break;
     }
   }
+  static void setTime(int time) {OrientationData::time = time;}
+  static double getTime() {return time;}
   static double getHeading() {return heading;}
   static double getPosition(Point3D id)
   {

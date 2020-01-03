@@ -643,7 +643,12 @@ return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
           try
           {
             gotMutex = OrientationData::mutex.take(3000);
-            std::string text1 = "(" + std::to_string((int)OrientationData::getPosition(x)) + ", " + std::to_string((int)OrientationData::getPosition(y)) + ", " + std::to_string((int)OrientationData::getHeading()) + ")                ";
+            std::string text1;
+            if(!OrientationData::isOld())
+              text1 = "(" + std::to_string((int)OrientationData::getPosition(x)) + ", " + std::to_string((int)OrientationData::getPosition(y)) + ", " + std::to_string((int)OrientationData::getHeading()) + ")                ";
+            else
+              text1 = "Old Data!";
+
             lv_label_set_text(Screen_Coordinates_Label, text1.c_str());
           } catch(...){}
 

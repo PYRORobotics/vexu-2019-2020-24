@@ -78,6 +78,8 @@ class BNO055 : public ADIGyro {
 
 class PYRO_Arduino
 {
+  private:
+    inline static int resetTimeout = 5000;
   public:
     PYRO_Arduino(int port);
     okapi::BNO055 BNO055_Main;
@@ -200,6 +202,12 @@ class PYRO_Arduino
                 std::string s_ay = s_str.substr(34,7);
                 std::string s_az = s_str.substr(42,7);
 
+                std::string s_time_hex = s_str.substr(50,8);
+
+                int time;
+                std::istringstream(s_time_hex) >> std::hex >> time;
+                // std::cout << s_time_hex << " = " << time << std::endl;
+
 
                 float heading = stof(s_heading);
                 if(heading > 180)
@@ -234,7 +242,9 @@ class PYRO_Arduino
                   std::stringstream(s_az) >> temp;
                   OrientationData::setAcceleration(z,medFilterAz.filter(temp));
 
-                    OrientationData::mutex.give();
+                  OrientationData::setTime(time);
+
+                  OrientationData::mutex.give();
 
                 }
 
@@ -255,6 +265,11 @@ class PYRO_Arduino
             }
 
 
+          }
+          if(pros::millis() > resetTimeout || OrientationData::isOld())
+          {
+            resetTimeout += 10000;
+            setClock();
           }
 
               pros::delay(20);
@@ -317,7 +332,53 @@ class PYRO_Arduino
         }
     }
 
-    void setClock();
+    static void setClock()
+    {
+      try
+      {
+        std::cout << "Trying to send SetClock" << std::endl;
+      // // Start serial on desired port
+      // vexGenericSerialEnable( bno->get_port() - 1, 0 );
+      //
+      // // Set BAUD rate
+      // vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+
+      FILE* port7 = fopen("/dev/7", "w");
+
+
+      // Let VEX OS configure port
+      pros::delay(10);
+
+        // Buffer to store serial data
+        // uint8_t buffer[6] = "C";
+        // int len = 6;
+
+
+        std::string str = "CLOCK";
+        str += std::to_string(pros::millis());
+        const char *cstr = str.c_str();
+
+
+        fputs(cstr, port7);
+        fclose(port7);
+
+
+        // // Get serial data
+        // vexGenericSerialTransmit(bno->get_port() - 1, buffer, len);
+
+
+        pros::delay(10);
+        std::cout << "Successfully SetClock" << std::endl;
+
+
+        }
+        catch(...)
+        {
+          std::cout << "ERROR ON SETCLOCK!!!" << std::endl;
+        }
+    }
+
     pros::Task t_arduino_update;
   private:
     int port;
