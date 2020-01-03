@@ -74,8 +74,25 @@ void liftTask(void*)
 //------------------------------------------------------------------------------
 void opcontrol() {
 
+  okapi::AverageFilter<250> avgFilterReset;
+
   while(1) // GUI Command
   {
+    // std::cout << avgFilterReset.getOutput() << std::endl;
+    if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X) && master.get_digital(pros::E_CONTROLLER_DIGITAL_Y) && master.get_digital(pros::E_CONTROLLER_DIGITAL_A) && master.get_digital(pros::E_CONTROLLER_DIGITAL_B))
+      avgFilterReset.filter(1);
+    else
+    {
+      for(int i = 0; i < 500; i++)
+        avgFilterReset.filter(0);
+    }
+
+    if(avgFilterReset.getOutput() == 1)
+    {
+      PYRO_Arduino::reset();
+      for(int i = 0; i < 500; i++)
+        avgFilterReset.filter(0);
+    }
 
     if(Screen::DriverEnabled)
     {
@@ -109,8 +126,6 @@ void opcontrol() {
 
         if(pros::millis() > 74850 + startTime)
           lv_obj_set_hidden(Screen::Screen_Innovate,0);
-
-
 
         pros::delay(20);
       }
