@@ -13,6 +13,7 @@
 #include "okapi/api/device/rotarysensor/continuousRotarySensor.hpp"
 #include "okapi/impl/device/rotarysensor/adiGyro.hpp"
 #include "okapi/api/filter/averageFilter.hpp"
+#include "okapi/api/filter/medianFilter.hpp"
 
 // Include sstream for serial parsing
 #include <sstream>
@@ -101,7 +102,11 @@ class PYRO_Arduino
         int i = 0;
         int j = 0;
 
-        okapi::AverageFilter<5> avgFilter;
+        okapi::AverageFilter<5> avgFilterComms;
+        okapi::MedianFilter<3> medFilterAx;
+        okapi::MedianFilter<3> medFilterAy;
+        okapi::MedianFilter<3> medFilterAz;
+        okapi::MedianFilter<3> medFilterHead;
 
         while (true)
         {
@@ -123,7 +128,7 @@ class PYRO_Arduino
           //std::cout << str << "asdfghjkl";
 
 
-          if(avgFilter.filter(nRead) > 0)
+          if(avgFilterComms.filter(nRead) > 0)
             isCommumnicating = 1;
 
 
@@ -142,7 +147,7 @@ class PYRO_Arduino
             {
               ptr+=sizeof(char);
               count++;
-              pros::delay(1);
+              // pros::delay(1);
             }
 
             if(*ptr == 2 && *(ptr+1)=='R')
@@ -150,7 +155,7 @@ class PYRO_Arduino
 
               int checksum = 0;
 
-              while(*ptr!=';' && count<86)
+              while(*ptr!=';' && count<60)
               {
 
 
@@ -158,7 +163,7 @@ class PYRO_Arduino
 
                 std::string str(ptr);
                 ptr+=sizeof(char);
-                pros::delay(1);
+                // pros::delay(1);
               }
 
               checksum += (int) *ptr;
@@ -199,50 +204,47 @@ class PYRO_Arduino
                 float heading = stof(s_heading);
                 if(heading > 180)
                  heading -= 360;
-                bno->set(heading);
 
-                // OrientationData::setAcceleration(x,stof(s_ax));
-                // OrientationData::setAcceleration(y,stof(s_ay));
-                // OrientationData::setAcceleration(z,stof(s_az));
+                 bool gotMutex = false;
 
-                float temp;
+                gotMutex = OrientationData::mutex.take(500);
+                if(gotMutex)
+                {
+                  bno->set(medFilterHead.filter(heading));
 
-                size_t position = s_ax.find("-");
-                if(position!=std::string::npos)
-                  s_ax = s_ax.substr(position);     // get from position to the end
+                  float temp;
 
-                position = s_ay.find("-");
-                if(position!=std::string::npos)
-                  s_ay = s_ay.substr(position);     // get from position to the end
+                  size_t position = s_ax.find("-");
+                  if(position!=std::string::npos)
+                    s_ax = s_ax.substr(position);     // get from position to the end
 
-                position = s_az.find("-");
-                if(position!=std::string::npos)
-                  s_az = s_az.substr(position);     // get from position to the end
+                  position = s_ay.find("-");
+                  if(position!=std::string::npos)
+                    s_ay = s_ay.substr(position);     // get from position to the end
 
-
-                std::stringstream(s_ax) >> temp;
-                OrientationData::setAcceleration(x,temp);
-                std::stringstream(s_ay) >> temp;
-                OrientationData::setAcceleration(y,temp);
-                std::stringstream(s_az) >> temp;
-                OrientationData::setAcceleration(z,temp);
+                  position = s_az.find("-");
+                  if(position!=std::string::npos)
+                    s_az = s_az.substr(position);     // get from position to the end
 
 
+                  std::stringstream(s_ax) >> temp;
+                  OrientationData::setAcceleration(x,medFilterAx.filter(temp));
+                  std::stringstream(s_ay) >> temp;
+                  OrientationData::setAcceleration(y,medFilterAy.filter(temp));
+                  std::stringstream(s_az) >> temp;
+                  OrientationData::setAcceleration(z,medFilterAz.filter(temp));
 
-                // std::cout << ++i << " yay: " << s_heading << " "
-                // << s_pitch << " "
-                // << s_roll << " "
-                // << s_ax << " "
-                // << s_ay << " "
-                // << s_az << " "
-                // << temp
-                // << std::endl;
+                    OrientationData::mutex.give();
 
-                while(vexGenericSerialReceive(bno->get_port() - 1, buffer, len) > 0){pros::delay(1);}
-                pros::delay(80);
+                }
 
 
-// if(i % 20 == 0) reset();
+                buffer[0]='\0';
+                while(vexGenericSerialReceive(bno->get_port() - 1, buffer, len) > 0){
+                  buffer[0]='\0';
+                  pros::delay(1);
+                }
+                pros::delay(20);
 
 
 
@@ -253,56 +255,6 @@ class PYRO_Arduino
             }
 
 
-            //
-            //
-            // char delim[] = " ;";
-            //           char* ptr = strtok(input, delim);
-            //           while(ptr!=NULL)
-            //           {
-            //             //std::cout << ptr << std::endl;
-            //             std::string str(ptr);
-            //
-            //
-            //             if(str.at(0) == 'R')
-            //             {
-            //               str.erase(0,1);
-            //
-            //               char * cstr = new char [str.length()+1];
-            //               strcpy (cstr, str.c_str());
-            //
-            //
-            //               char delim[] = ":";
-            //               char* ptr1 = strtok(cstr, delim);
-            //
-            //               int i = 0;
-            //
-            //               while(ptr1!=NULL)
-            //               {
-            //                 //std::cout << ptr << std::endl;
-            //                 std::string str(ptr);
-            //
-            //                 if(i == 0)
-            //                 {
-            //                   double heading = std::stod(str);
-            //                   if(heading > 0.000001 || heading == 0)
-            //                   {
-            //                     if(heading > 180)
-            //                       heading -= 360;
-            //                     bno->set(heading);
-            //                   }
-            //                 }
-            //
-            //                 i++;
-            //               }
-            //             }
-            //
-            //
-            //
-            //
-            //
-            //
-            //
-            //     }
           }
 
               pros::delay(20);
@@ -317,6 +269,7 @@ class PYRO_Arduino
 
 
       }
+
     }
     static void reset()
     {

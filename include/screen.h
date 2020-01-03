@@ -29,6 +29,7 @@ private:
 
   /* Styles */
   inline static lv_style_t style_btn_main;
+  inline static lv_style_t style_btn_transp;
   inline static lv_style_t style_bg;
 
   /* Objects */
@@ -38,7 +39,10 @@ private:
   inline static lv_obj_t *Screen_Bar_Cont1;
   inline static lv_obj_t *Screen_Bar_Cont2;
   inline static lv_obj_t *Screen_Bar_Box;
+  inline static lv_obj_t *Screen_Bar_Box_Reset_Btn;
   inline static lv_obj_t *Screen_Bar_Charging;
+  inline static lv_obj_t *Screen_Coordinates_Label;
+
   inline static lv_obj_t *Screen_Title_PYRO;
   inline static lv_obj_t *Screen_Title_Btn_Continue;
   inline static lv_obj_t *Screen_Generic_Label;
@@ -244,6 +248,15 @@ private:
     return LV_RES_OK; /*Return OK if the button is not deleted*/
   }
 
+  static lv_res_t button_box_reset(lv_obj_t * btn)
+  {
+
+    okapi::PYRO_Arduino::reset();
+
+    return LV_RES_OK; /*Return OK if the button is not deleted*/
+  }
+
+
 
   static lv_res_t btnm_action_red(lv_obj_t * btnm, const char *txt) {
 
@@ -318,6 +331,18 @@ return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
     style_btn_main.body.padding.hor = 5;
     style_btn_main.body.padding.ver = 5;
     style_btn_main.body.radius = 3;
+
+    lv_style_copy(&Screen::style_btn_transp, &lv_style_btn_rel);
+    style_btn_transp.body.main_color = LV_COLOR_TRANSP;
+    style_btn_transp.body.grad_color = LV_COLOR_TRANSP;
+    style_btn_transp.text.color = LV_COLOR_TRANSP;
+    style_btn_transp.body.border.color = LV_COLOR_TRANSP;
+    style_btn_transp.body.opa = 0;
+    style_btn_transp.body.border.width = 0;
+    style_btn_transp.body.padding.hor = 5;
+    style_btn_transp.body.padding.ver = 5;
+    style_btn_transp.body.radius = 0;
+
 
     lv_style_copy(&Screen::style_bg, &lv_style_plain_color);
     Screen::style_bg.body.main_color = LV_COLOR_BLACK;
@@ -426,6 +451,17 @@ return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
       Screen_Bar_Box = lv_img_create(Screen_Bar, NULL);
       lv_img_set_src(Screen_Bar_Box, "D:/usd/img_boxw.bin");
       lv_obj_align(Screen_Bar_Box, Screen_Bar, LV_ALIGN_CENTER, -104, 0);
+
+      Screen_Bar_Box_Reset_Btn = lv_btn_create(Screen_Bar, NULL);
+      //lv_obj_set_event_cb(btn1, event_handler);
+      lv_obj_align(Screen_Bar_Box_Reset_Btn, Screen_Bar, LV_ALIGN_CENTER, -56, 25);
+      lv_obj_set_size(Screen_Bar_Box_Reset_Btn, 32, 32);
+      lv_obj_set_style(Screen_Bar_Box_Reset_Btn, &style_btn_transp);
+      lv_btn_set_action(Screen_Bar_Box_Reset_Btn, LV_BTN_ACTION_CLICK, button_box_reset);
+
+      Screen_Coordinates_Label = lv_label_create(Screen_Bar, NULL);
+      lv_label_set_text(Screen_Coordinates_Label, "(x,y,h)");
+      lv_obj_align(Screen_Coordinates_Label, Screen_Bar, LV_ALIGN_CENTER, 85, 0);
 
       lv_obj_set_hidden(Screen_Bar_Cont1,1);
       lv_obj_set_hidden(Screen_Bar_Cont2,1);
@@ -602,6 +638,19 @@ return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
           std::string text1 = std::to_string((int)pros::battery::get_capacity()) + "%";
           lv_label_set_text(Screen_Battery_Percent_Label, text1.c_str());
         }
+
+        bool gotMutex = false;
+          try
+          {
+            gotMutex = OrientationData::mutex.take(3000);
+            std::string text1 = "(" + std::to_string((int)OrientationData::getPosition(x)) + ", " + std::to_string((int)OrientationData::getPosition(y)) + ", " + std::to_string((int)OrientationData::getHeading()) + ")                ";
+            lv_label_set_text(Screen_Coordinates_Label, text1.c_str());
+          } catch(...){}
+
+          if(gotMutex)
+          OrientationData::mutex.give();
+
+
 
         if(master.is_connected())
         {

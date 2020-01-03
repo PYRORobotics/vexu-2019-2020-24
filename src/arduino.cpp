@@ -136,7 +136,7 @@ void t_update_BNO055(void*)
 //```
 //------------------------------------------------------------------------------
 PYRO_Arduino::PYRO_Arduino(int port) : BNO055_Main(port), t_arduino_update(update_differential_pos,(void*)NULL, TASK_PRIORITY_DEFAULT,
-                          TASK_STACK_DEPTH_DEFAULT, "task")
+                          TASK_STACK_DEPTH_DEFAULT, "Arduino task")
 {
   this->port = port;
   bno = &BNO055_Main;

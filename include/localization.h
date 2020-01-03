@@ -100,6 +100,7 @@ private:
 
 public:
   OrientationData();
+  inline static pros::Mutex mutex;
   static void setHeading(double heading)
   {
     OrientationData::heading = heading;
