@@ -305,6 +305,14 @@ void PYROChassis::drive_seconds(int speed, double sec)
 
 void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
 {
+
+  int a, b;
+
+  PIDControllerManager man;
+
+  PIDControllerRemake q(a, b, 1, 1, 1, 1, 1, 333);
+  PIDControllerRemake w(b, a, 2, 1, 1, 1, 1, 333); 
+
   double x0, y0, h0, distance;
   x0 = OrientationData::getPosition(x);
   y0 = OrientationData::getPosition(y);

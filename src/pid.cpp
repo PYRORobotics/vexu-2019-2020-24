@@ -141,6 +141,45 @@ PIDImpl::~PIDImpl()
 {
 }
 
+
+
+
+
+
+
+
+PIDControllerRemake::PIDControllerRemake(int& l, int& r, float kp, float ki, float kd, float min, float max, float dt) : left(l), right(r)
+{
+  this->kp = kp;
+  this->ki = ki;
+  this->kd = kd;
+  this->min = min;
+  this->max = max;
+  this->dt = dt;
+
+  PIDControllerManager::controllerList.push_back(*this);
+}
+
+PIDReturn PIDControllerRemake::iterate()
+{
+  std::cout << "Yay" << kp << std::endl;
+  PIDReturn a;
+  a.left = 1;
+  a.right = 1;
+  return a;
+}
+
+
+
+PIDControllerManager::PIDControllerManager() : t_PIDManager(manager,(void*)NULL, TASK_PRIORITY_DEFAULT,
+                          TASK_STACK_DEPTH_DEFAULT, "PID Manager task")
+{
+
+}
+
+
+
+
 //------------------------------------------------------------------------------
 //===================================END FILE===================================
 //==============================================================================

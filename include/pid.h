@@ -2,6 +2,7 @@
 #define _PID_H_
 
 #include "api.h"
+#include <vector>
 
 // From: https://gist.github.com/bradley219/5373998
 
@@ -44,5 +45,47 @@ class PIDController
         PIDImpl *pimpl;
 };
 
+
+struct PIDReturn
+{
+  int left, right;
+};
+
+class PIDControllerRemake
+{
+  private:
+    float kp, ki, kd, min, max, dt;
+    int& left;
+    int& right;
+
+    PIDReturn iterate();
+
+  public:
+    PIDControllerRemake(int&, int&, float, float, float, float, float, float = 333);
+    friend class PIDControllerManager;
+
+};
+
+class PIDControllerManager
+{
+private:
+  static void manager(void*)
+  {
+    while(1)
+    {
+      for(auto PID : controllerList)
+        PID.iterate();
+      pros::delay(20);
+    }
+  }
+  inline static std::vector<PIDControllerRemake> controllerList;
+
+  pros::Task t_PIDManager;
+
+public:
+  PIDControllerManager();
+  friend class PIDControllerRemake;
+
+};
 
 #endif
