@@ -50,9 +50,10 @@ static void update_localization(void*)
 //------------------------------------------------------------------------------
 void initialize()
 {
-	pros::delay(100);
+	pros::delay(200);
 	//pros::lcd::initialize(); // Uncomment to use PROS's LCD
 	Screen screen;
+	pros::delay(100);
 	pros::Task t_update_localization(update_localization,(void*)NULL, TASK_PRIORITY_DEFAULT,
 	                          TASK_STACK_DEPTH_DEFAULT, "task");
 

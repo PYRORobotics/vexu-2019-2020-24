@@ -316,7 +316,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
   float multiplierr = 1.0;
 
   float maxSpeed = 10;
-  float kp = 0.1;
+  float kp = 1;
 
   do
   {
@@ -329,35 +329,44 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
     double pidl = distance * kp;
     double pidr = distance * kp;
 
-    double hn;
+    double heading_delta;
 
     if((y1-y0) == 0)
     {
-      x1 >= x0? hn = 90 : hn = -90;
+      if(x1-x0 >= 0)
+      heading_delta = 90 - h0;
+      else
+      heading_delta = -90 + h0;
     }
     else
     {
-      hn = 180 / PI * ( atan( (x1-x0)/(y1-y0) ) );
+      heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
     }
 
-    double heading_delta = h0 - hn;
+    int speedl;
+    int speedr;
 
-    if(heading_delta < 0)
+
+    if(heading_delta >= 0)
     {
-      multiplierl += 0.1 * (-heading_delta);
-      multiplierr -= 0.1 * (heading_delta);
+      if(y1-y0 >= 0)
+      speedl = 1 * pidl;
+      else
+      speedl = -1 * pidl;
+      speedr = cos( PI/180.0 * heading_delta ) * pidr;
     }
     else
     {
-      multiplierl -= 0.1 * (heading_delta);
-      multiplierr += 0.1 * (-heading_delta);
+      if(y1-y0 >= 0)
+      speedr = 1 * pidr;
+      else
+      speedr = -1 * pidr;
+      speedl = cos( PI/180.0 * heading_delta ) * pidl;
     }
 
-    int speedl = pidl * multiplierl;
-    int speedr = pidr * multiplierr;
 
-    left_motors.moveVelocity(pidl * multiplierl);
-    right_motors.moveVelocity(pidr * multiplierr);
+    left_motors.moveVelocity(pidl);
+    right_motors.moveVelocity(pidr);
 
     x0 = OrientationData::getPosition(x);
     y0 = OrientationData::getPosition(y);
@@ -366,9 +375,9 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
     pros::delay(333);
 
     distance = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
-    std::cout << "Distance: " << distance << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << std::endl;
+    std::cout << "Distance: " << distance << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << ", Delta: " << heading_delta << std::endl;
 
-  } while(distance > 2);
+  } while(distance > 1);
 
   turn_PID_sync(h1 - h0);
 

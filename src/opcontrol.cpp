@@ -121,7 +121,7 @@ void opcontrol() {
         if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
         {
           // Arduino.setClock();
-          chassis.drive_to_coordinate(0, 20, 0);
+          chassis.drive_to_coordinate(24, 24, 0);
         }
 
         if(pros::millis() > 74850 + startTime)
