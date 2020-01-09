@@ -306,19 +306,18 @@ void PYROChassis::drive_seconds(int speed, double sec)
 void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
 {
 
-  int a, b;
+  double cv = 0, pv = 2; float setpoint = 0;
 
-  PIDControllerManager man;
+  PIDControllerRemake q(setpoint, pv, cv, 15, 1, 1, 0, 100, 333);
 
-  PIDControllerRemake q(a, b, 1, 1, 1, 1, 1, 333);
-  PIDControllerRemake w(b, a, 2, 1, 1, 1, 1, 333); 
-
-  double x0, y0, h0, distance;
+  double x0, y0, h0;
   x0 = OrientationData::getPosition(x);
   y0 = OrientationData::getPosition(y);
   h0 = OrientationData::getHeading();
 
   double distance0 = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+
+  q.setSetpoint(distance0);
 
   float multiplierl = 1.0;
   float multiplierr = 1.0;
@@ -328,14 +327,16 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
 
   do
   {
-    if(distance > (distance0 * 3 / 4))
+    //std::cout << "sp : " << q.setpoint << std::endl;
+
+    if(pv > (distance0 * 3 / 4))
     {
       //limit speed
       maxSpeed = 5;
     }
 
-    double pidl = distance * kp;
-    double pidr = distance * kp;
+    double pidl = cv;
+    double pidr = cv;
 
     double heading_delta;
 
@@ -351,8 +352,8 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
       heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
     }
 
-    int speedl;
-    int speedr;
+    double speedl;
+    double speedr;
 
 
     if(heading_delta >= 0)
@@ -372,9 +373,14 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
       speedl = cos( PI/180.0 * heading_delta ) * pidl;
     }
 
+    speedl /= 100;
+    speedr /= 100;
 
-    left_motors.moveVelocity(pidl);
-    right_motors.moveVelocity(pidr);
+    // left_motors.moveVelocity(pidl);
+    // right_motors.moveVelocity(pidr);
+
+    chassis.driveController.left(speedl);
+    chassis.driveController.right(speedr);
 
     x0 = OrientationData::getPosition(x);
     y0 = OrientationData::getPosition(y);
@@ -382,12 +388,13 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
 
     pros::delay(333);
 
-    distance = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
-    std::cout << "Distance: " << distance << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << ", Delta: " << heading_delta << std::endl;
+    pv = distance0 - sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+    // std::cout << " pv = " << pv;
+    std::cout << "Distance: " << pv << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << ", Delta: " << heading_delta << std::endl;
 
-  } while(distance > 1);
+  } while(abs(distance0 - pv) > 0.125);
 
-  turn_PID_sync(h1 - h0);
+  // turn_PID_sync(h1 - h0);
 
 }
 

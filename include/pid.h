@@ -55,13 +55,17 @@ class PIDControllerRemake
 {
   private:
     float kp, ki, kd, min, max, dt;
-    int& left;
-    int& right;
+    float& setpoint;
+    double& pv;
+    double& cv;
 
-    PIDReturn iterate();
+    void iterate();
 
   public:
-    PIDControllerRemake(int&, int&, float, float, float, float, float, float = 333);
+    // PIDControllerRemake(double&, double&, float, float, float, float, float, float = 333);
+    PIDControllerRemake(float&, double&, double&, float, float, float, float, float, float = 333);
+
+    void setSetpoint(double setpoint);
     friend class PIDControllerManager;
 
 };

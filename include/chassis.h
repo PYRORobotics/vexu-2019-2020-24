@@ -64,6 +64,7 @@ namespace okapi
       {
         encoder_left.reset();
         encoder_right.reset();
+        std::cout << "ENC RESET"<< std::endl;
 
         double enc_last = 0;
         while(1)

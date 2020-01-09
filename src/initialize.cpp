@@ -60,6 +60,8 @@ void initialize()
 	Arduino.setClock();
 	pros::delay(200);
 	Arduino.reset();
+
+	PIDControllerManager man;
 }
 
 

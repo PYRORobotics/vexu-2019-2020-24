@@ -147,8 +147,21 @@ PIDImpl::~PIDImpl()
 
 
 
+//
+// PIDControllerRemake::PIDControllerRemake(double& pv, double& cv, float kp, float ki, float kd, float min, float max, float dt) : pv(pv), cv(cv), setpoint(0.0)
+// {
+//   setpoint = 0;
+//   this->kp = kp;
+//   this->ki = ki;
+//   this->kd = kd;
+//   this->min = min;
+//   this->max = max;
+//   this->dt = dt;
+//
+//   PIDControllerManager::controllerList.push_back(*this);
+// }
 
-PIDControllerRemake::PIDControllerRemake(int& l, int& r, float kp, float ki, float kd, float min, float max, float dt) : left(l), right(r)
+PIDControllerRemake::PIDControllerRemake(float& setpoint, double& pv, double& cv, float kp, float ki, float kd, float min, float max, float dt) : pv(pv), cv(cv), setpoint(setpoint)
 {
   this->kp = kp;
   this->ki = ki;
@@ -160,13 +173,44 @@ PIDControllerRemake::PIDControllerRemake(int& l, int& r, float kp, float ki, flo
   PIDControllerManager::controllerList.push_back(*this);
 }
 
-PIDReturn PIDControllerRemake::iterate()
+void PIDControllerRemake::setSetpoint(double setpoint)
 {
-  std::cout << "Yay" << kp << std::endl;
-  PIDReturn a;
-  a.left = 1;
-  a.right = 1;
-  return a;
+  this->setpoint = setpoint;
+}
+
+
+void PIDControllerRemake::iterate()
+{
+  int speed;
+  if(setpoint > 0.125)
+  {
+    // Ramp-up
+    if(pv < 0.25*setpoint)
+    {
+      // std::cout << "LIMITING (Rev-up): ";
+      speed = max * pow(1 + pow(2.71828182846,4-40*(pv/setpoint)), -0.75);
+    }
+    // PID
+    else
+    {
+      speed = kp * (setpoint - pv);
+      if(speed > max)
+      {
+        // std::cout << "LIMITING: ";
+        speed = max;
+      }
+    }
+    // std::cout << "speed: " << speed << " pv: " << pv << " setpt: " << setpoint << std::endl;
+  }
+  else
+  {
+    // Stop
+    speed = 0;
+  }
+  cv = speed;
+
+  // std::cout << "Speed, setpt " << speed << ", " << setpoint << std::endl;
+
 }
 
 

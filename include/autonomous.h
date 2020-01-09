@@ -33,6 +33,8 @@ enum autonNames
 extern void autonomousSelector(autonNames);
 extern void auton_red0();
 extern void auton_blue0();
+extern void auton_red1();
+extern void auton_blue1();
 extern void auton_skills0();
 
 //------------------------------------------------------------------------------
