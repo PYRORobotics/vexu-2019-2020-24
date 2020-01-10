@@ -28,6 +28,10 @@
 // Global/Static Objects
 // ---------------------
 pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::Controller partner(pros::E_CONTROLLER_PARTNER);
+PYROcontrollerLCD masterLCD(master);
+PYROcontrollerLCD partnerLCD(partner);
+
 
 
 // Function Defintions
@@ -51,6 +55,13 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 void liftTask(void*)
 {
     lift.loopTeleop();
+}
+
+void controllerLCDTask(void*){
+    while(true) {
+        masterLCD.controllerLCDLoop();
+        //partnerLCD.controllerLCDLoop(); //If the partner joystick isn't actually being used, then there's no point in halving our screen update frequency.
+    }
 }
 
 
