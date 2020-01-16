@@ -102,7 +102,7 @@ void printSampleControllerText(){
     stream << "R_Stick: " << master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
     masterLCD.setControllerLCD(1, stream.str());
     stream.str("");
-    stream << "YEET";
+    stream << "Battery: " << pros::battery::get_capacity() << "%%";
     masterLCD.setControllerLCD(2, stream.str());
 }
 
