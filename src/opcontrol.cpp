@@ -57,11 +57,53 @@ void liftTask(void*)
     lift.loopTeleop();
 }
 
+//------------------------------------------------------------------------------
+// Function: controllerLCDTask(void*) :
+// ---------------------------
+// Description:
+//     Runs the Async controller LCD functions (for use with pros::Task).
+//
+// Parameters:
+//```
+//    void* parameters
+//```
+// Returns:
+//```
+//    None
+//```
+//------------------------------------------------------------------------------
 void controllerLCDTask(void*){
     while(true) {
         masterLCD.controllerLCDLoop();
         //partnerLCD.controllerLCDLoop(); //If the partner joystick isn't actually being used, then there's no point in halving our screen update frequency.
     }
+}
+
+//------------------------------------------------------------------------------
+// Function: printSampleControllerText() :
+// -----------------------
+// Description:
+//     Function that displays some sample values to the master controller's screen
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    None
+//```
+//------------------------------------------------------------------------------
+void printSampleControllerText(){
+    std::ostringstream stream;
+    stream.str("");
+    stream << "L_Stick: " << master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    masterLCD.setControllerLCD(0, stream.str());
+    stream.str("");
+    stream << "R_Stick: " << master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+    masterLCD.setControllerLCD(1, stream.str());
+    stream.str("");
+    stream << "YEET";
+    masterLCD.setControllerLCD(2, stream.str());
 }
 
 
@@ -84,23 +126,25 @@ void controllerLCDTask(void*){
 //------------------------------------------------------------------------------
 void opcontrol() {
 
-  bool arcade = false;
-  bool voltageControl = false;
+    bool arcade = false;
+    bool voltageControl = false;
 
-  okapi::ADIEncoder LEFT('A', 'B', true);
-  okapi::ADIEncoder RIGHT('C', 'D');
+    okapi::ADIEncoder LEFT('A', 'B', true);
+    okapi::ADIEncoder RIGHT('C', 'D');
 
-  pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
+    pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
                             TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
-  while (true)
-  {
-    printf("%f %f\n", LEFT.get(), RIGHT.get());
-    chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
-                                 (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
-                                 0.05);
-
-    pros::delay(20);
-  }
+    pros::Task taskControllerLCD(controllerLCDTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
+                              TASK_STACK_DEPTH_DEFAULT, "controller LCD task");
+    while (true)
+    {
+        printf("%f %f\n", LEFT.get(), RIGHT.get());
+        chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
+                                     (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
+                                     0.05);
+        printSampleControllerText();
+        pros::delay(20);
+    }
 }
 
 //------------------------------------------------------------------------------
