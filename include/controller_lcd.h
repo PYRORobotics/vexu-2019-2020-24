@@ -7,7 +7,7 @@
 
 class PYROcontrollerLCD {
     public:
-        PYROcontrollerLCD(pros::Controller controller);
+        PYROcontrollerLCD(pros::Controller &controller);
         void controllerLCDLoop();
         void setControllerLCD(int line, std::string linedataString);
     private:

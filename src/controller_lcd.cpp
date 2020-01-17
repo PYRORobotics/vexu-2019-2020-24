@@ -7,7 +7,7 @@
 std::string LCDLinesOld[4];
 const int NUM_LINES = 3;
 
-PYROcontrollerLCD::PYROcontrollerLCD(pros::Controller acontroller) : controller(pros::E_CONTROLLER_PARTNER) {   //controller need to be explicitly initialized, so we just set it to the partner joystick. This isn't an issue since it gets set to whatever controller object was passed through
+PYROcontrollerLCD::PYROcontrollerLCD(pros::Controller &acontroller) : controller(pros::E_CONTROLLER_PARTNER) {   //controller need to be explicitly initialized, so we just set it to the partner joystick. This isn't an issue since it gets set to whatever controller object was passed through
     controller = acontroller;
     LCDLines[0] = "";
     LCDLines[1] = "";
