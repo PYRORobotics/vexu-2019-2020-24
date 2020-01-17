@@ -52,6 +52,7 @@ namespace okapi
       void turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*);
       void turn_PID_sync(double, bool = true);
       void drive_seconds(int,double);
+      double getHighestMotorTemperature();
       static void update_differential_pos(void*)
       {
         int i = 0;

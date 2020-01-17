@@ -96,10 +96,10 @@ void controllerLCDTask(void*){
 void printSampleControllerText(){
     std::ostringstream stream;
     stream.str("");
-    stream << "L_Stick: " << master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    stream << "Lift_Height: " << ((int)lift.getLiftHeight()) << "in";
     masterLCD.setControllerLCD(0, stream.str());
     stream.str("");
-    stream << "R_Stick: " << master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+    stream << "Drive_Temp: " << chassis.getHighestMotorTemperature();
     masterLCD.setControllerLCD(1, stream.str());
     stream.str("");
     stream << "Battery: " << pros::battery::get_capacity() << "%%";

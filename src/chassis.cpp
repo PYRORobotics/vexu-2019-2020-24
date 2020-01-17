@@ -292,5 +292,31 @@ void PYROChassis::drive_seconds(int speed, double sec)
 }
 
 //------------------------------------------------------------------------------
+// Method: getHighestMotorTemperature() :
+// ------------------------------------
+// Description:
+//     Polls all drive motors and returns the temperature of the hottest motor
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    double maxTemp
+//```
+//------------------------------------------------------------------------------
+double PYROChassis::getHighestMotorTemperature(){
+    int motors[] = {M_CHASSIS_LF, M_CHASSIS_LM, M_CHASSIS_LR, M_CHASSIS_RF, M_CHASSIS_RM, M_CHASSIS_RR};
+    double maxTemp = pros::Motor(motors[0]).get_temperature();
+    for(int i = 1; i < sizeof(motors)/ sizeof(int); i++){
+        if(pros::Motor(motors[i]).get_temperature() > maxTemp){
+            maxTemp = pros::Motor(motors[i]).get_temperature();
+        }
+    }
+    return maxTemp;
+}
+
+//------------------------------------------------------------------------------
 //===================================END FILE===================================
 //==============================================================================
