@@ -76,6 +76,8 @@ void opcontrol() {
 
   okapi::AverageFilter<250> avgFilterReset;
 
+  Piston pist(9);
+
   while(1) // GUI Command
   {
     // std::cout << avgFilterReset.getOutput() << std::endl;
@@ -108,8 +110,8 @@ void opcontrol() {
       // okapi::ADIEncoder LEFT('A', 'B', true);
       // okapi::ADIEncoder RIGHT('C', 'D');
 
-      // pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
-      //                           TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
+      pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
+                                TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
 
       while (Screen::DriverEnabled) // Teleop
       {
@@ -122,9 +124,53 @@ void opcontrol() {
         {
           // Arduino.setClock();
           std::cout << "Trying to set drive_to_coordinate" << std::endl;
-          chassis.drive_to_coordinate(0, 24, 0);
+          // chassis.drive_to_coordinate(0, 24, 0);
+          // pros::delay(500);
+          // chassis.drive_to_coordinate(0, 0, 0);
+          // pros::delay(500);
+          // chassis.drive_to_coordinate(0, 24, 90);
+          // pros::delay(2000);
+          //
+          // chassis.drive_to_coordinate(0, 48, 90);
+          // pros::delay(2000);
+
+          chassis.drive_to_coordinate(6, 42, 0);
+          pros::delay(100);
+
+
+
+          chassis.driveController.left(0);
+          chassis.driveController.right(0);
           pros::delay(500);
-          chassis.drive_to_coordinate(0, -24, 0);
+
+          //
+          // // chassis.driveController.turnAngle(180_deg);
+          // chassis.driveController.left(0.3);
+          // chassis.driveController.right(0.3);
+          //
+          // pros::delay(1000);
+          //
+          // chassis.driveController.left(0);
+          // chassis.driveController.right(0);
+          //
+          // pros::delay(500);
+          //
+          // chassis.drive_to_coordinate(0, 0, 0);
+          // // pros::delay(500);
+          // // chassis.drive_to_coordinate(-24, 24, -90);
+          // // pros::delay(500);
+          // // chassis.drive_to_coordinate(0, 0, 0);
+          // chassis.driveController.left(0);
+          // chassis.driveController.right(0);
+          //
+          // pros::delay(500);
+
+        }
+
+        if(0)//master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+        {
+          std::cout << "PISTON!!!!" << std::endl;
+          PYRO_Arduino::setADI(9, 1);
         }
 
         if(pros::millis() > 74850 + startTime)

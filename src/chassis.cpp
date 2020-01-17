@@ -308,7 +308,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
 
   double cv = 0, pv = 2; float setpoint = 0;
 
-  PIDControllerRemake q(setpoint, pv, cv, 15, 1, 1, 0, 100, 333);
+  PIDControllerRemake q(setpoint, pv, cv, 2, 1, 1, 0, 100, 333);
 
   double x0, y0, h0;
   x0 = OrientationData::getPosition(x);
@@ -319,8 +319,8 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
 
   q.setSetpoint(distance0);
 
-  float multiplierl = 1.0;
-  float multiplierr = 1.0;
+  float multiplierl = 0.01;
+  float multiplierr = 0.01;
 
   float maxSpeed = 10;
   float kp = 1;
@@ -329,11 +329,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
   {
     //std::cout << "sp : " << q.setpoint << std::endl;
 
-    if(pv > (distance0 * 3 / 4))
-    {
-      //limit speed
-      maxSpeed = 5;
-    }
+
 
     double pidl = cv;
     double pidr = cv;
@@ -362,7 +358,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
       speedl = 1 * pidl;
       else
       speedl = -1 * pidl;
-      speedr = cos( PI/180.0 * heading_delta ) * pidr;
+      speedr = 0.7* cos( PI/180.0 * heading_delta ) * pidr;
     }
     else
     {
@@ -370,29 +366,92 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
       speedr = 1 * pidr;
       else
       speedr = -1 * pidr;
-      speedl = cos( PI/180.0 * heading_delta ) * pidl;
+      speedl = 0.7* cos( PI/180.0 * heading_delta ) * pidl;
     }
 
     speedl /= 100;
     speedr /= 100;
 
+    if(pv < (distance0 * 1 / 4))
+    {
+      //limit speed
+      speedl *= multiplierl;
+      speedr *= multiplierr;
+      multiplierl += 0.05;
+      multiplierr += 0.05;
+    }
+
     // left_motors.moveVelocity(pidl);
     // right_motors.moveVelocity(pidr);
 
+    if(speedl > 0.6)
+      speedl = 0.6;
+    if(speedr > 0.6)
+      speedr = 0.6;
+
     chassis.driveController.left(speedl);
-    chassis.driveController.right(speedr);
+    chassis.driveController.right(-speedr);
 
     x0 = OrientationData::getPosition(x);
     y0 = OrientationData::getPosition(y);
     h0 = OrientationData::getHeading();
 
-    pros::delay(333);
+    pros::delay(20);
 
     pv = distance0 - sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
     // std::cout << " pv = " << pv;
     std::cout << "Distance: " << pv << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << ", Delta: " << heading_delta << std::endl;
 
-  } while(abs(distance0 - pv) > 0.125);
+  } while(fabs(distance0 - pv) > 1);
+
+  pros::delay(100);
+
+  if(h1-OrientationData::getHeading() >= 0)
+  {
+    while(h1-OrientationData::getHeading() > 0)
+    {
+      chassis.driveController.left(0.025);
+      chassis.driveController.right(0.025);
+      pros::delay(20);
+    }
+  }
+  else
+  {
+    while(h1-OrientationData::getHeading() < 0)
+    {
+      chassis.driveController.left(-0.025);
+      chassis.driveController.right(-0.025);
+      pros::delay(20);
+    }
+  }
+
+
+  // while(fabs(h1 - h0) > 0.5)
+  // {
+  //   kp = 1;
+  //   double speed;
+  //
+  //   speed = kp * (h1 - h0);
+  //
+  //   if(speed > 0.5) speed = 0.5;
+  //   else if(speed < -0.5) speed = -0.5;
+  //
+  //   if((h1 - h0) > 0)
+  //   {
+  //     chassis.driveController.left(speed);
+  //     chassis.driveController.right(speed);
+  //   }
+  //   else
+  //   {
+  //     chassis.driveController.left(-speed);
+  //     chassis.driveController.right(-speed);
+  //   }
+  //   pros::delay(20);
+  // }
+
+  chassis.driveController.left(0);
+  chassis.driveController.right(0);
+
 
   // turn_PID_sync(h1 - h0);
 

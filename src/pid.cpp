@@ -161,7 +161,7 @@ PIDImpl::~PIDImpl()
 //   PIDControllerManager::controllerList.push_back(*this);
 // }
 
-PIDControllerRemake::PIDControllerRemake(float& setpoint, double& pv, double& cv, float kp, float ki, float kd, float min, float max, float dt) : pv(pv), cv(cv), setpoint(setpoint)
+PIDControllerRemake::PIDControllerRemake(float& setpoint, double& pv, double& cv, float kp, float ki, float kd, float min, float max, float dt) : pv(pv), cv(cv), setpoint(setpoint)//, id(id)
 {
   this->kp = kp;
   this->ki = ki;
@@ -188,12 +188,17 @@ void PIDControllerRemake::iterate()
     if(pv < 0.25*setpoint)
     {
       // std::cout << "LIMITING (Rev-up): ";
-      speed = max * pow(1 + pow(2.71828182846,4-40*(pv/setpoint)), -0.75);
+      speed = max * pow(0.8 + pow(2.71828182846,2.5-40*(pv/setpoint)), -0.75);
     }
     // PID
     else
     {
-      speed = kp * (setpoint - pv);
+      speed = max * pow(0.8 + pow(2.71828182846,2.5-40*(pv/setpoint)), -0.75);
+      int speed2 = kp * (setpoint - pv);
+      if(fabs(speed2) < fabs(speed))
+      {
+        speed = speed2;
+      }
       if(speed > max)
       {
         // std::cout << "LIMITING: ";
@@ -206,6 +211,7 @@ void PIDControllerRemake::iterate()
   {
     // Stop
     speed = 0;
+    // PIDControllerManager.removePID(this);
   }
   cv = speed;
 

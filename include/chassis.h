@@ -25,7 +25,7 @@
 //------------------------------------------------------------------------------
 
 #define WHEELBASE 16.5
-#define IDLER_WHEEL_DIAMETER 2.83
+#define IDLER_WHEEL_DIAMETER 2.95//2.83 //3.22
 extern double ecToDegrees(int ec);
 
 

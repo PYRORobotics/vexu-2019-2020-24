@@ -3,6 +3,7 @@
 
 #include "api.h"
 #include <vector>
+#include <algorithm>
 
 // From: https://gist.github.com/bradley219/5373998
 
@@ -58,12 +59,13 @@ class PIDControllerRemake
     float& setpoint;
     double& pv;
     double& cv;
+    // const int id;
 
     void iterate();
 
   public:
     // PIDControllerRemake(double&, double&, float, float, float, float, float, float = 333);
-    PIDControllerRemake(float&, double&, double&, float, float, float, float, float, float = 333);
+    PIDControllerRemake(float&, double&, double&, float, float, float, float, float, float = 333);//, int = PIDControllerManager.num_objects++);
 
     void setSetpoint(double setpoint);
     friend class PIDControllerManager;
@@ -89,6 +91,24 @@ private:
 public:
   PIDControllerManager();
   friend class PIDControllerRemake;
+  inline static int num_objects = 0;
+  static void removePID(PIDControllerRemake& P)
+  {
+    // int pos = -1;
+    // for (int i = 0; i < controllerList.size(); i++) {
+    //   if (controllerList.data()->id == P.id)
+    //     pos = i;
+    // }
+    //
+    // if(pos >= 0)
+    // {
+    //   controllerList.erase(controllerList.begin() + pos);
+    //
+    //   num_objects--;
+    //   std::cout << "Removed a PID at position: " << pos << std::endl;
+    // }
+
+  }
 
 };
 
