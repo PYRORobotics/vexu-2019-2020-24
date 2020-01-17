@@ -81,15 +81,12 @@ void PYROcontrollerLCD::setControllerLCD(int line, std::string linedataString){
 //```
 //------------------------------------------------------------------------------
 void PYROcontrollerLCD::controllerLCDLoop(){
-    //while(true){
-    if(true){
-        for(int i = 0; i < (NUM_LINES); i++){   //loop through all lines
-            if(LCDLinesOld[i] != LCDLines[i]){  //if something has been changed, we need to update that line of the display. Otherwise, do nothing because writes to the controller LCD are costly in terms of time.
-                LCDLinesOld[i] = LCDLines[i]; //Do this early to try to minimize race condition possibility
-                controller.print(i, 0, prepareStringForLCD(LCDLines[i]).c_str());
-                pros::delay(52);    //since we wrote to the display, we need to wait the 50ms (52ms because I don't trust vex fully) cooldown before we attempt to write again
-            }
+    for(int i = 0; i < (NUM_LINES); i++){   //loop through all lines
+        if(LCDLinesOld[i] != LCDLines[i]){  //if something has been changed, we need to update that line of the display. Otherwise, do nothing because writes to the controller LCD are costly in terms of time.
+            LCDLinesOld[i] = LCDLines[i]; //Do this early to try to minimize race condition possibility
+            controller.print(i, 0, prepareStringForLCD(LCDLines[i]).c_str());
+            pros::delay(52);    //since we wrote to the display, we need to wait the 50ms (52ms because I don't trust vex fully) cooldown before we attempt to write again
         }
-        pros::delay(50);    //don't hog the CPU
     }
+    //pros::delay(50);    //don't hog the CPU   //there is a delay in the loop that calls this function, so this delay is no longer necessary.
 }

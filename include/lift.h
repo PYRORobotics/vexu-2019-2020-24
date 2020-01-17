@@ -33,6 +33,7 @@ class PYROLift {
         void collectCube();
         void collectCube(int);
         void intakeAndCollect();
+        double getHighestMotorTemperature();
         Piston piston_door;
         Piston piston_floor;
         static int liftTarget;

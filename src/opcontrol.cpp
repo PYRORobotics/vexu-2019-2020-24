@@ -75,7 +75,8 @@ void liftTask(void*)
 void controllerLCDTask(void*){
     while(true) {
         masterLCD.controllerLCDLoop();
-        //partnerLCD.controllerLCDLoop(); //If the partner joystick isn't actually being used, then there's no point in halving our screen update frequency.
+        partnerLCD.controllerLCDLoop();
+        pros::delay(50);
     }
 }
 
@@ -93,17 +94,31 @@ void controllerLCDTask(void*){
 //    None
 //```
 //------------------------------------------------------------------------------
+
 void printSampleControllerText(){
     std::ostringstream stream;
+
+    //Master prints:
     stream.str("");
     stream << "Lift_Height: " << ((int)lift.getLiftHeight()) << "in";
     masterLCD.setControllerLCD(0, stream.str());
     stream.str("");
-    stream << "Drive_Temp: " << chassis.getHighestMotorTemperature();
+    stream << "Drive_Temp: " << (int) chassis.getHighestMotorTemperature();
     masterLCD.setControllerLCD(1, stream.str());
     stream.str("");
     stream << "Battery: " << pros::battery::get_capacity() << "%%";
     masterLCD.setControllerLCD(2, stream.str());
+
+    //Partner prints:
+    stream.str("");
+    stream << "Bat_Amps: " << ((int)(pros::battery::get_current()/1000)) << "A";
+    partnerLCD.setControllerLCD(0, stream.str());
+    stream.str("");
+    stream << "Lift_Temp: " << (int) lift.getHighestMotorTemperature();
+    partnerLCD.setControllerLCD(1, stream.str());
+    stream.str("");
+    stream << "Comp: " << (pros::competition::is_connected() ? "YES" : "NO");
+    partnerLCD.setControllerLCD(2, stream.str());
 }
 
 

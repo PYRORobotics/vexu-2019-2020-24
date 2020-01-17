@@ -468,5 +468,31 @@ float PYROLift::getMotorTemps(){
 }
 
 //------------------------------------------------------------------------------
+// Method: getHighestMotorTemperature() :
+// ------------------------------------
+// Description:
+//     Polls all lift motors and returns the temperature of the hottest motor
+//
+// Parameters:
+//```
+//    None
+//```
+// Returns:
+//```
+//    double maxTemp
+//```
+//------------------------------------------------------------------------------
+double PYROLift::getHighestMotorTemperature(){
+    int motors[] = {13, 14, 2, 3};
+    double maxTemp = pros::Motor(motors[0]).get_temperature();
+    for(int i = 1; i < sizeof(motors)/ sizeof(int); i++){
+        if(pros::Motor(motors[i]).get_temperature() > maxTemp){
+            maxTemp = pros::Motor(motors[i]).get_temperature();
+        }
+    }
+    return maxTemp;
+}
+
+//------------------------------------------------------------------------------
 //===================================END FILE===================================
 //==============================================================================
