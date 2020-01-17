@@ -308,6 +308,13 @@ void PYROLift::manualControl(){
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
         intake.motors.moveVoltage(12000);
     }
+    else if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+        std::cout << "LOL";
+        intake.motors.tarePosition();
+        intake.motors.moveAbsolute(-60, 100);
+        pros::delay(500);
+        // intake.motors.setBrakeMode(AbstractMotor::brakeMode::brake);
+    }
     else{
         intake.motors.moveVoltage(0);
     }
@@ -389,7 +396,10 @@ void PYROLift::loopTeleop(){
 
         //macro to lift the height to the medium or short towers
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            moveLiftToHeight(30, 50);
+            //moveLiftToHeight(30, 50);
+            // std::cout << "LOL";
+            // intake.motors.tarePosition();
+            // intake.motors.moveAbsolute(-60, 100);
         }
 
         //macro to drop exactly one cube out of the floor of the intake, useful for placing cubes in towers
@@ -399,6 +409,7 @@ void PYROLift::loopTeleop(){
             pistonFloor.set_value(false);
         }
         //printf("Breakbeam: %d\n", breakbeam.get_value());
+        pros::delay(20);
     }
 }
 

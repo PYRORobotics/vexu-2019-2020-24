@@ -120,7 +120,7 @@ void opcontrol() {
                                      (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
                                      0.05);
 
-        if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+        if(0)//master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
         {
           // Arduino.setClock();
           std::cout << "Trying to set drive_to_coordinate" << std::endl;
