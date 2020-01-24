@@ -584,8 +584,10 @@ void auton_skills0()
 
   // OrientationData::setPosition(47,96.94,0.000);
   pros::delay(100);
+  chassis.drive_to_coordinate( 0, -30, 0, 1);
+  pros::delay(5000);
 
-  chassis.drive_to_coordinate( 0, -24, 0, 1);
+  chassis.drive_to_coordinate( 0, 0, 0, 0);
   pros::delay(999999999);
 
 

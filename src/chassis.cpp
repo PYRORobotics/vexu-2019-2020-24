@@ -349,7 +349,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
 
   double cv = 0, pv = 2; float setpoint = 0;
 
-  PIDControllerRemake q(setpoint, pv, cv, 2, 1, 1, 0, 100, 333);
+  PIDControllerRemake q(setpoint, pv, cv, 1.2, 1, 1, 0, 50, 333);
 
   double x0, y0, h0;
   x0 = OrientationData::getPosition(x);
@@ -363,17 +363,26 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
   float kp = 1;
 
   double heading_delta;
-  if((y1-y0) == 0)
-  {
-    if(x1-x0 >= 0)
-    heading_delta = 90 - h0;
+
+
+    if((y1-y0) == 0)
+    {
+      if(x1-x0 >= 0)
+      heading_delta = 90 - h0;
+      else
+      heading_delta = -90 + h0;
+    }
     else
-    heading_delta = -90 + h0;
-  }
-  else
-  {
-    heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
-  }
+    {
+      heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+    }
+
+    if(reversed)
+    {
+      heading_delta = 180 - heading_delta;
+    }
+
+
 
   if(!useWideTurns)
   {
@@ -418,23 +427,43 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
     double pidr = cv;
 
 
-    if((y1-y0) == 0)
-    {
-      if(x1-x0 >= 0)
-      heading_delta = 90 - h0;
+    // if(!reversed)
+    // {
+    //   if((y1-y0) == 0)
+    //   {
+    //     if(x1-x0 >= 0)
+    //     heading_delta = 90 - h0;
+    //     else
+    //     heading_delta = -90 + h0;
+    //   }
+    //   else
+    //   {
+    //     heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+    //   }
+    // }
+    // else
+    // {
+      if((y1-y0) == 0)
+      {
+        if(x1-x0 >= 0)
+        heading_delta = 90 - h0;
+        else
+        heading_delta = -90 + h0;
+      }
       else
-      heading_delta = -90 + h0;
-    }
-    else
-    {
-      heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
-    }
+      {
+        heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+      }
 
-    if(reversed) heading_delta *= -1;
+    // }
 
     double speedl;
     double speedr;
 
+    if(reversed)
+    {
+      heading_delta = 180 - heading_delta;
+    }
 
     if(heading_delta >= 0)
     {
@@ -442,7 +471,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
       speedl = 1 * pidl;
       else
       speedl = -1 * pidl;
-      speedr = 0.7* cos( PI/180.0 * heading_delta ) * pidr;
+      speedr = 0.5* cos( PI/180.0 * heading_delta ) * pidr;
     }
     else
     {
@@ -450,7 +479,7 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
       speedr = 1 * pidr;
       else
       speedr = -1 * pidr;
-      speedl = 0.7* cos( PI/180.0 * heading_delta ) * pidl;
+      speedl = 0.5* cos( PI/180.0 * heading_delta ) * pidl;
     }
 
     speedl /= 100;
@@ -463,18 +492,19 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
       speedr *= multiplierr;
       multiplierl += 0.05;
       multiplierr += 0.05;
+
     }
 
     // left_motors.moveVelocity(pidl);
     // right_motors.moveVelocity(pidr);
 
-    if(speedl > 0.6)
-      speedl = 0.6;
-    if(speedr > 0.6)
-      speedr = 0.6;
+    if(speedl > 0.2)
+      speedl = 0.2;
+    if(speedr > 0.2)
+      speedr = 0.2;
 
-    if(reversed) speedl *= -1;
-    if(reversed) speedr *= -1;
+    // if(reversed) speedl *= -1;
+    // if(reversed) speedr *= -1;
 
 
     chassis.driveController.left(speedl);
@@ -490,28 +520,28 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reve
     // std::cout << " pv = " << pv;
     std::cout << "Distance: " << pv << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << ", Delta: " << heading_delta << std::endl;
 
-  } while(fabs(distance0 - pv) > 1);
+  } while(fabs(distance0 - pv) > 2);
 
   pros::delay(100);
 
-  if(h1-OrientationData::getHeading() >= 0)
-  {
-    while(h1-OrientationData::getHeading() > 0)
-    {
-      chassis.driveController.left(0.025);
-      chassis.driveController.right(0.025);
-      pros::delay(20);
-    }
-  }
-  else
-  {
-    while(h1-OrientationData::getHeading() < 0)
-    {
-      chassis.driveController.left(-0.025);
-      chassis.driveController.right(-0.025);
-      pros::delay(20);
-    }
-  }
+  // if(h1-OrientationData::getHeading() >= 0)
+  // {
+  //   while(h1-OrientationData::getHeading() > 0)
+  //   {
+  //     chassis.driveController.left(0.025);
+  //     chassis.driveController.right(0.025);
+  //     pros::delay(20);
+  //   }
+  // }
+  // else
+  // {
+  //   while(h1-OrientationData::getHeading() < 0)
+  //   {
+  //     chassis.driveController.left(-0.025);
+  //     chassis.driveController.right(-0.025);
+  //     pros::delay(20);
+  //   }
+  // }
 
 
   // while(fabs(h1 - h0) > 0.5)
