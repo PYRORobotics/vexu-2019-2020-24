@@ -98,6 +98,8 @@ void opcontrol() {
 
     if(Screen::DriverEnabled)
     {
+      okapi::PYRO_Arduino::send("TELEOP");
+
       int startTime = pros::millis();
 
       if(Screen::Screen_Sponsors != NULL)
@@ -173,8 +175,16 @@ void opcontrol() {
           PYRO_Arduino::setADI(9, 1);
         }
 
+        if(pros::millis() > 60000 + startTime && pros::millis() < 60100 + startTime)
+          okapi::PYRO_Arduino::send("HURRYUP");
+
+        if(pros::millis() > 74000 + startTime)
+        okapi::PYRO_Arduino::send("END");
+
         if(pros::millis() > 74850 + startTime)
+        {
           lv_obj_set_hidden(Screen::Screen_Innovate,0);
+        }
 
         pros::delay(20);
       }

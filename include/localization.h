@@ -104,7 +104,7 @@ public:
   inline static pros::Mutex mutex;
   static bool isOld()
   {
-    if( (pros::millis() - time) < 500 )
+    if( (pros::millis() - time) < 1000 )
       return 0;
     else
       return 1;
@@ -126,6 +126,12 @@ public:
         std::get<2>(OrientationData::position) = value;
         break;
     }
+  };
+  static void setPosition(double x1, double y1, double z1)
+  {
+    setPosition(x, x1);
+    setPosition(y, y1);
+    setPosition(z, z1);
   };
   static void setVelocity(Point3D id, double value)
   {
@@ -154,6 +160,12 @@ public:
         std::get<2>(OrientationData::acceleration) = value;
         break;
     }
+  }
+  static void reset()
+  {
+    setPosition(x,0.0);
+    setPosition(y,0.0);
+    setPosition(z,0.0);
   }
   static void setTime(int time) {OrientationData::time = time;}
   static double getTime() {return time;}

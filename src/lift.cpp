@@ -262,6 +262,7 @@ void PYROLift::collectCube(){
     moveLiftToHeight(HOVER_HEIGHT, 50);
     liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
     cubeCount++;
+    okapi::PYRO_Arduino::send("COIN");
 }
 
 //overload for manually specifying the velocity at which the lift moves down.
@@ -407,6 +408,7 @@ void PYROLift::loopTeleop(){
             pistonFloor.set_value(true);
             pros::delay(33);
             pistonFloor.set_value(false);
+            okapi::PYRO_Arduino::send("ONEUP");
         }
         //printf("Breakbeam: %d\n", breakbeam.get_value());
         pros::delay(20);

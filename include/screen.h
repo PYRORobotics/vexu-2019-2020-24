@@ -250,9 +250,8 @@ private:
 
   static lv_res_t button_box_reset(lv_obj_t * btn)
   {
-
     okapi::PYRO_Arduino::reset();
-
+    OrientationData::reset();
     return LV_RES_OK; /*Return OK if the button is not deleted*/
   }
 
@@ -660,19 +659,23 @@ return LV_RES_OK; /*Return OK because the button matrix is not deleted*/
         if(master.is_connected())
         {
           lv_obj_set_hidden(Screen_Bar_Cont1,0);
+          // okapi::PYRO_Arduino::send("CONNECTED");
         }
         else
         {
           lv_obj_set_hidden(Screen_Bar_Cont1,1);
+          // okapi::PYRO_Arduino::send("DISCONNECTED");
         }
 
         if(partner.is_connected())
         {
           lv_obj_set_hidden(Screen_Bar_Cont2,0);
+          // okapi::PYRO_Arduino::send("CONNECTED");
         }
         else
         {
           lv_obj_set_hidden(Screen_Bar_Cont2,1);
+          // okapi::PYRO_Arduino::send("DISCONNECTED");
         }
 
         if(okapi::PYRO_Arduino::isCommumnicating)

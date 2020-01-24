@@ -32,6 +32,29 @@ double ecToDegrees(int ec)
   return ec/360.0 * PI * IDLER_WHEEL_DIAMETER;
 };
 
+// void drive_to_coordinate_async(void* input)
+// {
+//   asyncDriveStruct *s = (asyncDriveStruct*)input;
+//   double* arr = s->coordinateData;
+//   int size = sizeof(arr) / sizeof(double);
+//
+//   switch (size)
+//   {
+//     case 3:
+//       s->chassis.drive_to_coordinate(arr[0],arr[1],arr[2]);
+//       break;
+//     case 4:
+//       s->chassis.drive_to_coordinate(arr[0],arr[1],arr[2],arr[3]);
+//       break;
+//     case 5:
+//       s->chassis.drive_to_coordinate(arr[0],arr[1],arr[2],arr[3],arr[4]);
+//       break;
+//     default:
+//       break;
+//   }
+// }
+
+
 // Class Defintions
 // ----------------
 
@@ -303,7 +326,25 @@ void PYROChassis::drive_seconds(int speed, double sec)
 }
 
 
-void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
+//------------------------------------------------------------------------------
+// Method: drive_to_coordinate(double x1, double y1, double h1, bool reversed, bool useWideTurn) :
+// ------------------------------------
+// Description:
+//     Drives the robot to (x1, y1, h1) synchronously.
+//
+// Parameters:
+//```
+//    double x1, double y1, double h1 - coordinate to drive to
+//    bool reversed - drive path in reverse direction
+//    bool useWideTurn - make wide arc turns rather than initially turning to
+//                       the correct heading first
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
+void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reversed, bool useWideTurns)
 {
 
   double cv = 0, pv = 2; float setpoint = 0;
@@ -315,15 +356,57 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
   y0 = OrientationData::getPosition(y);
   h0 = OrientationData::getHeading();
 
-  double distance0 = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
-
-  q.setSetpoint(distance0);
-
   float multiplierl = 0.01;
   float multiplierr = 0.01;
 
   float maxSpeed = 10;
   float kp = 1;
+
+  double heading_delta;
+  if((y1-y0) == 0)
+  {
+    if(x1-x0 >= 0)
+    heading_delta = 90 - h0;
+    else
+    heading_delta = -90 + h0;
+  }
+  else
+  {
+    heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+  }
+
+  if(!useWideTurns)
+  {
+    if(fabs(heading_delta) > 45)
+    {
+      // while(fabs(h1 - h0) > 0.5)
+      // {
+      //   kp = 1;
+      //   double speed;
+      //
+      //   speed = kp * (h1 - h0);
+      //
+      //   if(speed > 0.5) speed = 0.5;
+      //   else if(speed < -0.5) speed = -0.5;
+      //
+      //   if((h1 - h0) > 0)
+      //   {
+      //     chassis.driveController.left(speed);
+      //     chassis.driveController.right(speed);
+      //   }
+      //   else
+      //   {
+      //     chassis.driveController.left(-speed);
+      //     chassis.driveController.right(-speed);
+      //   }
+      //   pros::delay(20);
+      // }
+    }
+  }
+
+  double distance0 = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+
+  q.setSetpoint(distance0);
 
   do
   {
@@ -334,7 +417,6 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
     double pidl = cv;
     double pidr = cv;
 
-    double heading_delta;
 
     if((y1-y0) == 0)
     {
@@ -347,6 +429,8 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
     {
       heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
     }
+
+    if(reversed) heading_delta *= -1;
 
     double speedl;
     double speedr;
@@ -388,6 +472,10 @@ void PYROChassis::drive_to_coordinate(double x1, double y1, double h1)
       speedl = 0.6;
     if(speedr > 0.6)
       speedr = 0.6;
+
+    if(reversed) speedl *= -1;
+    if(reversed) speedr *= -1;
+
 
     chassis.driveController.left(speedl);
     chassis.driveController.right(-speedr);

@@ -58,7 +58,7 @@ namespace okapi
       void turn_PID_sync(double, bool = true);
       void drive_seconds(int,double);
 
-      void drive_to_coordinate(double, double, double);
+      void drive_to_coordinate(double, double, double, bool = false, bool = true);
 
       static void update_position(void*)
       {
@@ -117,6 +117,15 @@ namespace okapi
 }
 
 extern okapi::PYROChassis chassis;
+
+
+extern void drive_to_coordinate_async(void* input);
+
+struct asyncDriveStruct
+{
+  okapi::PYROChassis* chassis;
+  double* coordinateData;
+};
 
 //------------------------------------------------------------------------------
 //===================================END FILE===================================

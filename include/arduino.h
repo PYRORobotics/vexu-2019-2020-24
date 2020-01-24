@@ -427,6 +427,51 @@ class PYRO_Arduino
     }
 
 
+    static void send(std::string str)
+    {
+      try
+      {
+        std::cout << "Trying to send SetClock" << std::endl;
+      // // Start serial on desired port
+      // vexGenericSerialEnable( bno->get_port() - 1, 0 );
+      //
+      // // Set BAUD rate
+      // vexGenericSerialBaudrate( bno->get_port() - 1, 115200 );
+
+
+      FILE* port7 = fopen("/dev/7", "w");
+
+
+      // Let VEX OS configure port
+      pros::delay(10);
+
+        // Buffer to store serial data
+        // uint8_t buffer[6] = "C";
+        // int len = 6;
+
+
+        const char *cstr = str.c_str();
+
+        fputs(cstr, port7);
+        fclose(port7);
+
+
+        // // Get serial data
+        // vexGenericSerialTransmit(bno->get_port() - 1, buffer, len);
+
+
+        pros::delay(10);
+        std::cout << "Successfully Sent Message" << std::endl;
+
+
+        }
+        catch(...)
+        {
+          std::cout << "ERROR ON Send Message!!!" << std::endl;
+        }
+    }
+
+
     pros::Task t_arduino_update;
   private:
     int port;
