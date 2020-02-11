@@ -56,9 +56,10 @@ namespace okapi
       void drive_PID_sync(double, bool = true);
       void turn_PID(okapi::ADIEncoder*, okapi::ADIEncoder*);
       void turn_PID_sync(double, bool = true);
-      void drive_seconds(int,double);
+      void drive_seconds(double,double);
 
-      void drive_to_coordinate(double, double, double, bool = false, bool = true);
+      void drive_to_coordinate(double, double, double, bool = false, float = 0.5, bool = true);
+      void drive_to_coordinate_old(double, double, double, bool = false, float = 0.5, bool = true);
 
       static void update_position(void*)
       {

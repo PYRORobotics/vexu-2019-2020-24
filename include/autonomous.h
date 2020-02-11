@@ -1,5 +1,6 @@
 #ifndef _AUTONOMOUS_H_
 #define _AUTONOMOUS_H_
+#include "api.h"
 
 //==================================START FILE==================================
 //==============================================================================
@@ -36,6 +37,7 @@ extern void auton_blue0();
 extern void auton_red1();
 extern void auton_blue1();
 extern void auton_skills0();
+extern pros::Task lifttaskauto;
 
 //------------------------------------------------------------------------------
 //===================================END FILE===================================

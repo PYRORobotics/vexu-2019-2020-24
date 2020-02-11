@@ -4,6 +4,8 @@
 #include "api.h"
 #include <vector>
 #include <algorithm>
+#include "okapi/api/filter/averageFilter.hpp"
+
 
 // From: https://gist.github.com/bradley219/5373998
 
@@ -57,18 +59,25 @@ class PIDControllerRemake
   private:
     float kp, ki, kd, min, max, dt;
     float& setpoint;
+    double tollerance;
     double& pv;
     double& cv;
+    double prev_error;
+    double integral;
+    okapi::AverageFilter<3> avgFilterError;
+
+
     // const int id;
 
     void iterate();
 
   public:
     // PIDControllerRemake(double&, double&, float, float, float, float, float, float = 333);
-    PIDControllerRemake(float&, double&, double&, float, float, float, float, float, float = 333);//, int = PIDControllerManager.num_objects++);
+    PIDControllerRemake(float&, double&, double&, float, float, float, float, float, double = 0.125, float = 333);//, int = PIDControllerManager.num_objects++);
 
     void setSetpoint(double setpoint);
     friend class PIDControllerManager;
+    double avgError();
 
 };
 

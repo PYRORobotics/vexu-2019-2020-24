@@ -582,90 +582,35 @@ void auton_red1()
 void auton_skills0()
 {
 
-  // OrientationData::setPosition(47,96.94,0.000);
-  pros::delay(100);
-  chassis.drive_to_coordinate( 0, -30, 0, 1);
-  pros::delay(5000);
-
-  chassis.drive_to_coordinate( 0, 0, 0, 0);
-  pros::delay(999999999);
-
-
-  // Starting Coordinate: (58.590_in, 96.946_in, -90_deg) --- now click on the map again to add a second point.
-  OrientationData::setPosition(58.59,96.94,-90.000);
-
-  // chassis.drive_to_coordinate( 47.393, 96.894, 180);
-  chassis.drive_to_coordinate( 47.393, 85.878, 180);
-  chassis.drive_to_coordinate( 47.393, 79.704, 180);
-
-  chassis.drive_to_coordinate( 47.393, 96.894, -90, 1);
-
-  chassis.drive_to_coordinate( 35.393, 96.894, 180);
-  pros::delay(300);
-
-  chassis.drive_to_coordinate( 29.589, 97.095, 0.000);
-  chassis.drive_to_coordinate( 5.850, 76.576, -45.000, 0,1);
-  chassis.drive_to_coordinate( 15.700, 103.310, 12.000);
-  chassis.drive_to_coordinate( 9.002, 105.678, 0.000);
-  chassis.drive_to_coordinate( 29.207, 105.701, 135.000);
-  chassis.drive_to_coordinate( 40.934, 117.663, 0.000);
-  chassis.drive_to_coordinate( 0.109, 125.058, 0.000);
-  chassis.drive_to_coordinate( -35.939, 121.796, -72.000);
-  chassis.drive_to_coordinate( -47.231, 97.219, -180.000);
-  chassis.drive_to_coordinate( -28.773, 97.219, -180.000);
-  chassis.drive_to_coordinate( -54.615, 125.928, 45.000);
-
-  pros::delay(999999999);
-
-
-
-
-
-
-
-
-
-
-
-
-  // Starting Coordinate: (59.220_in, 97.000_in, -90.0_deg) --- now click on the map again to add a second point.
-  OrientationData::setPosition(59.22,97.00,0);
-
-  // Drive forward to prevent lift colliding with the field wall
-  chassis.drive_PID_sync(6);
-  chassis.drive_PID_sync(-1);
-
-
-  // // Tare the lift (requires the lift task to stop clamping)
-  // lifttaskauto.suspend(); // Not needed?
-  // lift.tare(); // Not needed?
-  // lifttaskauto.resume(); // Not needed?
-
-
   lift.moveLiftToHeight(11, 50);
-
-  // Tare the lift (requires the lift task to stop clamping)
-  lifttaskauto.suspend();
-  lift.tare();
-  lifttaskauto.resume();
-  // pros::delay(500);
-  // Done calibrating the lift, start routine
-
+  pros::delay(500);
   // Turn on intake
   intake.motors.moveVelocity(150);
 
+  chassis.drive_PID_sync(6);
+  chassis.driveController.driveVector(-0.5, 0);
+  pros::delay(1000);
+  chassis.driveController.stop();
+
+
+
   // START REAL ROUTINE
-  chassis.drive_PID_sync( 5.920 ); // Drive forward
+  chassis.drive_PID_sync( 12.920 ); // Drive forward
   pros::delay(100);
 
   // Collect cube (requires the lift task to stop clamping)
   lifttaskauto.suspend();
   lift.collectCube();
+  // Tare the lift (requires the lift task to stop clamping)
+  lift.tare();
+  // pros::delay(500);
+  // Done calibrating the lift, start routine
+
   lifttaskauto.resume();
 
   chassis.turn_PID_sync( -90.000 ); // Turn
   pros::delay(150);
-  chassis.drive_PID_sync( 11.375 ); // Drive forward
+  chassis.drive_PID_sync( 19.375 ); // Drive forward
   pros::delay(100);
 
 
@@ -677,341 +622,34 @@ void auton_skills0()
 
   // Simultaniously increase lift height for 4 cube stack
   lift.moveLiftToHeight(34, 80);  // 20, 26, 39
-  chassis.drive_seconds(-30,0.3);
-  chassis.drive_seconds(0,0.1);
-  pros::delay(1000);
+  chassis.drive_seconds(-0.2,0.3);
+  pros::delay(600);
+  intake.motors.moveVelocity(150);
+  pros::delay(150);
+  intake.motors.moveRelative(-160, 100);
 
 
 
-  chassis.drive_seconds(50,0.8);
-  chassis.drive_seconds(0,0.1);
+
+  chassis.drive_seconds(0.25,0.8);
 
   lift.piston_floor.extend();
   pros::delay(25);
   lift.piston_floor.retract();
 
-  pros::delay(500);
-
-
-  chassis.drive_PID_sync( -16.5 ); // Drive backward
-  pros::delay(150);
-
-
-  chassis.turn_PID_sync( 92.000 ); // Turn
-  pros::delay(150);
-
-  lift.moveLiftToHeight(44, 80);  // 20, 26, 39
-
-
-  // Go after 4 stack
-
-  intake.motors.moveVelocity(150);
-  pros::delay(150);
-  intake.motors.moveRelative(-160, 100);
-
-  chassis.drive_PID_sync( 16.25 ); // Drive forward
-  pros::delay(150);
-
-  chassis.drive_PID_sync( 3 ); // Drive forward
-  pros::delay(150);
-
-  // Collect cube (requires the lift task to stop clamping)
-  lifttaskauto.suspend();
-  lift.collectCube();
-  lifttaskauto.resume();
-
-  lift.moveLiftToHeight(16, 80);  // 20, 26, 39
-
-
-  chassis.turn_PID_sync(17);
-
-  intake.motors.moveVelocity(150);
-  chassis.drive_PID_sync( 15 ); // Drive forward
-
-  chassis.drive_PID_sync( -4 ); // Drive forward
-  pros::delay(150);
-
-  // Collect cube (requires the lift task to stop clamping)
-  lifttaskauto.suspend();
-  lift.collectCube();
-  lifttaskauto.resume();
-
-  lift.moveLiftToHeight(35, 150);  // 20, 26, 39
-  pros::delay(1200);
-
-
-
-  chassis.drive_seconds(50,0.8);
-  chassis.drive_seconds(0,0.1);
-
-  pros::delay(150);
-
-  lift.piston_floor.extend();
-  pros::delay(30);
-  lift.piston_floor.retract();
-
-  pros::delay(500);
-  lift.moveLiftToHeight(46, 50);  // 20, 26, 39
-
-
-  chassis.drive_PID_sync( -16.75 ); // Drive forward
-  chassis.turn_PID_sync(-7-45);
-  intake.motors.moveRelative(-100, 100);
-
-
-
-  chassis.drive_PID_sync( 27.25 ); // Drive forward
-  pros::delay(150);
-
-  chassis.drive_seconds(50,0.8);
-  chassis.drive_seconds(0,0.1);
-
-  pros::delay(500);
-
-  lift.piston_floor.extend();
-  pros::delay(35);
-  lift.piston_floor.retract();
-
-  pros::delay(500);
-
-
-  chassis.drive_PID_sync( -20.125 ); // Drive forward
-  lift.moveLiftToHeight(14, 50);  // 20, 26, 39
-
-  // Turn on intake
-  intake.motors.moveVelocity(150);
-
-  chassis.turn_PID_sync( 165.000 ); // Turn
-  pros::delay(150);
-  chassis.drive_PID_sync( 29 ); // Drive forward
-  pros::delay(150);
-
-  // // Collect cube (requires the lift task to stop clamping)
-  // lifttaskauto.suspend();
-  // lift.collectCube();
-  // lifttaskauto.resume();
-
-
-
-
-  // chassis.turn_PID_sync( 7 ); // Turn
-  // pros::delay(150);
-
-  // Stop the intake and open it to "U" position
-  intake.motors.moveRelative(-190, 100);
-
-  chassis.driveController.left(1);
-  chassis.driveController.right(-0.9);
-
-  pros::delay(1000);
-
-  chassis.driveController.left(-0.2);
-  chassis.driveController.right(0.2);
-
-  pros::delay(150);
-  chassis.driveController.driveVector(0, 0);
-
-
-  // chassis.drive_PID_sync( 23.25 ); // Drive forward
-  // pros::delay(150);
-  //
-  // chassis.drive_seconds(75,1);
-  // chassis.drive_seconds(0,0.1);
-
-
-
-  // Place stack on floor
-  lift.moveLiftToHeight(0.1, 80);
-  pros::delay(200); // Wait for stack to settle
-
-  // Release piston holding cubes
-  lift.piston_floor.extend();
+  chassis.drive_PID_sync( -9.375 ); // Drive forward
   pros::delay(100);
 
-  lift.piston_door.extend();
+  chassis.turn_PID_sync( 90.000 ); // Turn
+  pros::delay(150);
+
+  chassis.drive_PID_sync( 12.5 ); // Drive forward
+  pros::delay(100);
+
+  chassis.drive_seconds(0.1, 2000);
   pros::delay(100);
 
 
-  //pros::delay(3000);
-
-
-
-  chassis.drive_PID_sync( -10 ); // Drive backward
-
-
-//////////////////////////////
-
-
-
-
-//
-//   chassis.drive_PID_sync( 3.661 ); // Drive forward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( -45.500 ); // Turn
-//   pros::delay(300);
-//
-//   // Stop the intake and open it to "U" position
-//   intake.motors.moveVelocity(150);
-//
-//   chassis.drive_PID_sync( 24.979 ); // Drive forward
-//   pros::delay(300);
-//
-//   intake.motors.moveRelative(-80, 80);
-//
-//
-//   chassis.drive_seconds(50,0.5);
-//   chassis.drive_seconds(0,0.1);
-//
-//   lift.piston_floor.extend();
-//   pros::delay(40);
-//   lift.piston_floor.retract();
-// pros::delay(300);
-//
-//   chassis.drive_PID_sync( -28.189 ); // Drive backward
-//   pros::delay(300);
-//
-//   lift.moveLiftToHeight(10, 50);  // 20, 26, 39
-//
-//   // Turn on intake
-//   intake.motors.moveVelocity(150);
-//
-//   chassis.turn_PID_sync( 175.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 16.125 ); // Drive forward
-//   pros::delay(300);
-//
-//   // Collect cube (requires the lift task to stop clamping)
-//   lifttaskauto.suspend();
-//   lift.collectCube();
-//   lifttaskauto.resume();
-//
-//   chassis.turn_PID_sync( 12.000 ); // Turn
-//   pros::delay(300);
-//
-//   // Stop the intake and open it to "U" position
-//   intake.motors.moveRelative(-190, 100);
-//
-//   chassis.drive_PID_sync( 20.319 ); // Drive forward
-//   pros::delay(300);
-//
-//   chassis.drive_seconds(75,1);
-//   chassis.drive_seconds(0,0.1);
-//
-//
-//
-//   // Place stack on floor
-//   lift.moveLiftToHeight(0.1, 50);
-//   pros::delay(1000); // Wait for stack to settle
-//
-//   // Release piston holding cubes
-//   lift.piston_floor.extend();
-//   pros::delay(300);
-//
-//   lift.piston_door.extend();
-//   pros::delay(300);
-//
-//
-//   //pros::delay(3000);
-//
-//
-//
-//   chassis.drive_PID_sync( -20.465 ); // Drive backward
-//   pros::delay(300);
-//   // Turn on intake
-//   intake.motors.moveVelocity(150);
-//
-//
-//   lift.piston_floor.retract();
-//   pros::delay(300);
-//
-//   lift.piston_door.retract();
-//   pros::delay(300);
-//
-//   lift.moveLiftToHeight(11, 50);
-//
-//   chassis.turn_PID_sync( 135.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( -15.706 ); // Drive backward
-//   chassis.drive_seconds(-100,1);
-//   chassis.drive_seconds(0,0.1);
-//   pros::delay(300);
-//
-//   chassis.drive_PID_sync( 25.394 ); // Drive forward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( 90.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 25.453 ); // Drive forward
-//   pros::delay(300);
-//
-//   // Collect cube (requires the lift task to stop clamping)
-//   lifttaskauto.suspend();
-//   lift.collectCube();
-//   lifttaskauto.resume();
-//
-//   chassis.drive_seconds(-30,0.25);
-//   chassis.drive_seconds(0,0.1);
-//
-//   lift.moveLiftToHeight(31, 50);  // 20, 26, 39
-//   pros::delay(1000);
-//
-//   chassis.drive_seconds(50,0.5);
-//   chassis.drive_seconds(0,0.1);
-//
-//   lift.piston_floor.extend();
-//   pros::delay(50);
-//   lift.piston_floor.retract();
-//
-//   pros::delay(500);
-//
-//
-//
-//   chassis.drive_PID_sync( -7.628 ); // Drive backward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( 90.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 16.531 ); // Drive forward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( -90.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 43.241 ); // Drive forward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( -45.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 36.728 ); // Drive forward
-//   pros::delay(300);
-//
-//   // Collect cube (requires the lift task to stop clamping)
-//   lifttaskauto.suspend();
-//   lift.collectCube();
-//   lifttaskauto.resume();
-//
-//   chassis.turn_PID_sync( -45.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 9.809 ); // Drive forward
-//   pros::delay(300);
-//
-//   // Collect cube (requires the lift task to stop clamping)
-//   lifttaskauto.suspend();
-//   lift.collectCube();
-//   lifttaskauto.resume();
-//
-//   chassis.drive_PID_sync( -8.485 ); // Drive backward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( -45.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 25.673 ); // Drive forward
-//   pros::delay(300);
-//
-//   chassis.turn_PID_sync( 50.000 ); // Turn
-//   pros::delay(300);
-//   chassis.drive_PID_sync( 64.211 ); // Drive forward
-//   pros::delay(300);
 }
 
 

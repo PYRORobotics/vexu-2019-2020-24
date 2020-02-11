@@ -99,6 +99,7 @@ void opcontrol() {
     if(Screen::DriverEnabled)
     {
       okapi::PYRO_Arduino::send("TELEOP");
+      lifttaskauto.suspend();
 
       int startTime = pros::millis();
 
@@ -119,53 +120,57 @@ void opcontrol() {
       {
         //printf("%f %f\n", LEFT.get(), RIGHT.get());
         chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
-                                     (float) -master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
+                                     (float) master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) / 127,
                                      0.05);
 
-        if(0)//master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+        if(0)//master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT))
         {
-          // Arduino.setClock();
-          std::cout << "Trying to set drive_to_coordinate" << std::endl;
-          // chassis.drive_to_coordinate(0, 24, 0);
-          // pros::delay(500);
-          // chassis.drive_to_coordinate(0, 0, 0);
-          // pros::delay(500);
-          // chassis.drive_to_coordinate(0, 24, 90);
-          // pros::delay(2000);
+          chassis.driveController.driveVector(-0.5, 0.5);
+          pros::delay(1000);
+          chassis.driveController.stop();
           //
-          // chassis.drive_to_coordinate(0, 48, 90);
-          // pros::delay(2000);
-
-          chassis.drive_to_coordinate(6, 42, 0);
-          pros::delay(100);
-
-
-
-          chassis.driveController.left(0);
-          chassis.driveController.right(0);
-          pros::delay(500);
-
-          //
-          // // chassis.driveController.turnAngle(180_deg);
-          // chassis.driveController.left(0.3);
-          // chassis.driveController.right(0.3);
-          //
-          // pros::delay(1000);
-          //
-          // chassis.driveController.left(0);
-          // chassis.driveController.right(0);
-          //
-          // pros::delay(500);
-          //
-          // chassis.drive_to_coordinate(0, 0, 0);
-          // // pros::delay(500);
-          // // chassis.drive_to_coordinate(-24, 24, -90);
+          // // Arduino.setClock();
+          // std::cout << "Trying to set drive_to_coordinate" << std::endl;
+          // // chassis.drive_to_coordinate(0, 24, 0);
           // // pros::delay(500);
           // // chassis.drive_to_coordinate(0, 0, 0);
+          // // pros::delay(500);
+          // // chassis.drive_to_coordinate(0, 24, 90);
+          // // pros::delay(2000);
+          // //
+          // // chassis.drive_to_coordinate(0, 48, 90);
+          // // pros::delay(2000);
+          //
+          // chassis.drive_to_coordinate(6, 42, 0);
+          // pros::delay(100);
+          //
+          //
+          //
           // chassis.driveController.left(0);
           // chassis.driveController.right(0);
-          //
           // pros::delay(500);
+          //
+          // //
+          // // // chassis.driveController.turnAngle(180_deg);
+          // // chassis.driveController.left(0.3);
+          // // chassis.driveController.right(0.3);
+          // //
+          // // pros::delay(1000);
+          // //
+          // // chassis.driveController.left(0);
+          // // chassis.driveController.right(0);
+          // //
+          // // pros::delay(500);
+          // //
+          // // chassis.drive_to_coordinate(0, 0, 0);
+          // // // pros::delay(500);
+          // // // chassis.drive_to_coordinate(-24, 24, -90);
+          // // // pros::delay(500);
+          // // // chassis.drive_to_coordinate(0, 0, 0);
+          // // chassis.driveController.left(0);
+          // // chassis.driveController.right(0);
+          // //
+          // // pros::delay(500);
 
         }
 

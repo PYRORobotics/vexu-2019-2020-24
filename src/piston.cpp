@@ -57,9 +57,9 @@ Piston::Piston(char port, int8_t starting_state): adi(port)
 //------------------------------------------------------------------------------
 void Piston::extend()
 {
-  if(port > 8)
+  // if(port > 8)
     adi.set_value(1);
-  else
+  // else
     PYRO_Arduino::setADI(port,1);
   state = 1;
 }
@@ -82,9 +82,9 @@ void Piston::extend()
 //------------------------------------------------------------------------------
 void Piston::retract()
 {
-  if(port > 8)
+  // if(port > 8)
     adi.set_value(0);
-  else
+  // else
     PYRO_Arduino::setADI(port,0);
   state = 0;
 }
