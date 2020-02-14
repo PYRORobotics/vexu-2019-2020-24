@@ -61,7 +61,7 @@ void initialize()
 	pros::delay(200);
 	Arduino.reset();
 
-	PIDControllerManager man;
+	//PIDControllerManager man;
 }
 
 

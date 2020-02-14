@@ -320,7 +320,7 @@ void PYROLift::manualControl(){
     }
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
     {
-      intake.motors.moveAbsolute(-60, 100);
+      intake.motors.moveAbsolute(-45, 100);
       intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
     }
     else{

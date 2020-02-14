@@ -76,10 +76,14 @@ void autonomousSelector(autonNames id)
       lv_obj_set_hidden(Screen::Screen_Plate_B,0);
       auton_blue0();
       break;
-      case red1:
-        lv_obj_set_hidden(Screen::Screen_Plate_R,0);
-        auton_red1();
-        break;
+    case red1:
+      lv_obj_set_hidden(Screen::Screen_Plate_R,0);
+      auton_red1();
+      break;
+    case blue1:
+      lv_obj_set_hidden(Screen::Screen_Plate_B,0);
+      auton_blue1();
+      break;
     case redSkills0:
       lv_obj_set_hidden(Screen::Screen_Plate_R,0);
       auton_skills0();
@@ -151,6 +155,231 @@ void autonomous()
 //```
 //------------------------------------------------------------------------------
 void auton_red0()
+{
+  //-----Set Starting Coordinate-----//
+  // N/A
+
+  chassis.MotionController.generatePath({Point{0_in,0_in,-17_deg}, Point{12_in,-3.25_in,0_deg}}, "0");
+
+  //-----Deploy-----//
+  lift.moveLiftToHeight(11, 50);
+  pros::delay(500);
+  // Turn on intake
+  intake.motors.moveVelocity(150);
+
+  //-----Drive into Cube 1-----//
+  chassis.MotionController.setTarget("0", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{15_in,0_in,0_deg}}, "1");
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Pick Up Cube 1 (1)-----//
+  lifttaskauto.suspend();
+  lift.collectCube();
+  lifttaskauto.resume();
+  lift.moveLiftToHeight(26, 100);
+  pros::delay(200);
+
+  //-----Intake to U-----//
+  intake.motors.tarePosition();
+  intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
+  intake.motors.moveAbsolute(-42, 100);
+
+  //-----Drive Up to 4 Stack-----//
+  chassis.MotionController.setTarget("1", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{3_in,0_in,0_deg}}, "ALIGN STACK");
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Slowly Align with 4 Stack-----//
+  chassis.MotionController.setTarget("ALIGN STACK", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{6_in,0_in,0_deg}}, "3");
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Pick Up 4 Stack (5)-----//
+  lifttaskauto.suspend();
+  lift.collectCube();
+  lifttaskauto.resume();
+  lift.moveLiftToHeight(20, 80);
+
+  //-----Drive Forward to Laterally Align with 3 Stack-----//
+  chassis.MotionController.setTarget("3", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{15_in,0_in,0_deg}}, "4");
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Turn Facing 3 Stack-----//
+  chassis.turn_PID_sync(90.5);
+
+  //-----Drive Up to 3 Stack-----//
+  chassis.MotionController.setTarget("4", false);  //Drive forward
+  chassis.MotionController.waitUntilSettled();
+
+
+  //-----Align with 3 Stack and Push Extra Cubes Away-----//
+  chassis.MotionController.setTarget("ALIGN STACK", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{6_in,0_in,0_deg}}, "PUSH CUBES AWAY");
+  chassis.MotionController.waitUntilSettled();
+  chassis.MotionController.setTarget("PUSH CUBES AWAY", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{8_in,0_in,0_deg}}, "6");
+  chassis.MotionController.waitUntilSettled();
+
+
+  //-----Pick Up 3 Stack (8)-----//
+  lifttaskauto.suspend();
+  lift.collectCube();
+  lifttaskauto.resume();
+  lift.moveLiftToHeight(16, 50);
+
+  // Turn on intake
+  intake.motors.moveVelocity(70);
+
+
+  //-----Drive Up to 2 Stack-----//
+  chassis.MotionController.setTarget("6", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{6_in,0_in,0_deg}}, "6.5");
+  chassis.MotionController.waitUntilSettled();
+
+  chassis.MotionController.setTarget("6", true);  //Drive backward
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Pick Up free cube ()-----//
+  lifttaskauto.suspend();
+  lift.collectCube();
+  lifttaskauto.resume();
+
+  intake.motors.moveVelocity(0);
+
+  lift.moveLiftToHeight(13, 50);
+
+  chassis.MotionController.setTarget("6", false);  //Drive forward
+  chassis.MotionController.waitUntilSettled();
+
+
+  //-----Intake to U-----//
+  intake.motors.tarePosition();
+  intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
+  intake.motors.moveAbsolute(-50, 100);
+
+  chassis.MotionController.setTarget("6.5", false);  //Drive forward
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Align with 2 Stack and Push Extra Cubes Away-----//
+  chassis.MotionController.setTarget("ALIGN STACK", false);  //Drive forward
+  chassis.MotionController.waitUntilSettled();
+  chassis.MotionController.setTarget("PUSH CUBES AWAY", false);  //Drive forward
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{34_in,-24_in,-38_deg}}, "7");
+  chassis.MotionController.waitUntilSettled();
+
+  //-----Pick Up 2 Stack (10)-----//
+  lifttaskauto.suspend();
+  lift.collectCube();
+  lifttaskauto.resume();
+
+
+  //-----Wide Arc Turn into Corner; Pick up cubes alogn the way-----//
+  // Turn on intake
+  intake.motors.moveVelocity(150);
+  chassis.MotionController.setTarget("7", false);  //Drive forward
+  chassis.MotionController.waitUntilSettled();
+
+  intake.motors.moveVelocity(0);
+  pros::delay(200);
+  intake.motors.moveRelative(-190, 100);
+
+  //-----Ram into Corner-----//
+  chassis.driveController.driveVector(0.3, 0);
+  pros::delay(1500);
+  chassis.driveController.stop();
+
+  //-----Back Up Slightly-----// ???
+  chassis.driveController.driveVector(-0.05, 0);
+  pros::delay(500);
+  chassis.driveController.stop();
+
+  //-----Release Stack-----//
+  // Place stack on floor
+  lift.moveLiftToHeight(0.1, 50);
+  pros::delay(1000); // Wait for stack to settle
+
+  // Release piston holding cubes
+  lift.piston_floor.extend();
+  pros::delay(300);
+
+  lift.moveLiftToHeight(36, 50);
+  pros::delay(5000);
+  lift.piston_floor.retract();
+  lift.moveLiftToHeight(42, 50);
+  pros::delay(800);
+
+
+  // Back away from stack
+  chassis.driveController.driveVector(-0.07, 0);
+  pros::delay(5000);
+  chassis.driveController.stop();
+  lift.moveLiftToHeight(6, 50);
+
+
+  //-----Back Up-----//
+
+  //-----Drive to Alliance Tower Cube-----//
+  //-----Drive to Bottom Tower Cube-----//
+  //-----Drive to Pyramid-----//
+  //-----END RED AUTON-----//
+
+}
+
+void auton_red0BOX()
+{
+  //-----Set Starting Coordinate-----//
+
+  //-----Deploy-----//
+  lift.moveLiftToHeight(11, 50);
+  pros::delay(500);
+  // Turn on intake
+  intake.motors.moveVelocity(150);
+
+  //-----Drive into Cube 1-----//
+
+  //-----Pick Up Cube 1 (1)-----//
+
+  //-----Drive Up to 4 Stack-----//
+
+  //-----Slowly Align with 4 Stack-----//
+
+  //-----Pick Up 4 Stack (5)-----//
+
+  //-----Drive Forward to Laterally Align with 3 Stack-----//
+
+  //-----Turn Facing 3 Stack-----//
+
+  //-----Intake to U-----//
+
+  //-----Drive Up to 3 Stack-----//
+
+  //-----Align with 3 Stack and Push Extra Cubes Away-----//
+
+  //-----Pick Up 3 Stack (8)-----//
+
+  {
+  //-----Drive Up to 2 Stack-----//
+  //-----Align with 2 Stack and Push Extra Cubes Away-----//
+  //-----Pick Up 2 Stack (10)-----//
+  }
+
+  //-----Wide Arc Turn into Corner; Pick up cubes alogn the way-----//
+
+  //-----Ram into Corner-----//
+
+  //-----Back Up Slightly-----//
+
+  //-----Release Stack-----//
+
+  //-----Back Up-----//
+
+  //-----Drive to Alliance Tower Cube-----//
+  //-----Drive to Bottom Tower Cube-----//
+  //-----Drive to Pyramid-----//
+}
+
+void auton_red2()
 {
     //-----START RED AUTON-----//
 
@@ -293,6 +522,8 @@ void auton_red0()
 //```
 //------------------------------------------------------------------------------
 void auton_blue0()
+{};
+void auton_blue1()
 {
   //-----START BLUE AUTON-----//
 

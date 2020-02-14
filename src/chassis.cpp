@@ -91,7 +91,7 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005
                             driveController(ChassisControllerFactory::create(
                                     left_motors, right_motors,
                                     encoder_left, encoder_right,
-                                    okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
+                                    okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000003},   //straight
                                     okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
                                     okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
                                     ratio,
@@ -264,7 +264,7 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
   pros::lcd::print(7, "%d", output_l);
   // left_motors.moveVelocity(output_l);
   // right_motors.moveVelocity(output_r);
-  driveController.rotate(output_l/100.0);
+  driveController.rotate(output_l/200.0);
 }
 
 
@@ -288,7 +288,7 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 {
 
-  set_target_position(degrees / 360 * PI * WHEELBASE * 92/95);
+  set_target_position(degrees / 360 * PI * WHEELBASE * 92/95  * 90/86);
   encoder_left.reset();
   encoder_right.reset();
   pos_pid_data.error = 0;
