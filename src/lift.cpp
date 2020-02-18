@@ -337,7 +337,7 @@ void PYROLift::manualControl(){
 
     //manual control to move the lift at a constant velocity, useful for moving the lift to a height that has not been pre set
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
-        liftMotors.moveVelocity(50);
+        liftMotors.moveVelocity(75);
         liftTarget = liftMotors.getPosition();
     }
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
