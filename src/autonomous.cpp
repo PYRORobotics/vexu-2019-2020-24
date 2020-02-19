@@ -239,7 +239,7 @@ void auton_red0()
   lifttaskauto.resume();
   lift.moveLiftToHeight(20, 50);
 
-  pros::delay(4000);
+  // pros::delay(4000);
 
   // "Bear hug cube"
   intake.motors.moveAbsolute(-100, 100);
