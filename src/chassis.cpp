@@ -85,13 +85,13 @@ ADIEncoder PYROChassis::encoder_right('C', 'D', 1);
 
 
 
-PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005),
+PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000001),
                             left_motors({-M_CHASSIS_LF, M_CHASSIS_LM, -M_CHASSIS_LR}),
                             right_motors({M_CHASSIS_RF, -M_CHASSIS_RM, M_CHASSIS_RR}),
                             driveController(ChassisControllerFactory::create(
                                     left_motors, right_motors,
                                     encoder_left, encoder_right,
-                                    okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000003},   //straight
+                                    okapi::IterativePosPIDController::Gains{0.000001, 0.00001, 0.000003},   //straight
                                     okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
                                     okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
                                     ratio,

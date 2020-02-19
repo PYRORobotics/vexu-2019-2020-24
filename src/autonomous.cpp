@@ -165,7 +165,7 @@ void auton_red0()
   lift.moveLiftToHeight(11, 50);
   pros::delay(500);
   // Turn on intake
-  intake.motors.moveVelocity(150);
+  intake.motors.moveVelocity(180);
 
   //-----Drive into Cube 1-----//
   chassis.MotionController.setTarget("0", false);  //Drive forward
@@ -176,7 +176,7 @@ void auton_red0()
   lifttaskauto.suspend();
   lift.collectCube();
   lifttaskauto.resume();
-  lift.moveLiftToHeight(26, 100);
+  lift.moveLiftToHeight(29, 100);
   pros::delay(200);
 
   //-----Intake to U-----//
@@ -198,7 +198,7 @@ void auton_red0()
   lifttaskauto.suspend();
   lift.collectCube();
   lifttaskauto.resume();
-  lift.moveLiftToHeight(20, 80);
+  lift.moveLiftToHeight(24, 80);
 
   //-----Drive Forward to Laterally Align with 3 Stack-----//
   chassis.MotionController.setTarget("3", false);  //Drive forward
@@ -207,6 +207,17 @@ void auton_red0()
 
   //-----Turn Facing 3 Stack-----//
   chassis.turn_PID_sync(90.5);
+
+  // Turn on intake
+  intake.motors.moveVelocity(150);
+  pros::delay(1000);
+  // intake.motors.moveVelocity(0);
+  // pros::delay(200);
+
+  //-----Intake to U-----//
+  intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
+  intake.motors.moveRelative(-37, 100);
+
 
   //-----Drive Up to 3 Stack-----//
   chassis.MotionController.setTarget("4", false);  //Drive forward
@@ -226,16 +237,21 @@ void auton_red0()
   lifttaskauto.suspend();
   lift.collectCube();
   lifttaskauto.resume();
-  lift.moveLiftToHeight(16, 50);
+  lift.moveLiftToHeight(20, 50);
 
-  // Turn on intake
-  intake.motors.moveVelocity(70);
+  pros::delay(4000);
 
+  // "Bear hug cube"
+  intake.motors.moveAbsolute(-100, 100);
+  pros::delay(300);
 
   //-----Drive Up to 2 Stack-----//
   chassis.MotionController.setTarget("6", false);  //Drive forward
   chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{6_in,0_in,0_deg}}, "6.5");
   chassis.MotionController.waitUntilSettled();
+
+  // Turn on intake
+  intake.motors.moveVelocity(70);
 
   chassis.MotionController.setTarget("6", true);  //Drive backward
   chassis.MotionController.waitUntilSettled();
@@ -247,7 +263,7 @@ void auton_red0()
 
   intake.motors.moveVelocity(0);
 
-  lift.moveLiftToHeight(13, 50);
+  lift.moveLiftToHeight(16, 50);
 
   chassis.MotionController.setTarget("6", false);  //Drive forward
   chassis.MotionController.waitUntilSettled();
@@ -265,13 +281,15 @@ void auton_red0()
   chassis.MotionController.setTarget("ALIGN STACK", false);  //Drive forward
   chassis.MotionController.waitUntilSettled();
   chassis.MotionController.setTarget("PUSH CUBES AWAY", false);  //Drive forward
-  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{34_in,-24_in,-38_deg}}, "7");
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{25_in,-27_in,-45_deg}}, "7");
   chassis.MotionController.waitUntilSettled();
 
   //-----Pick Up 2 Stack (10)-----//
-  lifttaskauto.suspend();
-  lift.collectCube();
-  lifttaskauto.resume();
+  // lifttaskauto.suspend();
+  // lift.collectCube();
+  // lifttaskauto.resume();
+  lift.moveLiftToHeight(6.5, 50);
+  pros::delay(1500);
 
 
   //-----Wide Arc Turn into Corner; Pick up cubes alogn the way-----//
@@ -280,13 +298,15 @@ void auton_red0()
   chassis.MotionController.setTarget("7", false);  //Drive forward
   chassis.MotionController.waitUntilSettled();
 
+  lift.moveLiftToHeight(9, 50);
+
   intake.motors.moveVelocity(0);
   pros::delay(200);
   intake.motors.moveRelative(-190, 100);
 
   //-----Ram into Corner-----//
   chassis.driveController.driveVector(0.3, 0);
-  pros::delay(1500);
+  pros::delay(3000);
   chassis.driveController.stop();
 
   //-----Back Up Slightly-----// ???
@@ -296,18 +316,20 @@ void auton_red0()
 
   //-----Release Stack-----//
   // Place stack on floor
-  lift.moveLiftToHeight(0.1, 50);
+  lift.moveLiftToHeight(6.1, 50);
   pros::delay(1000); // Wait for stack to settle
 
   // Release piston holding cubes
   lift.piston_floor.extend();
   pros::delay(300);
 
-  lift.moveLiftToHeight(36, 50);
-  pros::delay(5000);
-  lift.piston_floor.retract();
+  // lift.moveLiftToHeight(36, 50);
+  // pros::delay(5000);
+  // lift.piston_floor.retract();
   lift.moveLiftToHeight(42, 50);
   pros::delay(800);
+  pros::delay(3000);
+  lift.piston_door.extend();
 
 
   // Back away from stack
@@ -315,6 +337,7 @@ void auton_red0()
   pros::delay(5000);
   chassis.driveController.stop();
   lift.moveLiftToHeight(6, 50);
+  lift.piston_door.retract();
 
 
   //-----Back Up-----//
