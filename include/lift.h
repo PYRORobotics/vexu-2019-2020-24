@@ -31,7 +31,7 @@ class PYROLift {
         float getMotorPos();
         void moveLiftToHeight(float inches, int maxVelocity);
         void tare();
-        void collectCube();
+        void collectCube(bool tareOverride = false);
         void collectCube(int);
         void intakeAndCollect();
         Piston piston_door;

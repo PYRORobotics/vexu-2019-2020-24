@@ -1,0 +1,3 @@
+/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/CMakeFiles/vexu_2019_2020_24.dir
+/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/CMakeFiles/edit_cache.dir

@@ -50,7 +50,9 @@ static void update_localization(void*)
 //------------------------------------------------------------------------------
 void initialize()
 {
-	pros::delay(200);
+    chassis.MotionController.generatePath({Point{0_in,0_in,-17_deg}, Point{12_in,-3.25_in,0_deg}}, "0");
+
+    pros::delay(200);
 	//pros::lcd::initialize(); // Uncomment to use PROS's LCD
 	Screen screen;
 	pros::delay(100);

@@ -252,7 +252,7 @@ void PYROLift::intakeAndCollect(){
 //    void
 //```
 //------------------------------------------------------------------------------
-void PYROLift::collectCube(){
+void PYROLift::collectCube(bool tareOverride){
 
     liftMotors.moveVelocity(-60);
     pros::delay(100);
@@ -263,7 +263,9 @@ void PYROLift::collectCube(){
         // std::cout << abs(Motor/(2, true, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(3, true, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(13, 0, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(14, 0, AbstractMotor::gearset::red).getActualVelocity()) << std::endl;
         pros::delay(10);
     }
-    // if(LimitSwitch.isPressed()) liftMotors.tarePosition();
+    if(LimitSwitch.isPressed() || tareOverride){
+        liftMotors.tarePosition();
+    }
     moveLiftToHeight(HOVER_HEIGHT, 50);
     liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
     cubeCount++;
@@ -282,7 +284,6 @@ void PYROLift::collectCube(int velocity){
     liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
     cubeCount++;
 }
-
 
 //------------------------------------------------------------------------------
 // Method: manualControl() :

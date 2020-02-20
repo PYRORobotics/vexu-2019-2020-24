@@ -1,0 +1,4 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/charles/Vex_Projects/PYRO/vexu-2019-2020-24
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug

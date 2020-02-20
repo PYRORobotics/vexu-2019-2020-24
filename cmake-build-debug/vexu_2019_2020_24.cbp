@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="vexu_2019_2020_24"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="vexu_2019_2020_24">
+				<Option output="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/vexu_2019_2020_24" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_draw"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_hal"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_fonts"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_themes"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/controller"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/button"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/motor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/rotarysensor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis/controller"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis/model"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/async"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/iterative"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/button"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/motor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/rotarysensor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/filter"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/followers"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/modifiers"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../include/c++/9.1.0"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../include/c++/9.1.0/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../include/c++/9.1.0/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include-fixed"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 vexu_2019_2020_24"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="vexu_2019_2020_24/fast">
+				<Option output="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/vexu_2019_2020_24" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_draw"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_hal"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_fonts"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_themes"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/controller"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/button"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/motor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/rotarysensor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis/controller"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis/model"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/async"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/iterative"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/button"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/motor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/rotarysensor"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/filter"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/util"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/followers"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/modifiers"/>
+					<Add directory="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../include/c++/9.1.0"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../include/c++/9.1.0/x86_64-pc-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/../../../../include/c++/9.1.0/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/9.1.0/include-fixed"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 vexu_2019_2020_24/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/Makefile">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/README.md">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/common.mk">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/firmware/libpros.a">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/firmware/okapilib.a">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/firmware/v5-common.ld">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/firmware/v5-hot.ld">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/firmware/v5.ld">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/api.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/arduino.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/controller_lcd.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_conf.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core/lv_group.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core/lv_indev.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core/lv_obj.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core/lv_refr.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core/lv_style.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_core/lv_vdb.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_draw/lv_draw.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_draw/lv_draw_rbasic.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_draw/lv_draw_vbasic.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_hal/lv_hal.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_hal/lv_hal_disp.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_hal/lv_hal_indev.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_hal/lv_hal_tick.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_anim.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_area.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_circ.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_color.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_font.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_fs.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_ll.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_math.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_mem.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_symbol_def.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_task.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_templ.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_txt.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_misc/lv_ufs.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_bar.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_btn.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_btnm.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_cb.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_chart.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_cont.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_ddlist.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_gauge.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_img.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_kb.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_label.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_led.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_line.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_list.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_lmeter.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_mbox.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_objx_templ.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_page.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_roller.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_slider.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_sw.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_ta.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_tabview.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_objx/lv_win.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_themes/lv_theme.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_themes/lv_theme_alien.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lv_themes/lv_theme_templ.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/display/lvgl.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/init.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/main.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/controller/chassisController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/controller/chassisControllerIntegrated.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/controller/chassisControllerPid.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/controller/chassisScales.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model/chassisModel.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model/readOnlyChassisModel.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model/skidSteerModel.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model/threeEncoderSkidSteerModel.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/chassis/model/xDriveModel.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncLinearMotionProfileController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncMotionProfileController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncPosIntegratedController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncPosPidController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncPositionController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncVelIntegratedController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncVelPidController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncVelocityController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/async/asyncWrapper.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/closedLoopController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/controllerInput.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/controllerOutput.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative/iterativeController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative/iterativeMotorVelocityController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative/iterativePosPidController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative/iterativePositionController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative/iterativeVelPidController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/iterative/iterativeVelocityController.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/util/controllerRunner.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/util/flywheelSimulator.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/util/pidTuner.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/control/util/settledUtil.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/coreProsAPI.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/button/abstractButton.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/button/buttonBase.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/motor/abstractMotor.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/rotarysensor/continuousRotarySensor.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/device/rotarysensor/rotarySensor.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/averageFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/composableFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/demaFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/ekfFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/emaFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/filter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/filteredControllerInput.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/medianFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/passthroughFilter.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/filter/velMath.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QAcceleration.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QAngle.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QAngularAcceleration.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QAngularJerk.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QAngularSpeed.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QArea.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QForce.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QFrequency.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QJerk.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QLength.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QMass.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QPressure.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QSpeed.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QTime.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QTorque.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/QVolume.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/units/RQuantity.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util/abstractRate.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util/abstractTimer.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util/logging.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util/mathUtil.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util/supplier.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/api/util/timeUtil.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis/controller/chassisControllerFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/chassis/model/chassisModelFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/async/asyncControllerFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/iterative/iterativeControllerFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/util/controllerRunnerFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/util/pidTunerFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/control/util/settledUtilFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/adiUltrasonic.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/button/adiButton.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/button/controllerButton.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/controller.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/controllerUtil.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/motor/adiMotor.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/motor/motor.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/motor/motorGroup.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/rotarysensor/adiEncoder.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/rotarysensor/adiGyro.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/rotarysensor/integratedEncoder.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/rotarysensor/potentiometer.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/device/vision.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/filter/velMathFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/util/rate.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/util/timeUtilFactory.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/impl/util/timer.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/fit.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/followers/distance.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/followers/encoder.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/io.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/lib.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/mathutil.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/modifiers/swerve.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/modifiers/tank.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/spline.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/structs.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/okapi/pathfinder/include/pathfinder/trajectory.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/adi.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/adi.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/api_legacy.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/apix.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/colors.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/llemu.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/llemu.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/misc.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/misc.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/motors.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/motors.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/rtos.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/rtos.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/vision.h">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/include/pros/vision.hpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/project.pros">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/arduino.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/autonomous.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/chassis.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/controller_lcd.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/initialize.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/lift.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/opcontrol.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/src/pid.cpp">
+			<Option target="vexu_2019_2020_24"/>
+		</Unit>
+		<Unit filename="/home/charles/Vex_Projects/PYRO/vexu-2019-2020-24/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
