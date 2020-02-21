@@ -96,7 +96,7 @@ void opcontrol() {
         avgFilterReset.filter(0);
     }
 
-    if(Screen::DriverEnabled)
+    if(Screen::DriverEnabled || !pros::competition::is_disabled())
     {
       okapi::PYRO_Arduino::send("TELEOP");
       lifttaskauto.suspend();
@@ -116,7 +116,7 @@ void opcontrol() {
       pros::Task lifttaskteleop(liftTask, (void*)NULL, TASK_PRIORITY_DEFAULT,
                                 TASK_STACK_DEPTH_DEFAULT, "lift teleop task");
 
-      while (Screen::DriverEnabled) // Teleop
+      while (Screen::DriverEnabled || !pros::competition::is_disabled()) // Teleop
       {
         //printf("%f %f\n", LEFT.get(), RIGHT.get());
         chassis.driveController.tank((float) master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) / 127,
