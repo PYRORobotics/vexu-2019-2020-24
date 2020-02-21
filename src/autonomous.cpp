@@ -182,7 +182,7 @@ void auton_red0()
   //-----Intake to U-----//
   intake.motors.tarePosition();
   intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
-  intake.motors.moveAbsolute(-42, 100);
+  intake.motors.moveAbsolute(-125, 25);//-42
 
   //-----Drive Up to 4 Stack-----//
   chassis.MotionController.setTarget("1", false);  //Drive forward
@@ -204,24 +204,29 @@ void auton_red0()
 
   //-----Drive Forward to Laterally Align with 3 Stack-----//
   chassis.MotionController.setTarget("3", false);  //Drive forward
-  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{15_in,0_in,0_deg}}, "4");
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{15_in,0_in,1_deg}}, "4");
   chassis.MotionController.waitUntilSettled();
 
   //-----Turn Facing 3 Stack-----//
-  chassis.turn_PID_sync(90.5);
+  chassis.turn_PID_sync(89.5);//90.5
 
   // Turn on intake
   intake.motors.moveVelocity(25);
-  pros::delay(1000);
+  pros::delay(1750);
   // intake.motors.moveVelocity(0);
   // pros::delay(200);
 
   //-----Intake to U-----//
   intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
-  intake.motors.moveRelative(-30, 25);//-37
+  pros::delay(50);
+  //intake.motors.moveRelative(-29, 25);//-37
+    Motor(15, true, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees).moveRelative(-27, 25);//-37
+    Motor(6, false, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees).moveRelative(-40, 25);//-37
 
 
-  //-----Drive Up to 3 Stack-----//
+
+
+    //-----Drive Up to 3 Stack-----//
   chassis.MotionController.setTarget("4", false);  //Drive forward
     chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{6_in,0_in,0_deg}}, "PUSH CUBES AWAY");//6
     //chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{1_in,0_in,0_deg}}, "PUSH CUBES AWAY 2");//6
@@ -236,6 +241,8 @@ void auton_red0()
   //chassis.MotionController.setTarget("PUSH CUBES AWAY 2", false);  //Drive forward
   chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{14_in,0_in,0_deg}}, "6");//8
     chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{8_in,0_in,0_deg}}, "6.1");//8
+    chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{2_in,0_in,0_deg}}, "6.2");//8
+
 
     chassis.MotionController.waitUntilSettled();
 
@@ -253,14 +260,14 @@ void auton_red0()
   pros::delay(300);
 
   //-----Drive Up to 2 Stack-----//
-  chassis.MotionController.setTarget("6", false);  //Drive forward
+  chassis.MotionController.setTarget("6.1", false);  //Drive forward
   chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{6_in,0_in,0_deg}}, "6.5");
   chassis.MotionController.waitUntilSettled();
 
   // Turn on intake
   intake.motors.moveVelocity(70);
   pros::delay(500);
-  chassis.MotionController.setTarget("6.1", true);  //Drive backward
+  chassis.MotionController.setTarget("6.2", true);  //Drive backward
   chassis.MotionController.waitUntilSettled();
 
   //-----Pick Up free cube ()-----//
@@ -288,7 +295,7 @@ void auton_red0()
   chassis.MotionController.setTarget("ALIGN STACK", false);  //Drive forward
   chassis.MotionController.waitUntilSettled();
   chassis.MotionController.setTarget("PUSH CUBES AWAY 2", false);  //Drive forward
-  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{28_in,-27_in,-45_deg}}, "7");//25
+  chassis.MotionController.generatePath({Point{0_in,0_in,0_deg}, Point{28_in,-31_in,-45_deg}}, "7");//25
   chassis.MotionController.waitUntilSettled();
 
   //-----Pick Up 2 Stack (10)-----//
