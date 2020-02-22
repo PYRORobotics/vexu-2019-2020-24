@@ -51,6 +51,8 @@ static void update_localization(void*)
 void initialize()
 {
     chassis.MotionController.generatePath({Point{0_in,0_in,-17_deg}, Point{12_in,-3.25_in,0_deg}}, "0");
+    chassis.MotionController.generatePath({Point{0_in,0_in,17_deg}, Point{12_in,3.75_in,0_deg}}, "0 BLUE");
+
 
     pros::delay(200);
 	//pros::lcd::initialize(); // Uncomment to use PROS's LCD

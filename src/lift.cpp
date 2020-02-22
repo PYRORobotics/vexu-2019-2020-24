@@ -57,7 +57,7 @@ okapi::MotorGroup PYROLift::liftMotors({
                                                Motor(13, false, AbstractMotor::gearset::red),
                                                Motor(14, false, AbstractMotor::gearset::red),
                                                Motor(2, true, AbstractMotor::gearset::red),
-                                               Motor(3, true, AbstractMotor::gearset::red)}
+                                               Motor(4, true, AbstractMotor::gearset::red)}
 );
 
 pros::ADIDigitalIn breakbeam('e');
