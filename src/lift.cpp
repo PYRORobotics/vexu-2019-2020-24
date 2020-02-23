@@ -313,13 +313,13 @@ void PYROLift::manualControl(){
     }
 
     //manual override to just move the intake without picking up a cube
-    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
+    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){  //A
         intake.motors.moveVoltage(12000);
     }
-    else if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+    else if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){    //Y
         intake.motors.tarePosition();
     }
-    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_Y))
+    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A))   //Y
     {
       intake.motors.moveAbsolute(-45, 100);
       intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
