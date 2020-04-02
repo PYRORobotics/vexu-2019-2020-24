@@ -54,10 +54,12 @@ int PYROLift::liftTarget = 10;
 PYROLift lift(11,12,1,2,5,6);
 
 okapi::MotorGroup PYROLift::liftMotors({
-                                               Motor(13, false, AbstractMotor::gearset::red),
                                                Motor(14, false, AbstractMotor::gearset::red),
+                                               Motor(17, false, AbstractMotor::gearset::red),
+                                               Motor(13, true, AbstractMotor::gearset::red),
                                                Motor(2, true, AbstractMotor::gearset::red),
-                                               Motor(4, true, AbstractMotor::gearset::red)}
+                                               Motor(5, true, AbstractMotor::gearset::red),
+                                               Motor(4, false, AbstractMotor::gearset::red)}
 );
 
 pros::ADIDigitalIn breakbeam('e');
