@@ -261,7 +261,13 @@ void PYROLift::collectCube(bool tareOverride){
     // while(abs(liftMotors.getActualVelocity()) > 3){
     //     pros::delay(10);
     // }
-    while((abs(Motor(2, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(3, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(13, 0, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(14, 0, AbstractMotor::gearset::red).getActualVelocity()) > 2 )){
+    //while((abs(Motor(2, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(3, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(13, 0, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(14, 0, AbstractMotor::gearset::red).getActualVelocity()) > 2 )){
+    while(abs(Motor(14, false, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(17, false, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(13, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(2, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(5, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(4, false, AbstractMotor::gearset::red).getActualVelocity()) > 2)  {
         // std::cout << abs(Motor/(2, true, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(3, true, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(13, 0, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(14, 0, AbstractMotor::gearset::red).getActualVelocity()) << std::endl;
         pros::delay(10);
     }
