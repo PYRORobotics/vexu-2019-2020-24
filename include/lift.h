@@ -3,6 +3,7 @@
 
 #include "piston.h"
 #include "okapi/api.hpp"
+#include "arduino.h"
 
 //==================================START FILE==================================
 //==============================================================================
@@ -30,21 +31,24 @@ class PYROLift {
         float getMotorPos();
         void moveLiftToHeight(float inches, int maxVelocity);
         void tare();
-        void collectCube();
+        void collectCube(bool tareOverride = false);
         void collectCube(int);
         void intakeAndCollect();
         Piston piston_door;
         Piston piston_floor;
+        okapi::ADIButton LimitSwitch;
+
         static int liftTarget;
         static void auton(void*)
         {
             liftMotors.tarePosition();
-          while(pros::competition::is_autonomous())
+          while(1)
           {
             liftMotors.moveAbsolute(liftTarget, 50);
             pros::delay(20);
           }
         }
+
     private:
         static okapi::MotorGroup liftMotors;
         int cubeCount;

@@ -57,7 +57,10 @@ Piston::Piston(char port, int8_t starting_state): adi(port)
 //------------------------------------------------------------------------------
 void Piston::extend()
 {
-  adi.set_value(1);
+  // if(port > 8)
+    adi.set_value(1);
+  // else
+    PYRO_Arduino::setADI(port,1);
   state = 1;
 }
 
@@ -79,7 +82,10 @@ void Piston::extend()
 //------------------------------------------------------------------------------
 void Piston::retract()
 {
-  adi.set_value(0);
+  // if(port > 8)
+    adi.set_value(0);
+  // else
+    PYRO_Arduino::setADI(port,0);
   state = 0;
 }
 
@@ -101,7 +107,10 @@ void Piston::retract()
 //------------------------------------------------------------------------------
 void Piston::set(bool output)
 {
-  adi.set_value(output);
+  if(port > 8)
+    adi.set_value(output);
+  else
+    PYRO_Arduino::setADI(port,output);
   state = output;
 }
 
@@ -125,12 +134,18 @@ void Piston::toggle()
 {
   if(state == 1)
   {
-    adi.set_value(0);
+    if(port > 8)
+      adi.set_value(0);
+    else
+      PYRO_Arduino::setADI(port,0);
     state = 0;
   }
   else
   {
-    adi.set_value(1);
+    if(port > 8)
+      adi.set_value(0);
+    else
+      PYRO_Arduino::setADI(port,0);
     state = 1;
   }
 }

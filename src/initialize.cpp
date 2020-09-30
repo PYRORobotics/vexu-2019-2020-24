@@ -18,6 +18,17 @@
 // Function Defintions
 // -------------------
 
+static void update_localization(void*)
+{
+	while(1)
+	{
+		orientation.setHeading(Arduino.bno->get());
+		//std::cout << "Heading: " << orientation.getHeading();// << std::endl;
+		//std::cout << "; Heading: " << orientation.getAcceleration(x) << std::endl;
+		pros::delay(20);
+	}
+}
+
 //------------------------------------------------------------------------------
 // Function: initialize() :
 // ------------------------
@@ -39,8 +50,22 @@
 //------------------------------------------------------------------------------
 void initialize()
 {
+    chassis.MotionController.generatePath({Point{0_in,0_in,-17_deg}, Point{12_in,-3.25_in,0_deg}}, "0");
+    chassis.MotionController.generatePath({Point{0_in,0_in,17_deg}, Point{12_in,3.75_in,0_deg}}, "0 BLUE");
+
+
+    pros::delay(200);
 	//pros::lcd::initialize(); // Uncomment to use PROS's LCD
 	Screen screen;
+	pros::delay(100);
+	pros::Task t_update_localization(update_localization,(void*)NULL, TASK_PRIORITY_DEFAULT,
+	                          TASK_STACK_DEPTH_DEFAULT, "task");
+
+	Arduino.setClock();
+	pros::delay(200);
+	Arduino.reset();
+
+	//PIDControllerManager man;
 }
 
 

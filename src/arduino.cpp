@@ -24,7 +24,9 @@ using namespace okapi;
 
 // Global/Static Objects
 // ---------------------
-PYRO_Arduino Arduino(16);
+PYRO_Arduino Arduino(7);
+okapi::BNO055* PYRO_Arduino::bno = NULL;
+
 
 
 // Function Defintions
@@ -133,10 +135,16 @@ void t_update_BNO055(void*)
 //    BNO055_Main
 //```
 //------------------------------------------------------------------------------
-PYRO_Arduino::PYRO_Arduino(int port) : BNO055_Main(port)
+PYRO_Arduino::PYRO_Arduino(int port) : BNO055_Main(port), t_arduino_update(update_differential_pos,(void*)NULL, TASK_PRIORITY_DEFAULT,
+                          TASK_STACK_DEPTH_DEFAULT, "Arduino task")
 {
   this->port = port;
+  bno = &BNO055_Main;
 }
+
+
+
+
 
 
 //------------------------------------------------------------------------------

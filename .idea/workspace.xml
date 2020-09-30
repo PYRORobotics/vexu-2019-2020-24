@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="vexu_2019_2020_24" targetName="vexu_2019_2020_24" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="039e94cb-7834-4d30-ae95-09a10599f90d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common.mk" beforeDir="false" afterPath="$PROJECT_DIR$/common.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firmware/libpros.a" beforeDir="false" afterPath="$PROJECT_DIR$/firmware/libpros.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/display/lv_conf.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/display/lv_conf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/lift.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/lift.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/adi.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/adi.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/adi.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/adi.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/api_legacy.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/api_legacy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/apix.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/apix.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/colors.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/colors.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/llemu.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/llemu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/llemu.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/llemu.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/misc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/misc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/misc.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/misc.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/motors.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/motors.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/motors.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/motors.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/rtos.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/rtos.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/rtos.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/rtos.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/serial.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/serial.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/serial.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/serial.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/vision.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/vision.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/pros/vision.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/pros/vision.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.pros" beforeDir="false" afterPath="$PROJECT_DIR$/project.pros" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/autonomous.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/autonomous.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/initialize.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/initialize.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lift.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/lift.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectId" id="1RFumOaspZyKns46zaVJ4VIHSRa" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/include" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Shell Script.make+upload">
+    <configuration name="make" type="ShConfigurationType">
+      <option name="SCRIPT_PATH" value="$USER_HOME$/.local/bin/prosv5" />
+      <option name="SCRIPT_OPTIONS" value="make" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="" />
+      <option name="INTERPRETER_PATH" value="/usr/bin/python3" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="make+upload" type="ShConfigurationType">
+      <option name="SCRIPT_PATH" value="$USER_HOME$/.local/bin/prosv5" />
+      <option name="SCRIPT_OPTIONS" value="mu" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="" />
+      <option name="INTERPRETER_PATH" value="/usr/bin/python3" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="upload" type="ShConfigurationType">
+      <option name="SCRIPT_PATH" value="$USER_HOME$/.local/bin/prosv5" />
+      <option name="SCRIPT_OPTIONS" value="upload" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="" />
+      <option name="INTERPRETER_PATH" value="/usr/bin/python3" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Shell Script.make" />
+      <item itemvalue="Shell Script.make+upload" />
+      <item itemvalue="Shell Script.upload" />
+    </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="039e94cb-7834-4d30-ae95-09a10599f90d" name="Default Changelist" comment="" />
+      <created>1569275323357</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1569275323357</updated>
+      <workItem from="1569275324420" duration="601000" />
+      <workItem from="1569285557128" duration="3526000" />
+      <workItem from="1569356831311" duration="28000" />
+      <workItem from="1569359516477" duration="1304000" />
+      <workItem from="1569890516944" duration="4663000" />
+      <workItem from="1570152023077" duration="1375000" />
+      <workItem from="1570489958067" duration="4832000" />
+      <workItem from="1570506790848" duration="1017000" />
+      <workItem from="1571357234582" duration="7829000" />
+      <workItem from="1571440216643" duration="6213000" />
+      <workItem from="1571701021902" duration="4900000" />
+      <workItem from="1571863800482" duration="9278000" />
+      <workItem from="1571965297133" duration="599000" />
+      <workItem from="1572041246492" duration="705000" />
+      <workItem from="1572311399252" duration="8771000" />
+      <workItem from="1572476473676" duration="4668000" />
+      <workItem from="1572490815336" duration="739000" />
+      <workItem from="1572569955644" duration="2288000" />
+      <workItem from="1572661659008" duration="1422000" />
+      <workItem from="1572709979618" duration="7217000" />
+      <workItem from="1572988883105" duration="2038000" />
+      <workItem from="1573778532499" duration="323000" />
+      <workItem from="1574470826862" duration="1255000" />
+      <workItem from="1574554518494" duration="168000" />
+      <workItem from="1574738526665" duration="327000" />
+      <workItem from="1574895105648" duration="599000" />
+      <workItem from="1575327851777" duration="2061000" />
+      <workItem from="1575601246127" duration="1191000" />
+      <workItem from="1578628189234" duration="6907000" />
+      <workItem from="1579121729160" duration="599000" />
+      <workItem from="1579139154081" duration="2906000" />
+      <workItem from="1579217589469" duration="11812000" />
+      <workItem from="1581384521073" duration="3770000" />
+      <workItem from="1582156400531" duration="832000" />
+      <workItem from="1582160862368" duration="7179000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="720" y="90" width="992" height="734" key="SettingsEditor" timestamp="1582156626890">
+      <screen x="0" y="31" width="1920" height="1013" />
+    </state>
+    <state x="720" y="90" width="992" height="734" key="SettingsEditor/0.31.1920.1013@0.31.1920.1013" timestamp="1582156626890" />
+    <state x="224" y="185" width="511" height="708" key="refactoring.ChangeSignatureDialog" timestamp="1579139906485">
+      <screen x="0" y="31" width="1920" height="1013" />
+    </state>
+    <state x="224" y="185" width="511" height="708" key="refactoring.ChangeSignatureDialog/0.31.1920.1013@0.31.1920.1013" timestamp="1579139906485" />
+    <state x="623" y="250" width="672" height="678" key="search.everywhere.popup" timestamp="1579237738494">
+      <screen x="0" y="31" width="1920" height="1013" />
+    </state>
+    <state x="623" y="250" width="672" height="678" key="search.everywhere.popup/0.31.1920.1013@0.31.1920.1013" timestamp="1579237738494" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/lift.cpp</url>
+          <line>256</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/lift.cpp</url>
+          <line>261</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

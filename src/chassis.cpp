@@ -27,6 +27,34 @@ using namespace okapi;
 PYROChassis chassis;
 
 
+double ecToDegrees(int ec)
+{
+  return ec/360.0 * PI * IDLER_WHEEL_DIAMETER;
+};
+
+// void drive_to_coordinate_async(void* input)
+// {
+//   asyncDriveStruct *s = (asyncDriveStruct*)input;
+//   double* arr = s->coordinateData;
+//   int size = sizeof(arr) / sizeof(double);
+//
+//   switch (size)
+//   {
+//     case 3:
+//       s->chassis.drive_to_coordinate(arr[0],arr[1],arr[2]);
+//       break;
+//     case 4:
+//       s->chassis.drive_to_coordinate(arr[0],arr[1],arr[2],arr[3]);
+//       break;
+//     case 5:
+//       s->chassis.drive_to_coordinate(arr[0],arr[1],arr[2],arr[3],arr[4]);
+//       break;
+//     default:
+//       break;
+//   }
+// }
+
+
 // Class Defintions
 // ----------------
 
@@ -51,15 +79,19 @@ PYROChassis chassis;
 //    N/A: t_update_differential_pos (pros::Task)
 //```
 //------------------------------------------------------------------------------
-PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005),
+
+ADIEncoder PYROChassis::encoder_left('A', 'B', 0);
+ADIEncoder PYROChassis::encoder_right('C', 'D', 1);
+
+
+
+PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000001),
                             left_motors({-M_CHASSIS_LF, M_CHASSIS_LM, -M_CHASSIS_LR}),
-                            right_motors({-M_CHASSIS_RF, M_CHASSIS_RM, -M_CHASSIS_RR}),
-                            encoder_left(ADIEncoder('A', 'B', 0)),
-                            encoder_right(ADIEncoder('C', 'D', 1)),
+                            right_motors({M_CHASSIS_RF, -M_CHASSIS_RM, M_CHASSIS_RR}),
                             driveController(ChassisControllerFactory::create(
                                     left_motors, right_motors,
                                     encoder_left, encoder_right,
-                                    okapi::IterativePosPIDController::Gains{0.00001, 0.00001, 0.000006},   //straight
+                                    okapi::IterativePosPIDController::Gains{0.000001, 0.00001, 0.000003},   //straight
                                     okapi::IterativePosPIDController::Gains{0.000, 0.0, 0.0000},    //correct drift
                                     okapi::IterativePosPIDController::Gains{0.001, 0.00001, 0.00000},  //turn
                                     ratio,
@@ -71,6 +103,8 @@ PYROChassis::PYROChassis(): PositionPIDController(20, 80, 10, 5.5, 1.5, 0.000005
                               10.0, // Maximum linear jerk of the Chassis in m/s/s/s
                               driveController // Chassis Controller
                             ))///,
+                            ,t_update_pos(update_position,(void*)NULL, TASK_PRIORITY_DEFAULT,
+                                                      TASK_STACK_DEPTH_DEFAULT, "task")
                             ///t_update_differential_pos(update_differential_pos,NULL)
 {
   left_motors.setBrakeMode(AbstractMotor::brakeMode::brake);
@@ -123,8 +157,9 @@ void PYROChassis::drive_PID()
   int output = (int) PositionPIDController.calculate(pos_pid_data.target_position,
                      left_motors.getPosition() * IDLER_WHEEL_DIAMETER * PI / 3600,
                      &pos_pid_data.error);
-  left_motors.moveVelocity(output);
-  right_motors.moveVelocity(output);
+  // left_motors.moveVelocity(output);
+  // right_motors.moveVelocity(-output);
+  driveController.driveVector(output/100.0, 0);
 }
 
 
@@ -155,8 +190,10 @@ void PYROChassis::drive_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 
   pros::lcd::print(6, "%f", pos_pid_data.error);
   pros::lcd::print(7, "%d", output_l);
-  left_motors.moveVelocity(output_l);
-  right_motors.moveVelocity(output_r);
+  // left_motors.moveVelocity(output_l);
+  // right_motors.moveVelocity(output_r);
+  driveController.driveVector(output_l/100.0, 0*(output_l-output_r)/100.0);
+
 }
 
 
@@ -225,8 +262,9 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 
   pros::lcd::print(6, "%f", pos_pid_data.error);
   pros::lcd::print(7, "%d", output_l);
-  left_motors.moveVelocity(output_l);
-  right_motors.moveVelocity(output_r);
+  // left_motors.moveVelocity(output_l);
+  // right_motors.moveVelocity(output_r);
+  driveController.rotate(output_l/200.0);
 }
 
 
@@ -250,7 +288,7 @@ void PYROChassis::turn_PID(okapi::ADIEncoder* left, okapi::ADIEncoder* right)
 void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 {
 
-  set_target_position(degrees / 360 * PI * WHEELBASE * 92/95);
+  set_target_position(degrees / 360 * PI * WHEELBASE * 92/95  * 90/86);
   encoder_left.reset();
   encoder_right.reset();
   pos_pid_data.error = 0;
@@ -284,11 +322,464 @@ void PYROChassis::turn_PID_sync(double degrees, bool useIdler)
 //    void
 //```
 //------------------------------------------------------------------------------
-void PYROChassis::drive_seconds(int speed, double sec)
+void PYROChassis::drive_seconds(double speed, double sec)
 {
-  left_motors.moveVelocity(speed);
-  right_motors.moveVelocity(-speed);
+  // left_motors.moveVelocity(speed);
+  // right_motors.moveVelocity(-speed);
+  driveController.driveVector(speed, 0);
   pros::delay(sec*1000);
+  driveController.stop();
+}
+
+
+//------------------------------------------------------------------------------
+// Method: drive_to_coordinate(double x1, double y1, double h1, bool reversed, float speed, bool useWideTurn) :
+// ------------------------------------
+// Description:
+//     Drives the robot to (x1, y1, h1) synchronously.
+//
+// Parameters:
+//```
+//    double x1, double y1, double h1 - coordinate to drive to
+//    bool reversed - drive path in reverse direction
+//    bool useWideTurn - make wide arc turns rather than initially turning to
+//                       the correct heading first
+//```
+// Returns:
+//```
+//    void
+//```
+//------------------------------------------------------------------------------
+void PYROChassis::drive_to_coordinate(double x1, double y1, double h1, bool reversed, float speed, bool useWideTurns)
+{
+
+  double cv = 0, pv = 0; float setpoint = 0; // pv = error
+
+  // float& setpoint, double& pv, double& cv, float kp, float ki, float kd, float min, float max, double tollerance, float dt
+  PIDControllerRemake q(setpoint, pv, cv, 1.2, 0, 0, 0, fabs(speed),1, 10);
+
+  double x0, y0, h0;
+  x0 = OrientationData::getPosition(x);
+  y0 = OrientationData::getPosition(y);
+  h0 = OrientationData::getHeading();
+
+  double heading_delta;
+
+  if((y1-y0) == 0)
+  {
+    if(x1-x0 >= 0)
+    heading_delta = 90 - h0;
+    else
+    heading_delta = -90 + h0;
+  }
+  else
+  {
+    heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+  }
+
+  if(reversed)
+  {
+    heading_delta = heading_delta - 180;
+    if(heading_delta <= -360) heading_delta += 360;
+  }
+
+
+  if(!useWideTurns)
+  {
+    // double cv_t = 0, pv_t = 0; float setpoint_t = 0;
+    //
+    // if(heading_delta > 45)
+    // {
+    //   setpoint_t = 45;
+    //   pv_t = heading_delta;
+    //   PIDControllerRemake t(setpoint_t, pv_t, cv_t, 1.2, 0, 0, 0, fabs(speed),1, 20);
+    //
+    //   while(t.avgError() > 0.5)
+    //   {
+    //     chassis.driveController.rotate(cv_t);
+    //     if((y1-y0) == 0)
+    //     {
+    //       if(x1-x0 >= 0)
+    //       heading_delta = 90 - h0;
+    //       else
+    //       heading_delta = -90 + h0;
+    //     }
+    //     else
+    //     {
+    //       heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+    //     }
+    //
+    //     if(reversed)
+    //     {
+    //       heading_delta = heading_delta - 180;
+    //       if(heading_delta <= -360) heading_delta += 360;
+    //     }
+    //     pv_t = heading_delta;
+    //     pros::delay(20);
+    //   }
+    // }
+    // else if(heading_delta < -45)
+    // {
+    //   setpoint_t = -45;
+    //   pv_t = heading_delta;
+    //   PIDControllerRemake t(setpoint_t, pv_t, cv_t, 1.2, 0, 0, 0, fabs(speed),1, 20);
+    //
+    //   while(t.avgError() > 0.5)
+    //   {
+    //     chassis.driveController.rotate(-cv_t);
+    //     if((y1-y0) == 0)
+    //     {
+    //       if(x1-x0 >= 0)
+    //       heading_delta = 90 - h0;
+    //       else
+    //       heading_delta = -90 + h0;
+    //     }
+    //     else
+    //     {
+    //       heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+    //     }
+    //
+    //     if(reversed)
+    //     {
+    //       heading_delta = heading_delta - 180;
+    //       if(heading_delta <= -360) heading_delta += 360;
+    //     }
+    //     pv_t = heading_delta;
+    //     pros::delay(20);
+    //   }
+    // }
+    // chassis.driveController.stop();
+  }
+
+  double distance0 = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+
+  q.setSetpoint(distance0);
+
+  do
+  {
+      if((y1-y0) == 0)
+      {
+        if(x1-x0 >= 0)
+        heading_delta = 90 - h0;
+        else
+        heading_delta = -90 + h0;
+      }
+      else
+      {
+        heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+      }
+
+    if(reversed)
+    {
+      heading_delta = heading_delta - 180;
+      if(heading_delta <= -360) heading_delta += 360;
+    }
+
+
+    if(!reversed)
+      chassis.driveController.driveVector(cv, sinf(heading_delta));
+    else
+      chassis.driveController.driveVector(-cv, sinf(heading_delta));
+
+    x0 = OrientationData::getPosition(x);
+    y0 = OrientationData::getPosition(y);
+    h0 = OrientationData::getHeading();
+
+    pros::delay(10);
+
+    pv = distance0 - sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+
+} while(sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) > 2));
+
+  chassis.driveController.stop();
+  // q.~PIDControllerRemake();
+
+  pros::delay(100);
+
+
+  // double cv_t2 = 0, pv_t2 = 0; float setpoint_t2 = 0;
+  // setpoint_t2 = h1-OrientationData::getHeading();
+  // pv_t2 = heading_delta;
+  // PIDControllerRemake t2(setpoint_t2, pv_t2, cv_t2, 1.2, 0, 0, 0, fabs(speed),1, 20);
+  //
+  // if(setpoint_t2 > 0)
+  // {
+  //   while(t2.avgError() > 0.5)
+  //   {
+  //     pv_t2 = h1-OrientationData::getHeading();
+  //     chassis.driveController.rotate(cv_t2);
+  //     pros::delay(20);
+  //   }
+  // }
+  // else
+  // {
+  //   while(t2.avgError() > 0.5)
+  //   {
+  //     pv_t2 = h1-OrientationData::getHeading();
+  //     chassis.driveController.rotate(-cv_t2);
+  //     pros::delay(20);
+  //   }
+  // }
+
+  if(h1-OrientationData::getHeading() >= 0)
+  {
+    while(h1-OrientationData::getHeading() > 0)
+    {
+      double p = (h1-OrientationData::getHeading())/90;
+      chassis.driveController.rotate(p + 0.025);
+      pros::delay(10);
+    }
+  }
+  else
+  {
+    while(h1-OrientationData::getHeading() < 0)
+    {
+      double p = (h1-OrientationData::getHeading())/90;
+      chassis.driveController.rotate(p - 0.025);
+      pros::delay(10);
+    }
+  }
+
+
+  chassis.driveController.stop();
+
+  pros::delay(10);
+
+}
+
+
+void PYROChassis::drive_to_coordinate_old(double x1, double y1, double h1, bool reversed, float speed, bool useWideTurns)
+{
+
+  double cv = 0, pv = 2; float setpoint = 0;
+
+  PIDControllerRemake q(setpoint, pv, cv, 1.2, 0, 0, 0, fabs(speed),1, 20);
+
+  double x0, y0, h0;
+  x0 = OrientationData::getPosition(x);
+  y0 = OrientationData::getPosition(y);
+  h0 = OrientationData::getHeading();
+
+  // float multiplierl = 0.01;
+  // float multiplierr = 0.01;
+
+  // float maxSpeed = 10;
+  // float kp = 1;
+
+  double heading_delta;
+
+
+    if((y1-y0) == 0)
+    {
+      if(x1-x0 >= 0)
+      heading_delta = 90 - h0;
+      else
+      heading_delta = -90 + h0;
+    }
+    else
+    {
+      heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+    }
+
+    if(reversed)
+    {
+      heading_delta = 180 - heading_delta;
+    }
+
+
+
+  if(!useWideTurns)
+  {
+    if(fabs(heading_delta) > 45)
+    {
+      // while(fabs(h1 - h0) > 0.5)
+      // {
+      //   kp = 1;
+      //   double speed;
+      //
+      //   speed = kp * (h1 - h0);
+      //
+      //   if(speed > 0.5) speed = 0.5;
+      //   else if(speed < -0.5) speed = -0.5;
+      //
+      //   if((h1 - h0) > 0)
+      //   {
+      //     chassis.driveController.left(speed);
+      //     chassis.driveController.right(speed);
+      //   }
+      //   else
+      //   {
+      //     chassis.driveController.left(-speed);
+      //     chassis.driveController.right(-speed);
+      //   }
+      //   pros::delay(20);
+      // }
+    }
+  }
+
+  double distance0 = sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+
+  q.setSetpoint(distance0);
+
+  do
+  {
+    //std::cout << "sp : " << q.setpoint << std::endl;
+
+
+
+    double pidl = cv;
+    double pidr = cv;
+
+
+    // if(!reversed)
+    // {
+    //   if((y1-y0) == 0)
+    //   {
+    //     if(x1-x0 >= 0)
+    //     heading_delta = 90 - h0;
+    //     else
+    //     heading_delta = -90 + h0;
+    //   }
+    //   else
+    //   {
+    //     heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+    //   }
+    // }
+    // else
+    // {
+      if((y1-y0) == 0)
+      {
+        if(x1-x0 >= 0)
+        heading_delta = 90 - h0;
+        else
+        heading_delta = -90 + h0;
+      }
+      else
+      {
+        heading_delta = 180.0/PI * ( atan( (x1-x0)/(y1-y0) ) ) - h0;
+      }
+
+    // }
+
+    double speedl;
+    double speedr;
+
+    if(reversed)
+    {
+      heading_delta = 180 - heading_delta;
+    }
+
+    heading_delta = 0;
+
+    if(heading_delta >= 0)
+    {
+      if(y1-y0 >= 0)
+      speedl = 1 * pidl;
+      else
+      speedl = -1 * pidl;
+      speedr = 0.75* cos( PI/180.0 * heading_delta ) * pidr;
+    }
+    else
+    {
+      if(y1-y0 >= 0)
+      speedr = 1 * pidr;
+      else
+      speedr = -1 * pidr;
+      speedl = 0.75* cos( PI/180.0 * heading_delta ) * pidl;
+    }
+
+    // speedl /= 100;
+    // speedr /= 100;
+
+    // if(pv < (distance0 * 1 / 4))
+    // {
+    //   //limit speed
+    //   speedl *= multiplierl;
+    //   speedr *= multiplierr;
+    //   multiplierl += 0.05;
+    //   multiplierr += 0.05;
+    //
+    // }
+
+    // left_motors.moveVelocity(pidl);
+    // right_motors.moveVelocity(pidr);
+
+    // if(speedl > 0.2)
+    //   speedl = 0.2;
+    // if(speedr > 0.2)
+    //   speedr = 0.2;
+
+    // if(reversed) speedl *= -1;
+    // if(reversed) speedr *= -1;
+
+
+    chassis.driveController.left(speedl);
+    chassis.driveController.right(-speedr);
+
+    x0 = OrientationData::getPosition(x);
+    y0 = OrientationData::getPosition(y);
+    h0 = OrientationData::getHeading();
+
+    pros::delay(20);
+
+    pv = distance0 - sqrt( (x1-x0)*(x1-x0) + (y1-y0)*(y1-y0) );
+    // std::cout << " pv = " << pv;
+    std::cout << "Distance: " << pv << "; Speed l = " << speedl << ", r = " << speedr << " HEADING: " << h0 << ", Delta: " << heading_delta << std::endl;
+
+  // } while(fabs(distance0 - pv) > 2);
+} while(q.avgError() > 0.5);
+
+  pros::delay(100);
+
+  // if(h1-OrientationData::getHeading() >= 0)
+  // {
+  //   while(h1-OrientationData::getHeading() > 0)
+  //   {
+  //     chassis.driveController.left(0.025);
+  //     chassis.driveController.right(0.025);
+  //     pros::delay(20);
+  //   }
+  // }
+  // else
+  // {
+  //   while(h1-OrientationData::getHeading() < 0)
+  //   {
+  //     chassis.driveController.left(-0.025);
+  //     chassis.driveController.right(-0.025);
+  //     pros::delay(20);
+  //   }
+  // }
+
+
+  // while(fabs(h1 - h0) > 0.5)
+  // {
+  //   kp = 1;
+  //   double speed;
+  //
+  //   speed = kp * (h1 - h0);
+  //
+  //   if(speed > 0.5) speed = 0.5;
+  //   else if(speed < -0.5) speed = -0.5;
+  //
+  //   if((h1 - h0) > 0)
+  //   {
+  //     chassis.driveController.left(speed);
+  //     chassis.driveController.right(speed);
+  //   }
+  //   else
+  //   {
+  //     chassis.driveController.left(-speed);
+  //     chassis.driveController.right(-speed);
+  //   }
+  //   pros::delay(20);
+  // }
+
+  chassis.driveController.left(0);
+  chassis.driveController.right(0);
+
+
+  // turn_PID_sync(h1 - h0);
+
 }
 
 //------------------------------------------------------------------------------

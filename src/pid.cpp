@@ -141,6 +141,137 @@ PIDImpl::~PIDImpl()
 {
 }
 
+
+
+
+
+
+
+//
+// PIDControllerRemake::PIDControllerRemake(double& pv, double& cv, float kp, float ki, float kd, float min, float max, float dt) : pv(pv), cv(cv), setpoint(0.0)
+// {
+//   setpoint = 0;
+//   this->kp = kp;
+//   this->ki = ki;
+//   this->kd = kd;
+//   this->min = min;
+//   this->max = max;
+//   this->dt = dt;
+//
+//   PIDControllerManager::controllerList.push_back(*this);
+// }
+
+PIDControllerRemake::PIDControllerRemake(float& setpoint, double& pv, double& cv, float kp, float ki, float kd, float min, float max, double tollerance, float dt) : pv(pv), cv(cv), setpoint(setpoint)//, id(id)
+{
+  this->kp = kp;
+  this->ki = ki;
+  this->kd = kd;
+  this->min = min;
+  this->max = max;
+  this->dt = dt;
+  this->tollerance = tollerance;
+  prev_error = 0;
+  integral = 0;
+
+  for(int i = 0; i < 50; i++)
+  {
+    avgFilterError.filter(48);
+  }
+
+  PIDControllerManager::controllerList.push_back(*this);
+}
+
+void PIDControllerRemake::setSetpoint(double setpoint)
+{
+  this->setpoint = setpoint;
+}
+
+double PIDControllerRemake::avgError()
+{
+  return avgFilterError.getOutput();
+}
+
+void PIDControllerRemake::iterate()
+{
+  float speed;
+  float slew = 0.7;
+  if(fabs(setpoint) > fabs(tollerance))
+  {
+    // Ramp-up
+    if(pv < 0.25*setpoint)
+    {
+      // std::cout << "LIMITING (Rev-up): ";
+      // speed = max * pow(0.8 + pow(2.71828182846,2.5-40*(pv/setpoint)), -0.75);
+      // https://www.desmos.com/calculator/8kwtgeelos
+      speed = max * pow(1 + pow(2.5*slew/max, 2.5-20 * pv),-0.75);
+    }
+    // PID
+    else
+    {
+      speed = max * pow(1 + pow(2.5*slew/max, 2.5-20 * pv),-0.75);
+      setpoint < 0? speed *= -1: 0;
+      // float speedPID = kp * (setpoint - pv);
+
+      // Calculate error
+      double error = setpoint - pv;
+
+      avgFilterError.filter(error);
+
+      if(setpoint < 0)
+      error = -error;
+
+      // Proportional term
+      double Pout = kp * error;
+
+      // Integral term
+      integral += error * dt;
+      double Iout = ki * integral;
+
+      // Derivative term
+      double derivative = (error - prev_error) / dt;
+      double Dout = kd * derivative;
+
+      // Calculate total output
+      float speedPID = Pout + Iout + Dout;
+      prev_error = error;
+
+
+      if(speedPID < speed)
+      {
+        speed = speedPID;
+      }
+      if(abs(speed) > max)
+      {
+        // std::cout << "LIMITING: ";
+        speed < 0? speed = -max : speed = max;
+      }
+    }
+    // std::cout << "speed: " << speed << " pv: " << pv << " setpt: " << setpoint << std::endl;
+  }
+  else
+  {
+    // Stop
+    speed = 0;
+    // PIDControllerManager.removePID(this);
+  }
+  cv = speed;
+
+
+  // std::cout << "Speed, setpt " << speed << ", " << setpoint << std::endl;
+
+}
+
+
+
+PIDControllerManager::PIDControllerManager() : t_PIDManager(manager,(void*)NULL, TASK_PRIORITY_DEFAULT,
+                          TASK_STACK_DEPTH_DEFAULT, "PID Manager task")
+{
+
+}
+
+
+
+
 //------------------------------------------------------------------------------
 //===================================END FILE===================================
 //==============================================================================

@@ -1,5 +1,6 @@
 #ifndef _AUTONOMOUS_H_
 #define _AUTONOMOUS_H_
+#include "api.h"
 
 //==================================START FILE==================================
 //==============================================================================
@@ -17,19 +18,26 @@
 
 enum autonNames
 {
+  notSelected,
   red0,
   blue0,
-  skills0
+  red1,
+  blue1,
+  redSkills0,
+  blueSkills0
 };
 
-typedef autonNames autonID;
+// typedef autonNames autonID;
 
-static autonID selectedAutonID;
+// static autonNames selectedAutonID = notSelected;
 
-extern void autonomousSelector(autonID);
+extern void autonomousSelector(autonNames);
 extern void auton_red0();
 extern void auton_blue0();
+extern void auton_red1();
+extern void auton_blue1();
 extern void auton_skills0();
+extern pros::Task lifttaskauto;
 
 //------------------------------------------------------------------------------
 //===================================END FILE===================================

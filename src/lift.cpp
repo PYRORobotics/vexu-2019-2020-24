@@ -46,7 +46,7 @@ const float HEIGHT_OFFSET = (2*(INCHES_PIVOT_TO_PIVOT * (-cos((42.0 * pi/180)) +
 
 //The height that the lift should return to after collecting a cube.
 //11 inches leaves a satisfactory about of clearance between cubes while also minimizing travel time for cube collection
-const float HOVER_HEIGHT = 11.0;
+const float HOVER_HEIGHT = 15.0;
 
 //initially set the lift target to a tiny bit above 0 (approximately 1.4 degrees) so that the motors do not bind against the hard stops
 int PYROLift::liftTarget = 10;
@@ -54,10 +54,12 @@ int PYROLift::liftTarget = 10;
 PYROLift lift(11,12,1,2,5,6);
 
 okapi::MotorGroup PYROLift::liftMotors({
-                                               Motor(13, false, AbstractMotor::gearset::red),
                                                Motor(14, false, AbstractMotor::gearset::red),
+                                               Motor(17, false, AbstractMotor::gearset::red),
+                                               Motor(13, true, AbstractMotor::gearset::red),
                                                Motor(2, true, AbstractMotor::gearset::red),
-                                               Motor(3, true, AbstractMotor::gearset::red)}
+                                               Motor(5, true, AbstractMotor::gearset::red),
+                                               Motor(4, false, AbstractMotor::gearset::red)}
 );
 
 pros::ADIDigitalIn breakbeam('e');
@@ -97,7 +99,7 @@ PYROLift::PYROLift( int motorTopRight,
                     int motorTopLeft,
                     int motorBottomLeft,
                     int pneumaticFloorPort,
-                    int pneumaticDoorPort) : piston_door(8), piston_floor(7)
+                    int pneumaticDoorPort) : piston_door(8), piston_floor(7), LimitSwitch('f')
 {
     cubeCount = 0;
 }
@@ -225,7 +227,7 @@ float PYROLift::getLiftAngle(){
 void PYROLift::intakeAndCollect(){
     intake.motors.moveVoltage(12000);
     while(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1) && breakbeam.get_value()){
-        printf("breakbeam: %d\n", breakbeam.get_value());
+        //printf("breakbeam: %d\n", breakbeam.get_value());
         pros::delay(10);
     }
     if(!breakbeam.get_value()) {
@@ -252,16 +254,30 @@ void PYROLift::intakeAndCollect(){
 //    void
 //```
 //------------------------------------------------------------------------------
-void PYROLift::collectCube(){
+void PYROLift::collectCube(bool tareOverride){
 
     liftMotors.moveVelocity(-60);
-    pros::delay(250);
-    while(abs(liftMotors.getActualVelocity()) > 3){
+    pros::delay(100);
+    // while(abs(liftMotors.getActualVelocity()) > 3){
+    //     pros::delay(10);
+    // }
+    //while((abs(Motor(2, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(3, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(13, 0, AbstractMotor::gearset::red).getActualVelocity()) > 2 && abs(Motor(14, 0, AbstractMotor::gearset::red).getActualVelocity()) > 2 )){
+    while(abs(Motor(14, false, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(17, false, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(13, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(2, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(5, true, AbstractMotor::gearset::red).getActualVelocity()) > 2 &&
+            abs(Motor(4, false, AbstractMotor::gearset::red).getActualVelocity()) > 2)  {
+        // std::cout << abs(Motor/(2, true, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(3, true, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(13, 0, AbstractMotor::gearset::red).getActualVelocity()) << " " << abs(Motor(14, 0, AbstractMotor::gearset::red).getActualVelocity()) << std::endl;
         pros::delay(10);
+    }
+    if(LimitSwitch.isPressed() || tareOverride){
+        liftMotors.tarePosition();
     }
     moveLiftToHeight(HOVER_HEIGHT, 50);
     liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
     cubeCount++;
+    okapi::PYRO_Arduino::send("COIN");
 }
 
 //overload for manually specifying the velocity at which the lift moves down.
@@ -276,7 +292,6 @@ void PYROLift::collectCube(int velocity){
     liftTarget = getMotorDegreesFromLiftDegrees(getAngleForHeight(HOVER_HEIGHT));
     cubeCount++;
 }
-
 
 //------------------------------------------------------------------------------
 // Method: manualControl() :
@@ -302,11 +317,20 @@ void PYROLift::manualControl(){
     //flip the intake motors back
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
         intake.motors.moveAbsolute(-190, 100);
+        intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
     }
 
     //manual override to just move the intake without picking up a cube
-    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
+    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)){  //A
         intake.motors.moveVoltage(12000);
+    }
+    else if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)){    //Y
+        intake.motors.tarePosition();
+    }
+    else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A))   //Y
+    {
+      intake.motors.moveAbsolute(-45, 100);
+      intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
     }
     else{
         intake.motors.moveVoltage(0);
@@ -322,7 +346,7 @@ void PYROLift::manualControl(){
 
     //manual control to move the lift at a constant velocity, useful for moving the lift to a height that has not been pre set
     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
-        liftMotors.moveVelocity(50);
+        liftMotors.moveVelocity(75);
         liftTarget = liftMotors.getPosition();
     }
     else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
@@ -373,8 +397,10 @@ void PYROLift::loopTeleop(){
     moveLiftToHeight(HOVER_HEIGHT, 50);
     while(true) {
         manualControl();
+        // intake.motors.setBrakeMode(AbstractMotor::brakeMode::hold);
         //run the automated cube collection routine
         if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+          intake.motors.setBrakeMode(AbstractMotor::brakeMode::coast);
             if (getLiftHeight() > 10) {
                 intakeAndCollect();
             } else {
@@ -387,18 +413,16 @@ void PYROLift::loopTeleop(){
             tare();
         }
 
-        //macro to lift the height to the medium or short towers
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            moveLiftToHeight(30, 50);
-        }
 
         //macro to drop exactly one cube out of the floor of the intake, useful for placing cubes in towers
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
             pistonFloor.set_value(true);
             pros::delay(33);
             pistonFloor.set_value(false);
+            okapi::PYRO_Arduino::send("ONEUP");
         }
-        printf("Breakbeam: %d\n", breakbeam.get_value());
+        //printf("Breakbeam: %d\n", breakbeam.get_value());
+        pros::delay(20);
     }
 }
 
@@ -419,11 +443,14 @@ void PYROLift::loopTeleop(){
 //```
 //------------------------------------------------------------------------------
 void PYROLift::tare(){
+  if(!LimitSwitch.isPressed())
+  {
     liftMotors.moveVelocity(-25);
     pros::delay(500);
-    while(abs(liftMotors.getActualVelocity()) > 10){
+    while(!LimitSwitch.isPressed()){
         pros::delay(10);
     }
+  }
     liftMotors.tarePosition();
 }
 
